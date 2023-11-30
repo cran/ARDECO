@@ -20,6 +20,9 @@
 #' @export
 
 ardeco_get_variable_list <- function() {
+  # set code variable to NULL (for CRAN check)
+  code <- NULL
+
   # root of the URL to access to graphQL API for ARDECO
   link <- 'https://urban.jrc.ec.europa.eu/ardeco-api-v2/graphql'
   conn <- GraphqlClient$new(url=link)
@@ -34,6 +37,33 @@ ardeco_get_variable_list <- function() {
 
   # convert the result in formatted list
   variable_list <- result$data$variableList %>% as_tibble()
+
+  # remove variable which have to not be public (deflator, rate, others...)
+  '%notin%' <- Negate('%in%')
+  variable_list <- subset(variable_list, code %notin% c("RHVGDP",
+                                                        "XGVA_CLV2015",
+                                                        "XGVAGR_N2",
+                                                        "XGDPGR_N2",
+                                                        "XGVAGR_N3",
+                                                        "PVGD",
+                                                        "PVGT",
+                                                        "PVG1",
+                                                        "PVG2",
+                                                        "PVG4",
+                                                        "PVG5",
+                                                        "PIGT",
+                                                        "RUTYH",
+                                                        "SOKCT",
+                                                        "SUKCT",
+                                                        "SOKCZ",
+                                                        "SUKCZ",
+                                                        "ROKND",
+                                                        "ROKNZ",
+                                                        "SUKCT",
+                                                        "RNECN",
+                                                        "RNUTN",
+                                                        "RUVNH",
+                                                        "RUYNH"))
 
   # return the formatted data
   return(variable_list)

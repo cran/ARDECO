@@ -1,9 +1,10 @@
-30fcb1f7bb4ec30e2211ca733a247389 *DESCRIPTION
+26fee78e449a6f051f688f56aa865772 *DESCRIPTION
 d9791d4b9514c6cd4104947f6e8da60d *NAMESPACE
-cd7eb62215af56290a39abe32cfc7a6c *NEWS
+ae953d1b7064f5252517037ada03cd93 *NEWS
 1cf29c981f7ef5fe97a6b75f677d6c30 *R/get_dataset_data.R
 fd38b0e3e3e24b99c7fb84153c3a6b16 *R/get_dataset_list.R
-75af0caab8b9c13c5d20138ee7387781 *R/get_variable_list.R
+371fabc6ac597725621e9a9f1cdf3fd7 *R/get_variable_list.R
+b9e284f92e1076b79fc4d9066926faa2 *README.md
 e139b21eaa5385ecdf7396e57768c65f *man/ardeco.Rd
 5ca1ac3db2100c38e1d988d53512a5ae *man/get_dataset_data.Rd
 4fda75ec5a0a8caed9fb5a5ae0d0486c *man/get_dataset_list.Rd

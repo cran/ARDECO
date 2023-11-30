@@ -1,7 +1,7 @@
 Package: ARDECO
 Type: Package
 Title: 'ARDECO' Dataset
-Version: 0.1.0
+Version: 0.1.1
 Author: European Commission (EC)
 Maintainer: European Commission <carmelo.attardo@ec.europa.eu>
 Description: A set of functions to access the 'ARDECO' (Annual Regional Database
@@ -21,6 +21,6 @@ License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-11-28 09:37:35 UTC; attar
+Packaged: 2023-11-29 16:59:19 UTC; attar
 Repository: CRAN
-Date/Publication: 2023-11-28 17:50:23 UTC
+Date/Publication: 2023-11-30 09:30:11 UTC
