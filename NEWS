@@ -1,4 +1,9 @@
 ARDECO package
+ver.1.0.0
+- rename output data.frame column
+- add filter by version, nuts, year and level in ardeco_get_dataset_data
+- unit and sector optional in ardeco_get_dataset_data
+- add level and version in output data.frame
 ver.0.1.1
 assessment of the returned variables list
 ver.0.1.0

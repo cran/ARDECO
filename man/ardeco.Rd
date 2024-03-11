@@ -5,10 +5,11 @@
 This package provides three functions which are linked between them and have to be used in the following way.
 \itemize{
   \item \bold{ardeco_get_variable_list} - to recover the list of the avavilable variables with related descritpion.
-  \item \bold{ardeco_get_dataset_list} - After having identified the variable of interest, to access the data it's needed to identify the list of datasets included into the variable of interest. This list of datasets is recovered by using ardeco_get_dataset_list with the variable code of interest.
-  \item \bold{ardeco_get_dataset_data} - After having recovered the dataset details it's finally possibile to recover the data using ardeco_get_dataset_data related to the dataset details (var_code, unit, sector).
+  \item \bold{ardeco_get_dataset_list} - After having identified the variable of interest, it's possible to identify the list of datasets included into the variable of interest. This list of datasets is recovered by using ardeco_get_dataset_list with the variable code of interest.
+  \item \bold{ardeco_get_dataset_data} - To recover the data related to a variable it's possibile to do it by using just the variable code (recovering all variable data) or filtering it using unit, sector (recovered by ardeco_get_dataset_list) and/or nuts version, nuts code, year and level.
 }
 }
+
 
 \description{
 This package provide a set of functions to access the ARDECO data
@@ -24,8 +25,11 @@ EUROSTAT)
 The description of the ARDECO database can be found at the following URL
 https://urban.jrc.ec.europa.eu/ardeco
 }
+
+
 \examples{
 ardeco_get_variable_list()
 ardeco_get_dataset_list('SNPTN')
-ardeco_get_dataset_data('SNPTN', 'Persons', 'Total')
+ardeco_get_dataset_data('SNETD', version=2021, level=0, nutscode='IT', year=2020)
 }
+

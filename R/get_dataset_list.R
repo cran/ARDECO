@@ -5,11 +5,10 @@
 # Function: ardeco_get_dataset_list
 # Input: var_code = variable code
 # Output: list of datasets for the requested variable
-#         - variableCode: variable code
-#         - sector: if there is only one sector, this is coded 'Total' otehrwise
+#         - dt_var: variable code
+#         - dt_unit: unit: unit of measure for the dataset
+#         - dt_sector: if there is only one sector, this is coded 'Total' otehrwise
 #                   it's a NACE sector
-#         - unit: unit of measure for the dataset
-#         - lastBatch$id: list of the batch_id collecting the data related to the dataset
 #
 # Description: return the list of the datasets related to a variable (input parameter).
 #              for each dataset is returned the variableCode, the unit of measure and
@@ -21,7 +20,10 @@
 
 ardeco_get_dataset_list <- function(var_code) {
 
-  # root of the URL to access to graphQL API for ARDECO
+  # binding variables to read dataset list with lastBatchList
+  lastBatchList <- NULL
+
+    # root of the URL to access to graphQL API for ARDECO
   link <- 'https://urban.jrc.ec.europa.eu/ardeco-api-v2/graphql'
   conn <- GraphqlClient$new(url=link)
 
@@ -32,6 +34,9 @@ ardeco_get_dataset_list <- function(var_code) {
               variableCode
               unit
               sector
+              lastBatchList(release: true) {
+                nutsVersion
+              }
             }
           }',sep="")
   new <- Query$new()$query('link', query)
@@ -41,6 +46,11 @@ ardeco_get_dataset_list <- function(var_code) {
 
   # convert the result in formatted list
   dataset_list <- result$data$datasetList %>% as_tibble()
+  dataset_list <- dataset_list %>% unnest(lastBatchList)
+
+  # rename column name of dataset_list with suffix dt (dt_var, dt_unit, dt_sector)
+  lookup <- c(dt_var="variableCode", dt_unit="unit", dt_sector="sector", dt_version="nutsVersion")
+  dataset_list = rename(dataset_list, all_of(lookup))
 
   # return the formatted data
   return(dataset_list)

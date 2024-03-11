@@ -9,9 +9,10 @@ ardeco_get_dataset_list(var_code)
 }
 \value{
 The set of datasets related to the selected variable. Each datraset is described by:
-- variable_code
-- unit of measure
-- sector
+- dt_var: variable code
+- dt_unit: unit of measure
+- dt_sector: reference sector
+- dt_version: available nuts version
 }
 
 \examples{
@@ -19,5 +20,5 @@ ardeco_get_dataset_list('SNPTN')
 }
 \description{
 The function return the list of dataset linked to a variable through the ARDECO API by defining the varaible code.
-For each dataset it'ìs returned the code of variable, the unit fo measure and the sector of reference.
+For each dataset it'ìs returned the code of variable, the unit fo measure, the sector of reference and nuts version for which data is available.
 }
