@@ -1,9 +1,9 @@
-da3e5eb3a5877b0c2648279269a3e5b5 *DESCRIPTION
-77f7de04822e5c156ba41ab192a0485a *NAMESPACE
-086b1796340d101a669ab6546689a50f *NEWS
-da0970ad43a72ba7c76e4dacbc07405d *R/get_dataset_data.R
-b4576f367cef535a124f86b8fafb0d8d *R/get_dataset_list.R
-371fabc6ac597725621e9a9f1cdf3fd7 *R/get_variable_list.R
+58a2ea7bbc34b5453b05390ffd4ace68 *DESCRIPTION
+b3557d045b299bbc151e27dfd0a9b5e6 *NAMESPACE
+cd7746bd690a9d4811fec712c5822e40 *NEWS
+32bb6f692f04af791fb8e0aea293f533 *R/get_dataset_data.R
+4c60a009e21e18b83da89bb5960319f5 *R/get_dataset_list.R
+1701d0eff8aa6e804cd3577c9c97af61 *R/get_variable_list.R
 b9e284f92e1076b79fc4d9066926faa2 *README.md
 278aa7a0b655aed3af66b17da76075de *man/ardeco.Rd
 174fe84093cef3ce674e471386b612f1 *man/get_dataset_data.Rd

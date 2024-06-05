@@ -17,6 +17,12 @@
 #              For variable with just only one sector, this usually is identified
 #              by "Total" code.
 #
+#' @import dplyr
+#' @import ghql
+#' @import httr
+#' @import jsonlite
+#' @import tidyr
+#' @importFrom rjstat fromJSONstat
 #' @export
 
 ardeco_get_variable_list <- function() {

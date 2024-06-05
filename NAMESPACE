@@ -3,10 +3,9 @@
 export(ardeco_get_dataset_data)
 export(ardeco_get_dataset_list)
 export(ardeco_get_variable_list)
-
 import(dplyr)
 import(ghql)
 import(httr)
 import(jsonlite)
 import(tidyr)
-importFrom(rjstat, fromJSONstat)
+importFrom(rjstat,fromJSONstat)

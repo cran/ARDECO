@@ -1,4 +1,6 @@
 ARDECO package
+ver.1.0.1
+- include directives in compliance with CRAN requirements for building package
 ver.1.0.0
 - rename output data.frame column
 - add filter by version, nuts, year and level in ardeco_get_dataset_data

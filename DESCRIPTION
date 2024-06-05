@@ -1,7 +1,7 @@
 Package: ARDECO
 Type: Package
 Title: Annual Regional Database of the European Commission (ARDECO)
-Version: 1.0.0
+Version: 1.0.1
 Author: European Commission (EC)
 Maintainer: European Commission <carmelo.attardo@ec.europa.eu>
 Description: A set of functions to access the 'ARDECO' (Annual Regional Database
@@ -21,6 +21,6 @@ License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2024-03-11 16:13:51 UTC; attar
+Packaged: 2024-06-04 10:48:43 UTC; attar
 Repository: CRAN
-Date/Publication: 2024-03-11 16:30:12 UTC
+Date/Publication: 2024-06-05 16:00:11 UTC

@@ -37,6 +37,12 @@
 #              variable code is a mandatory parameter. All the others input parameter are optional.
 #              If it's defined only the variable, the function return all data related the requested variable.
 #
+#' @import dplyr
+#' @import ghql
+#' @import httr
+#' @import jsonlite
+#' @import tidyr
+#' @importFrom rjstat fromJSONstat
 #' @export
 
 ardeco_get_dataset_data <- function(variable,
