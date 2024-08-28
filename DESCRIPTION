@@ -1,9 +1,11 @@
 Package: ARDECO
 Type: Package
 Title: Annual Regional Database of the European Commission (ARDECO)
-Version: 1.0.1
-Author: European Commission (EC)
-Maintainer: European Commission <carmelo.attardo@ec.europa.eu>
+Version: 2.0.0
+Authors@R: c(
+    person("Carmelo", "Attardo", email = "carmelo.attardo@ec.europa.eu", role = "cre"),
+    person("Giuseppe", "Bucciarelli", email = "giuseppe.bucciarelli@ext.ec.europa.eu", role = "aut"),
+    person("European Commission, JRC", role = "cph"))
 Description: A set of functions to access the 'ARDECO' (Annual Regional Database
     of the European Commission) data directly from the official ARDECO public
     repository through the exploitation of the 'ARDECO' APIs.
@@ -16,11 +18,15 @@ Description: A set of functions to access the 'ARDECO' (Annual Regional Database
     The description of the 'ARDECO' database can be found at the following URL
     <https://urban.jrc.ec.europa.eu/ardeco>.
 Depends: R (>= 4.2.0),
-Imports: httr, ghql, rjstat, jsonlite, dplyr, tidyr
+Imports: httr, ghql, rjstat, jsonlite, stringr, dplyr, tidyr
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-06-04 10:48:43 UTC; attar
+Packaged: 2024-08-27 16:59:03 UTC; attar
+Author: Carmelo Attardo [cre],
+  Giuseppe Bucciarelli [aut],
+  European Commission, JRC [cph]
+Maintainer: Carmelo Attardo <carmelo.attardo@ec.europa.eu>
 Repository: CRAN
-Date/Publication: 2024-06-05 16:00:11 UTC
+Date/Publication: 2024-08-28 03:50:06 UTC

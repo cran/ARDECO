@@ -22,6 +22,7 @@
 #' @import httr
 #' @import jsonlite
 #' @import tidyr
+#' @import stringr
 #' @importFrom rjstat fromJSONstat
 #' @export
 
@@ -38,8 +39,16 @@ ardeco_get_variable_list <- function() {
   query <- 'query{variableList{code, description}}'
   new <- Query$new()$query('link', query)
 
-  # submit the GraphQL API request
-  result <- conn$exec(new$link) %>% fromJSON(flatten = F)
+
+  tryCatch({
+    # submit the GraphQL API request
+    result <- conn$exec(new$link) %>% fromJSON(flatten = F)
+  }, error = function(e) {
+    strErr <- paste("Error call: ", link)
+    stop(strErr)
+  })
+
+
 
   # convert the result in formatted list
   variable_list <- result$data$variableList %>% as_tibble()

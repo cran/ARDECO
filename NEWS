@@ -1,4 +1,9 @@
 ARDECO package
+ver.2.0.0
+- new ARDECO data structure including different dimentions for each variable
+- the data filter is performed by API (faster answer) using different rules from the previous versions
+- it has been introduced error controls to avoid unexpected results or error messages
+- the old versions are no more able to recover data due to the different ARDECO data structure
 ver.1.0.1
 - include directives in compliance with CRAN requirements for building package
 ver.1.0.0

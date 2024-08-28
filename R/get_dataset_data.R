@@ -5,8 +5,6 @@
 # Function: ardeco_get_dataset_data
 # Input: variable (mandatory) = variable code
 #        unit: (optional) unit of measure of the dataset. If NULL return all units data
-#        sector: (optional) if there is only one sector, this is coded 'Total', otherwise
-#                it's one of the NACE sectors. If NULL return all sector data
 #        version: (optional). If defined return only version belonging into the provided set.
 #                 If NULL return all versions
 #        nutscode: (optional). If defined return only nuts codes including values defined by the provided regex
@@ -19,194 +17,346 @@
 #               - 4: metro regions
 #               - 9: EU average (eg. EU27_2020)
 #               If NULL return all levels
+#        dim(s): (optional) it can be one or more dimensions of dataset. if no dimension is passed, return data for all existing dimensions.
 # Output: a dataframe collecting the data related to the requested dataset
 #         detailed by year, nuts_code, unit and sector
 #         The fields of the dataframe are the following:
-#         - variable: code of the variable
-#         - sector: if there is only one sector, this is coded 'Total' otherwise
-#                   it's a NACE sector
-#         - unit: unit of measure of the value
-#         - level: the nuts level of nutscode
-#         - version: nuts version of the nutscode
-#         - nutscode: code of the territory (NUTS code) of the value
-#         - year: year of reference of the value
-#         - value: value of the variable related to a specific unit, sector, version, level, nutscode, year
+#         - VARIABLE: code of the variable
+#         - VERSION: nuts version of the nutscode
+#         - LEVEL: the nuts level of nutscode
+#         - NUTSCODE: code of the territory (NUTS code) of the value
+#         - YEAR: year of reference of the value
+#         - DIM(s): one or mode columns depending by the dimensions defined for the selected dataset
+#         - UNIT: unit of measure of the value
+#         - VALUE: value of the variable related to a specific unit, dim(s), version, level, nutscode, year
 #
 # Description: return the list of value for each version, level, year and nutscode related to
-#              the requested dataset specified by variable code, unit and sector.
+#              the requested dataset specified by variable code, unit and dimensions.
 #              variable code is a mandatory parameter. All the others input parameter are optional.
 #              If it's defined only the variable, the function return all data related the requested variable.
+
 #
 #' @import dplyr
 #' @import ghql
 #' @import httr
 #' @import jsonlite
 #' @import tidyr
+#' @import stringr
 #' @importFrom rjstat fromJSONstat
+#' @import utils
 #' @export
 
 ardeco_get_dataset_data <- function(variable,
-                                    unit=NULL,
-                                    sector=NULL,
-                                    version=NULL,
-                                    nutscode=NULL,
-                                    year=NULL,
-                                    level=NULL) {
+                                    ...) {
 
-  # define variables exposed by external functions
-  # binding variables to read dataset list with lastBatchList
-  dt_unit <- dt_sector <- dt_version <- lastBatchList <- NULL
-  # binding variables: api jsonstat data
-  DATE <- LEVEL <- TERRITORY_ID <- NULL
+  #	define the URl base of REST API
+  url <- "https://urban.jrc.ec.europa.eu/ardeco-api-v2/rest/export/"
 
-  # root of the URL to access to graphQL API for ARDECO
-  link <- 'https://urban.jrc.ec.europa.eu/ardeco-api-v2/graphql'
-  conn <- GraphqlClient$new(url=link)
-
-  ### 1) read all datasets for variable with batch_id
-  ############### START: ardeco_get_dataset_list code requiring also lastBatch:id #######
-  # root of the URL to access to graphQL API for ARDECO
-  link <- 'https://urban.jrc.ec.europa.eu/ardeco-api-v2/graphql'
-  conn <- GraphqlClient$new(url=link)
-
-  # build the graphql query to recover the list of dataset for
-  # the requested variable
-  query <- paste('query {
-            datasetList (variableCode: "',variable,'") {
-              variableCode
-              unit
-              sector
-              lastBatchList(release: true) {
-                nutsVersion,
-                id
-              }
-            }
-          }',sep="")
-  new <- Query$new()$query('link', query)
-
-  # submit the GraphQL API request
-  result <- conn$exec(new$link) %>% fromJSON(flatten = F)
-
-  # convert the result in formatted list
-  dataset_list <- result$data$datasetList %>% as_tibble()
-  dataset_list <- dataset_list %>% unnest(lastBatchList)
-
-  # rename column name of dataset_list with suffix dt (dt_var, dt_unit, dt_sector)
-  lookup <- c(dt_var="variableCode", dt_unit="unit", dt_sector="sector", dt_version="nutsVersion", dt_id="id")
-  dataset_list = rename(dataset_list, all_of(lookup))
-  ############### END: ardeco_get_dataset_list code requiring also lastBatch:id #######
-
-  # if dataset_list is empty, return
-  if (nrow(dataset_list) == 0) {
-    return(paste("Variable", variable, "doesn't exist or return no data", sep=" "))
+  # 1) check validity of input parameters
+  # 	1.1) variable parameter
+  #		1.1.1) have to be defined
+  if (missing(variable)) {
+    return("Variable is mandatory")
   }
 
-  ### 2) filter datasets list according to unit value
-  if ( !is.null(unit)) {
-    dataset_list <- dataset_list %>% filter(dt_unit %in% unit)
+  # 	1.1.2) one of the possible variable code
+  variables_available = ardeco_get_variable_list()
+  if (!variable %in% variables_available$code) {
+    return(paste("Variable ", variable, "does not exist"))
+  }
+  datasets_available = ardeco_get_dataset_list(variable)
+  url <- paste(url, variable, sep="")
+  url <- paste(url, "?" , sep="")
+
+  # 	1.2) check the validity of all other optional parameters.
+  #		1.2.1) one of "unit", "version", "nutscode", "year", "level"
+  # 		1.2.2) one of the possible dimensions as defined in the selected variable
+  unit <- NULL
+  version <- NULL
+  nutscode <- NULL
+  year <- NULL
+  level <- NULL
+
+  # recover the optional parameters passed to the function call
+  add_dims <- NULL
+  tryCatch({
+    add_dims <- list(...)
+  }, error = function(e) {
+    #print(e)
+  })
+  if (is.null(add_dims)) {
+    return("Error in additional parameters values")
+  }
+  for (param in names(add_dims)) {
+    if (param == "year") {
+      year <- add_dims[param]
+    }
+    if (param == "nutscode") {
+      nutscode <- add_dims[param]
+    }
+    if (param == "version") {
+      version <- add_dims[param]
+    }
+    if (param == "level") {
+      level <- add_dims[param]
+    }
+    if (param == "unit") {
+      unit <- add_dims[param]
+    }
+
   }
 
-  # if dataset_list is empty, return
-  if (nrow(dataset_list) == 0) {
-    return(paste("Unit", unit, "doesn't exist in variable", variable, sep=" "))
+  # 	1.3) check value of passed optional parameters
+  #		1.3.1) For each of ("unit", "version", "nutscode", "year", "level") (if passed)
+  #	 		check if the passed value is in the domain of the parameter
+  #	check UNIT value
+  if (!is.null(unit)) {
+    unit = as.character((unit))
+    if (!unit %in% datasets_available$unit) {
+      return(paste("unit", unit , "is not valid. units permitted:[", paste(unique(datasets_available$unit), collapse = ", "), "]"))
+    }
+    url <- paste(url, "&unit=", sep="")
+    url <- paste(url, URLencode(as.character(unit)), sep="")
   }
 
-  ### 3) filter datasets list according to sector value
-  if ( !is.null(sector)) {
-    dataset_list <- dataset_list %>% filter(dt_sector %in% sector)
+
+  #	check VERSION values
+  if (!is.null(version)) {
+    strErr <- "VERSION must be numeric or string!"
+    tp <- NULL
+    tryCatch({
+      tp <- typeof(version)
+    }, error = function(e) {
+
+    })
+    if (is.null(tp)) {
+      return(strErr)
+    }
+    if (!any(grepl(version, datasets_available$vers))) {
+      return(paste("Version", version , "is not valid. versions permitted:[", paste(unique(datasets_available$vers), collapse = ", "), "]"))
+    }
+    url <- paste(url, "&version=", sep="")
+    url <- paste(url, URLencode(as.character(version)), sep="")
   }
 
-  # if dataset_list is empty, return
-  if (nrow(dataset_list) == 0) {
-    return(paste("Sector", sector, "doesn't exist in variable", variable, sep=" "))
+  #	check NUTSCODE values
+  #	 		1.3.1.2) for nutscode it can be define more values separated by comma
+  #	 			ex: nutscode=IT,ES ==> requested nutscode: IT and ES
+  if (!is.null(nutscode)) {
+    nutscode = as.character((nutscode))
+    nutscode_list <- strsplit(as.character(nutscode), ",")[[1]]
+    for (nutscode in nutscode_list) {
+      url <- paste(url, "&territory_id=", sep="")
+      url <- paste(url, URLencode(as.character(nutscode)), sep="")
+    }
   }
 
-  ### 4) filter datasets list according to version value
-  if ( !is.null(version)) {
-    dataset_list <- dataset_list %>% filter(dt_version %in% version)
+  #	 		1.3.1.1) for level and year parameters it can be define more values in two main ways:
+  #	 			values separated by comma: ex: level=0,2 ==> requested level 0 and level 2
+  #	 			2 values separated by -: ex: level=0-2 ==> requested levels: 0, 1 and 2
+  #	 Check YEAR values
+  if (!is.null(year)) {
+      suppressWarnings({
+      strErr <- "YEAR must be numeric or string!"
+      tp <- NULL
+      tryCatch({
+        tp <- typeof(year)
+      }, error = function(e) {
+
+      })
+      if (is.null(tp)) {
+        return(strErr)
+      }
+
+      str_years = as.character(year)
+      if (grepl("-", str_years)) {
+        year_list <- strsplit(as.character(year), "-")[[1]]
+        if (length(year_list) != 2) {
+          return ("Illegal value in year parameter")
+        }
+        val_min = as.numeric(year_list[1])
+        val_max = as.numeric(year_list[2])
+
+        if ((is.na(as.numeric(val_min)) || is.na(as.numeric(val_max)))) {
+          return ("Illegal value in year parameter")
+        }
+
+        if (val_min > val_max) {
+          return ("Wrong min max in year parameter")
+        }
+
+        for (y in val_min:val_max) {
+          url <- paste(url, "&year=", sep="")
+          url <- paste(url, URLencode(as.character(y)), sep="")
+        }
+      } else {
+        year_list <- strsplit(as.character(year), ",")[[1]]
+        for (y in year_list) {
+          if (is.na(as.numeric(y))) {
+            return(paste("Level contains illegal value: ", y))
+          }
+          url <- paste(url, "&year=", sep="")
+          url <- paste(url, URLencode(as.character(y)), sep="")
+        }
+      }
+    })
+
+
   }
 
-  # if dataset_list is empty, return
-  if (nrow(dataset_list) == 0) {
-    return(paste("version", version, "doesn't exist for the selected variable/unit/sector", sep=" "))
-  }
+  #	 Check LEVEL values
+  if (!is.null(level)) {
+      suppressWarnings({
+      strErr <- "LEVEL must be numeric or string!"
+      tp <- NULL
+      tryCatch({
+        tp <- typeof(level)
+      }, error = function(e) {
 
-  ### 5) read data for all selected dataset and filter by YEAR and NUTSCODE
-  # For each identified dataset, recover the data using the lastBatchId
-  for (i in 1:nrow(dataset_list)) {
+      })
+      if (is.null(tp)) {
+        return(strErr)
+      }
 
+    str_level = as.character(level)
+    if (grepl("-", str_level)) {
+      level_list <- strsplit(as.character(level), "-")[[1]]
+      if (length(level_list) != 2) {
+        return ("Illegal value in level parameter")
+      }
+      val_min = as.numeric(level_list[1])
+      val_max = as.numeric(level_list[2])
 
-    ## 5.1) read data using API
-    message(paste("Recovering dataset: var", variable,"unit:", dataset_list[i,c("dt_unit")], "sector:",dataset_list[i,c("dt_sector")], "version:",dataset_list[i,c("dt_version")]))
+      if ((is.na(as.numeric(val_min)) || is.na(as.numeric(val_max)))) {
+        return ("Illegal value in level parameter")
+      }
 
-    # submit REST API to recover dataset data using the batch_id
-    # - Build the API rest request
-    call <- paste('https://urban.jrc.ec.europa.eu/ardeco-api-v2/rest/batch/', dataset_list[i,c("dt_id")],sep="")
+      if (val_min > val_max) {
+        return ("Wrong min max in level parameter")
+      }
 
-    # submit rest API request converting data from JSONstat to R data frame (function fromJSONstat)
-    json_data <- fromJSONstat(call, naming="id")
-
-    # add 'version' column to read dataframe (version is not returned by API)
-    json_data['version'] <- dataset_list[i,c("dt_version")]
-
-    #Store recovered data into a unique data.frame (dataset_data). Assign (first round) or add (rbind) into dataset_data
-    if (i == 1) {
-      dataset_data <- json_data
+      for (lev in val_min:val_max) {
+        url <- paste(url, "&level_id=", sep="")
+        url <- paste(url, URLencode(as.character(lev)), sep="")
+      }
     } else {
-      dataset_data <- rbind(dataset_data, json_data)
+      level_list <- strsplit(as.character(level), ",")[[1]]
+      for (lev in level_list) {
+        if (is.na(as.numeric(lev))) {
+          return(paste("Level contains illegal value: ", lev))
+        }
+        url <- paste(url, "&level_id=", sep="")
+        url <- paste(url, URLencode(as.character(lev)), sep="")
+      }
     }
+    })
 
-    ## 5.2) Apply filter by nuts
-    if ( !is.null(nutscode)) {
-      #dataset_data <- data.frame(filter(dataset_data, grepl(nutscode, TERRITORY_ID, ignore.case = TRUE)))
-      dataset_data <- dataset_data %>% filter(grepl(nutscode, TERRITORY_ID, ignore.case = TRUE))
-      #dataset_data <- dataset_data %>% filter(TERRITORY_ID %in% nutscode)
-    }
-
-    ## 5.3) Apply filter by year
-    if ( !is.null(year)) {
-      dataset_data <- dataset_data %>% filter(DATE %in% year)
-    }
   }
 
-  # add column LEVEL to the output data.frame
-  # level definition:
-  #   nuts0-3: level 0-3
-  #   metro: level 4
-  #   EU27_2020: level 9
-  if (nrow(dataset_data) > 0) {
-    dataset_data$LEVEL <- nchar(dataset_data$TERRITORY_ID) - 2
-    #Set LEVEL = NULL for NUTS EUR27_2020 (length = 7 i.e. > 3)
-    if (nrow(subset(dataset_data, LEVEL > 6)) > 0) {
-      dataset_data[dataset_data$LEVEL>6,]$LEVEL <- -1
+  #		1.3.2) For each passed dimension
+  #	 		check if the passed value is in the domain of the related dimension
+  #	 		1.3.1.2) for each dimension it can be define more values separated by comma:
+  #	 			ex: sex=male,felame ==> requested sex dimension: male and female
+  add_dims <- NULL
+  tryCatch({
+    add_dims <- list(...)
+  }, error = function(e) {
+    #print(e)
+  })
+
+  if (is.null(add_dims)) {
+    return("Error in additional parameters values")
+  }
+
+  for (param in names(add_dims)) {
+
+    #	skip already processed parameters
+    if (param == "level" || param == "year" || param == "nutscode" || param == "unit" || param == "version") {
+      next
     }
-    if (nrow(subset(dataset_data, LEVEL > 3)) > 0) {
-      dataset_data[dataset_data$LEVEL>3,]$LEVEL <- 4
+
+    #	check parameters and related values
+    valid_values <- datasets_available[[param]]
+    if (is.null(valid_values)) {
+      return(paste("There is an invalid dimension...", param))
     }
-    if (nrow(subset(dataset_data, LEVEL < 0)) > 0) {
-      dataset_data[dataset_data$LEVEL<0,]$LEVEL <- 9
+
+    suppressWarnings({
+    strErr <- paste(param, " must be numeric or string!")
+    tp <- NULL
+    tryCatch({
+      tp <- typeof(add_dims[[param]])
+    }, error = function(e) {
+
+    })
+    if (is.null(tp)) {
+      return(strErr)
     }
+    })
+
+
+    if (!as.character(add_dims[[param]]) %in% valid_values) {
+      dim_input <- as.character(add_dims[[param]])
+      return(paste(dim_input,
+      "is not a valid value for dimension",
+      param,
+      "- Values permitted:[", paste(unique(valid_values), collapse = ", "), "]"))
+    }
+
+
+    url <- paste(url, "&", sep="")
+    url <- paste(url, param, sep="")
+    url <- paste(url, "=", sep="")
+    url <- paste(url, URLencode(as.character(add_dims[[param]])), sep="")
   }
 
-  ### 6) Apply filter by LEVEL
-  if ( nrow(dataset_data) > 0 & !is.null(level)) {
-    dataset_data <- dataset_data %>% filter(LEVEL %in% level)
-  }
+  # 2.1) Build URL to retrive data
+  url <- stringr::str_replace_all(url, "\\?&", "?")
+  options(max.print = 100)
+  # print (url)
+  suppressWarnings({
 
-  ### 7) formatting output data.frame
-  if (nrow(dataset_data) > 0) {
-    # rename the column for output dataset_data
-    lookup <- c(year="DATE", sector="SECTOR", nutscode="TERRITORY_ID", unit="UNIT", variable="VARIABLE", level="LEVEL")
-    dataset_data = rename(dataset_data, all_of(lookup))
+    #	2.2) request the data by REST API
+    readfile <- NULL
+    errorMessage <- "Error during execution. Check parameter values or API avalaibility"
+    tryCatch({
+      readfile <- read.csv(url)
+    }, error = function(e) {
+      errorMessage <- paste(readfile, conditionMessage(e))
+    })
 
-    # reorder the columns of output dataset_data
-    dataset_data <- dataset_data[, c("variable", "sector", "unit", "version", "level", "nutscode", "year", "value")]
-  }
-  else {
-    dataset_data <- data.frame(matrix(ncol=7, nrow=0))
-    colnames(dataset_data) <- c("variable", "sector", "unit", "version", "level", "nutscode", "year", "value")
-  }
+    if (is.null(readfile)) {
+      return(errorMessage)
+    }
 
-  ### 7) return requested data
-  return(dataset_data)
+
+    #	2.3) Formatting the output in order to have all fields with the field name according to the output specifications, ie:
+    #         - VARIABLE: code of the variable
+    #         - VERSION: nuts version of the nutscode
+    #         - LEVEL: the nuts level of nutscode
+    #         - NUTSCODE: code of the territory (NUTS code) of the value
+    #         - YEAR: year of reference of the value
+    #         - DIM(s): one or mode columns depending by the dimensions defined for the selected dataset in lower case
+    #         - UNIT: unit of measure of the value
+    #         - VALUE: value of the variable related to a specific unit, dim(s), version, level, nutscode, year
+    for (i in 1:length(colnames(readfile))) {
+      if (colnames(readfile)[i] == "LEVEL_ID") {
+        colnames(readfile)[i] = "LEVEL"
+      }
+      if (colnames(readfile)[i] == "TERRITORY_ID") {
+        colnames(readfile)[i] = "NUTSCODE"
+      }
+    }
+
+    # remove DATE and NAME-HTML columns from output table
+    readfile <- readfile %>% select(-one_of('DATE', 'NAME_HTML'))
+    # readfile <- readfile %>% select(-NAME_HTML)
+
+    # insert VARIABLE column into output table in 1st position
+    readfile <- cbind ("VARIABLE" =  variable, readfile)
+    return (readfile)
+    #return (as_tibble(readfile))
+  })
 }
+
+

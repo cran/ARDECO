@@ -1,63 +1,107 @@
-# European Commission
+get# European Commission
 # ARDECO database
 # R packege "ardeco" exposing ARDECO data to be used in R
 #
 # Function: ardeco_get_dataset_list
 # Input: var_code = variable code
 # Output: list of datasets for the requested variable
-#         - dt_var: variable code
-#         - dt_unit: unit: unit of measure for the dataset
-#         - dt_sector: if there is only one sector, this is coded 'Total' otehrwise
-#                   it's a NACE sector
+#         - var: variable code
+#         - unit: unit: unit of measure for the dataset
+#         - version: the available nutcode version
+#         - list of additional dimensions like sector, sex, age class, others
+#               and, for each of these additional dimensions, the possible values
 #
 # Description: return the list of the datasets related to a variable (input parameter).
-#              for each dataset is returned the variableCode, the unit of measure and
-#              the sector.
-#              For variable with just only one sector, this usually is identified
-#              by "Total" code.
+#              for each dataset is returned the variableCode, the unit of measure, the nutscode version
+#              and the eventual additional dimensions better detailing the variable
 #
 #' @import dplyr
 #' @import ghql
 #' @import httr
 #' @import jsonlite
 #' @import tidyr
+#' @import stringr
 #' @importFrom rjstat fromJSONstat
 #' @export
 
 ardeco_get_dataset_list <- function(var_code) {
 
-  # binding variables to read dataset list with lastBatchList
-  lastBatchList <- NULL
+  # check if the var_code has been specified
+  if (missing(var_code)) {
+    return("ERROR: You must specify var_code")
+  }
 
-    # root of the URL to access to graphQL API for ARDECO
+  # check if the var_code has one of the permitted values
+  variables_available = ardeco_get_variable_list()
+  if (!var_code %in% variables_available$code) {
+    return(paste("Variable ", var_code, "does not exist. Variables permitted:[", paste(unique(variables_available$code), collapse = ", "), "]"))
+  }
+
+  # root of the URL to access to graphQL API for ARDECO
   link <- 'https://urban.jrc.ec.europa.eu/ardeco-api-v2/graphql'
   conn <- GraphqlClient$new(url=link)
 
   # build the graphql query to recover the list of dataset for
   # the requested variable
+
   query <- paste('query {
-            datasetList (variableCode: "',var_code,'") {
-              variableCode
-              unit
-              sector
-              lastBatchList(release: true) {
-                nutsVersion
-              }
-            }
-          }',sep="")
+            variable (id:"',var_code,'") {
+              nutsLevel
+              round code
+              tolerance
+              lastYear
+              export
+              classificationClassId
+              allowedDimensions
+              description
+              nutsVersionList
+              datasets {
+                datasetId
+                dimensions {key value}}}}', sep="")
+
+
   new <- Query$new()$query('link', query)
-
   # submit the GraphQL API request
-  result <- conn$exec(new$link) %>% fromJSON(flatten = F)
 
-  # convert the result in formatted list
-  dataset_list <- result$data$datasetList %>% as_tibble()
-  dataset_list <- dataset_list %>% unnest(lastBatchList)
+  suppressWarnings({
 
-  # rename column name of dataset_list with suffix dt (dt_var, dt_unit, dt_sector)
-  lookup <- c(dt_var="variableCode", dt_unit="unit", dt_sector="sector", dt_version="nutsVersion")
-  dataset_list = rename(dataset_list, all_of(lookup))
+    result <- NULL
 
-  # return the formatted data
-  return(dataset_list)
+    tryCatch({
+      result <- conn$exec(new$link) %>% fromJSON(flatten = F)
+    }, error = function(e) {
+      cat(conditionMessage(e))
+    })
+
+
+    # if API call fails, return error about API availability
+    if (is.null(result$data$variable)) {
+      return("Error during execution. Check variable value or API avalaibility")
+    }
+
+    # recover from the API result the list of all information related to the datasets
+    dataset_list <- result$data$variable$datasets
+    d_nutsVersionList = result$data$variable$nutsVersionList
+    d_keys <- lapply(dataset_list$dimensions, "[[", "key")
+    d_values <- lapply(dataset_list$dimensions, "[[", "value")
+
+    dataset_dataframe <- data.frame()
+
+    # formatting and return the recovered info related to the dataset list
+    for (v in d_values) {
+      list_mod <- c(var_code, v)
+      list_mod <- c(list_mod, toString(d_nutsVersionList))
+      dataset_dataframe <- rbind(dataset_dataframe, list_mod)
+    }
+    colnames(dataset_dataframe)[1] = 'var'
+
+    for (i in seq_along(d_keys[[1]])) {
+      colnames(dataset_dataframe)[i+1] = d_keys[[1]][i]
+      colnames(dataset_dataframe)[i+2] = "vers"
+    }
+
+    dataset_tibble <- as_tibble(dataset_dataframe)
+  })
+
+  return(dataset_tibble)
 }
