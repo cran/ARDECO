@@ -6,7 +6,7 @@ ardeco_get_dataset_data(variable, ...)
 }
 \arguments{
   \item{variable}{mandatory: the code of variable}
-  \item{...}{Other optional parameters to filter according to the different dimensions. This can be: version, level, nutscode, year, unit and the additional dimensions depending by the selected varable}
+  \item{...}{Other optional parameters to filter according to the different dimensions. This can be: version, level, nutscode, year, unit, tercet and the additional dimensions depending by the selected varable}
 }
 \value{
 This function return a data frame including the data related to the selected dataset. The data frame include the following fileds:
@@ -52,7 +52,18 @@ It's possible to require values satisfing multiple conditions, using the charact
 
 For example: \bold{level=\sQuote{0,2}} return the values for level 0 and level 2. Remember to use quote to define the list of values.
 
-It's also possible to filter data defining an interval of years/levels. It can be defined using this notation: \bold{c(}min\bold{-}max\bold{)} where min and max are the minimun and maximus values. Remember to use quote to define the values interval.
+It's also possible to filter data defining an interval of years/levels. It can be defined using this notation: \bold{\sQuote{min-max}} where min and max are the minimun and maximus values. Remember to use quote to define the values interval.
 
 For example: \bold{year=\sQuote{2000-2005}} return the values for the years starting from 2000 to 2005.
+
+FILTERING OPTION FOR PARAMETERS \bold{tercet}
+
+The parameters \bold{tercet} is a numeric parameter corresponding to a tercet class returned by ardeco_get_tercet_list() function.
+
+Using this parameter, the returned values are related to the aggregated data at country level (nuts level 0)
+for the selected tercet class.
+
+The parameters \bold{tercet} and \bold{level} cannot be use together
+
+For example: \bold{tercet=0} return the values at country level relatet to the tecet class "Predominantly urban"
 }

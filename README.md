@@ -1,8 +1,5 @@
 # ardeco-be-rpackage
 
-## Description
-
-
 ## Name
 ARDECO - R package
 
@@ -13,7 +10,7 @@ The code to produce R package to access data from ARDECO
 The code could be deployed into own machine and install as a package in R o RStudio. The binary version of this package is also available on CRAN repository.
 
 ## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+ARDECO database is designed and managed by Davide Auteri (<davide.auteri@ec.europa.eu>). This R package is designed and developed by Carmelo Attardo (<carmelo.attardo@ec.europa.eu>) supported by Giuseppe Bucciarelli (<giuseppe.bucciarelli@ext.ec.europa.eu>)
 
 ## Project status
-The project currently provide simple functions to access ARDECO data. New functions are planned to to filter data permitting to download just the data subset of interest.
+The project provides simple functions to access ARDECO data, requiring the available ARDECO variables and related data with the possibility to filter them according to the different parameters. 

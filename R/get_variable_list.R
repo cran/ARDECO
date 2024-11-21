@@ -23,7 +23,6 @@
 #' @import jsonlite
 #' @import tidyr
 #' @import stringr
-#' @importFrom rjstat fromJSONstat
 #' @export
 
 ardeco_get_variable_list <- function() {
@@ -36,7 +35,8 @@ ardeco_get_variable_list <- function() {
 
   # build the graphql query to recover the list of variables
   # and related description
-  query <- 'query{variableList{code, description}}'
+  #query <- 'query{variableList{code, description, nutsLevel}}'
+  query <- 'query{variableList(export: true){code, description}}'
   new <- Query$new()$query('link', query)
 
 
@@ -49,36 +49,9 @@ ardeco_get_variable_list <- function() {
   })
 
 
-
   # convert the result in formatted list
   variable_list <- result$data$variableList %>% as_tibble()
 
-  # remove variable which have to not be public (deflator, rate, others...)
-  '%notin%' <- Negate('%in%')
-  variable_list <- subset(variable_list, code %notin% c("RHVGDP",
-                                                        "XGVA_CLV2015",
-                                                        "XGVAGR_N2",
-                                                        "XGDPGR_N2",
-                                                        "XGVAGR_N3",
-                                                        "PVGD",
-                                                        "PVGT",
-                                                        "PVG1",
-                                                        "PVG2",
-                                                        "PVG4",
-                                                        "PVG5",
-                                                        "PIGT",
-                                                        "RUTYH",
-                                                        "SOKCT",
-                                                        "SUKCT",
-                                                        "SOKCZ",
-                                                        "SUKCZ",
-                                                        "ROKND",
-                                                        "ROKNZ",
-                                                        "SUKCT",
-                                                        "RNECN",
-                                                        "RNUTN",
-                                                        "RUVNH",
-                                                        "RUYNH"))
 
   # return the formatted data
   return(variable_list)

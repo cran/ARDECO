@@ -1,4 +1,4 @@
-get# European Commission
+# European Commission
 # ARDECO database
 # R packege "ardeco" exposing ARDECO data to be used in R
 #
@@ -21,7 +21,6 @@ get# European Commission
 #' @import jsonlite
 #' @import tidyr
 #' @import stringr
-#' @importFrom rjstat fromJSONstat
 #' @export
 
 ardeco_get_dataset_list <- function(var_code) {

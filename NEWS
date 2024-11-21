@@ -1,4 +1,6 @@
 ARDECO package
+ver.2.1.0
+- availability to recover aggregation at tercet class
 ver.2.0.0
 - new ARDECO data structure including different dimentions for each variable
 - the data filter is performed by API (faster answer) using different rules from the previous versions

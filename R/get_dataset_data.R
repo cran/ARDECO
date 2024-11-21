@@ -18,6 +18,7 @@
 #               - 9: EU average (eg. EU27_2020)
 #               If NULL return all levels
 #        dim(s): (optional) it can be one or more dimensions of dataset. if no dimension is passed, return data for all existing dimensions.
+#        tercet: (optional) it can be one of the available tercet class id as returned by ardeco_get_tercet_list() function. Tercet cannot be defined with level.
 # Output: a dataframe collecting the data related to the requested dataset
 #         detailed by year, nuts_code, unit and sector
 #         The fields of the dataframe are the following:
@@ -28,6 +29,7 @@
 #         - YEAR: year of reference of the value
 #         - DIM(s): one or mode columns depending by the dimensions defined for the selected dataset
 #         - UNIT: unit of measure of the value
+#         - TERCET_CLASS_NAME: (if required) name of the requested tercet class name.
 #         - VALUE: value of the variable related to a specific unit, dim(s), version, level, nutscode, year
 #
 # Description: return the list of value for each version, level, year and nutscode related to
@@ -42,12 +44,14 @@
 #' @import jsonlite
 #' @import tidyr
 #' @import stringr
-#' @importFrom rjstat fromJSONstat
 #' @import utils
 #' @export
 
 ardeco_get_dataset_data <- function(variable,
                                     ...) {
+
+  nutsLevel <- ardeco_get_variable_props(variable)
+  nutsLevel <- nutsLevel$nutsLevel
 
   #	define the URl base of REST API
   url <- "https://urban.jrc.ec.europa.eu/ardeco-api-v2/rest/export/"
@@ -76,6 +80,7 @@ ardeco_get_dataset_data <- function(variable,
   nutscode <- NULL
   year <- NULL
   level <- NULL
+  tercet <- NULL
 
   # recover the optional parameters passed to the function call
   add_dims <- NULL
@@ -103,12 +108,49 @@ ardeco_get_dataset_data <- function(variable,
     if (param == "unit") {
       unit <- add_dims[param]
     }
+    if (param == "tercet") {
+      tercet <- add_dims[param]
+    }
 
   }
 
   # 	1.3) check value of passed optional parameters
-  #		1.3.1) For each of ("unit", "version", "nutscode", "year", "level") (if passed)
+  #		1.3.1) For each of ("unit", "version", "nutscode", "year", "level", "tercet") (if passed)
   #	 		check if the passed value is in the domain of the parameter
+
+  # check TERCET value:
+  if (!is.null(tercet)) {
+    #   - cannot be used together level parameter
+    if (!is.null(level)) {
+      return("Attention! You can't use both level and tercet. Choose only one of these two parameters.")
+    }
+
+    #   - can be used if exist data at level3
+    if (as.character(nutsLevel) != "3") {
+      return(paste("variable", variable , "has no data at level 3 and it's no possible to aggregate data at tercet classes"))
+    }
+
+    #   - must be one of the tercet_class id returned by ardeco_get_tercet_list
+    valid_tercets = ardeco_get_tercet_list()
+    tercet = as.character((tercet))
+    tercet_list <- strsplit(as.character(tercet), ",")[[1]]
+
+    if (length(tercet_list) > 1) {
+      return("tercet must contains only one value")
+    }
+
+    for (tercet in tercet_list) {
+      is_present <- any(valid_tercets$tercet_class_code %in% tercet)
+      if (!is_present) {
+        valid_tercets_list <- sort(unique(unlist(as.list(valid_tercets$tercet_class_code))))
+        return(paste("tercet", tercet , "is not valid. tercet values permitted:[", paste(valid_tercets_list, collapse = ', '), "]"))
+      }
+      url <- paste(url, "&tercet_class=", sep="")
+      url <- paste(url, URLencode(as.character(tercet)), sep="")
+    }
+  }
+
+
   #	check UNIT value
   if (!is.null(unit)) {
     unit = as.character((unit))
@@ -271,7 +313,7 @@ ardeco_get_dataset_data <- function(variable,
   for (param in names(add_dims)) {
 
     #	skip already processed parameters
-    if (param == "level" || param == "year" || param == "nutscode" || param == "unit" || param == "version") {
+    if (param == "level" || param == "year" || param == "nutscode" || param == "unit" || param == "version" || param == "tercet") {
       next
     }
 
@@ -315,7 +357,6 @@ ardeco_get_dataset_data <- function(variable,
   options(max.print = 100)
   # print (url)
   suppressWarnings({
-
     #	2.2) request the data by REST API
     readfile <- NULL
     errorMessage <- "Error during execution. Check parameter values or API avalaibility"
@@ -347,13 +388,29 @@ ardeco_get_dataset_data <- function(variable,
         colnames(readfile)[i] = "NUTSCODE"
       }
     }
-
     # remove DATE and NAME-HTML columns from output table
     readfile <- readfile %>% select(-one_of('DATE', 'NAME_HTML'))
     # readfile <- readfile %>% select(-NAME_HTML)
-
     # insert VARIABLE column into output table in 1st position
-    readfile <- cbind ("VARIABLE" =  variable, readfile)
+
+    # Check dataframe empty
+    if (nrow(readfile) == 0) {
+      return("*** NO DATA ***")
+    } else {
+      if (!is.null(tercet)) {
+        tercet_class_name <- unique(valid_tercets$tercet_class_name[valid_tercets$tercet_class_code == tercet])
+        readfile$TERCET_CLASS_NAME <- tercet_class_name
+        col_names <- colnames(readfile)
+        readfile <- readfile[, c(col_names[1:(length(col_names)-2)], col_names[length(col_names)], col_names[(length(col_names)-1)])]
+        #readfile <- cbind(TERCET = tercet_class_name, readfile)
+      }
+      readfile <- cbind(VARIABLE = variable, readfile)
+
+
+
+    }
+
+    #readfile <- cbind ("VARIABLE" =  variable, readfile)
     return (readfile)
     #return (as_tibble(readfile))
   })
