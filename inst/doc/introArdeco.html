@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>ARDECO R package</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">ARDECO R package</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ARDECO)</span></code></pre></div>
+<div id="content" class="section level2">
+<h2>Content</h2>
+<div id="what-is-ardeco" class="section level3">
+<h3><a href="#whatis">What is ARDECO</a></h3>
+</div>
+<div id="variables-and-indicators" class="section level3">
+<h3><a href="#varandind">Variables and indicators</a></h3>
+</div>
+<div id="how-to-use-ardeco-r-package" class="section level3">
+<h3><a href="#howto">How to use ARDECO R package</a></h3>
+</div>
+<div id="filtering-data" class="section level3">
+<h3><a href="#filter">Filtering data</a></h3>
+</div>
+</div>
+<div id="whatis" class="section level2">
+<h2>What is ARDECO - <a href="#content">back</a></h2>
+<p>The Annual Regional Database of the European Commission (ARDECO) is
+maintained by the Joint Research Centre in close coordination with the
+Directorate General for Regional and Urban Policy. Its purpose is to
+provide consistent and harmonised time-series data on demographic and
+socio-economic variables at the regional and sub-regional levels.</p>
+<p>ARDECO primarily relies on official data from sources like Eurostat’s
+‘Regional Accounts’ ( <a href="https://ec.europa.eu/eurostat/web/national-accounts/methodology/european-accounts/regional-accounts" class="uri">https://ec.europa.eu/eurostat/web/national-accounts/methodology/european-accounts/regional-accounts</a>
+) and national or regional statistical offices. However, it also
+incorporates data from supplementary sources (such as the European
+Regional Database from Cambridge Econometrics - <a href="httpS://www.camecon.com/wp-content/uploads/2019/01/ERD-manual.pdf" class="uri">httpS://www.camecon.com/wp-content/uploads/2019/01/ERD-manual.pdf</a>)
+and estimates generated using various methodologies (such as data
+interpolation, regional shares of closest year, and proxy
+variables).</p>
+<p>In cases where official data exhibits inconsistencies across the
+time-series due to breaks or provisional values, ARDECO replaces these
+values with estimates based on the most suitable methodology. Ensuring
+consistency across variables and over time, therefore, sometimes
+requires adjustments of official values</p>
+<p>For most variables and countries, ARDECO extends its time-series back
+to 1980 (1960 for population data). Additionally, short-term projections
+based on AMECO (<a href="https://economy-finance.ec.europa.eu/economic-research-and-databases/economic-databases/ameco-database_en" class="uri">https://economy-finance.ec.europa.eu/economic-research-and-databases/economic-databases/ameco-database_en</a>)
+forecasts are included whenever possible.</p>
+<p>More detailed information about ARDECO can be found in the
+methodological note:</p>
+<p><strong>European Commission, Joint Research Centre, Auteri, D.,
+Attardo, C., Berzi, M., Dorati, C., Albinola, F., Baggio, L.,
+Bucciarelli, G., Bussolari, I. and Dijkstra, L., <a href="https://publications.jrc.ec.europa.eu/repository/handle/JRC138212">The
+Annual Regional Database of the European Commission (ARDECO) -
+Methodological Note</a>, European Commission, Ispra, 2024,
+JRC138212)</strong></p>
+</div>
+<div id="varandind" class="section level2">
+<h2>Variables and indicators - <a href="#content">back</a></h2>
+<ul>
+<li><a href="#codconv">Coding convention</a></li>
+<li><a href="#themcont">The thematic content</a></li>
+<li><a href="#geocov">The geographical coverage (NUTS)</a>
+<ul>
+<li><a href="#tercetdef">Territorial tipologies: aggregated data by
+tercet</a></li>
+</ul></li>
+<li><a href="#tempcov">The temporal coverage</a></li>
+<li><a href="#vardim">Variable as a set of datasets - variable
+dimensions</a></li>
+</ul>
+<div id="codconv" class="section level3">
+<h3>Coding convention - <a href="#varandind">back</a></h3>
+<p>Within ARDECO, both variables and indicators are provided. Variables
+represent core data expressed as ‘volumes’ and are computed from primary
+sources. Indicators, on the other hand, are expressed as ‘ratios’ and
+result from dividing one variable (e.g., GDP) by another (e.g., average
+population).</p>
+<p>For a convention adopted in ARDECO, variables have a code composed by
+4 o 5 characters (for example: “GDP at current market prices” is coded
+SUVGD), while the indicators are coded with 6 or more characters (for
+example: “GDP per capita at current prices” is coded SUVGDP)</p>
+</div>
+<div id="themcont" class="section level3">
+<h3>The thematic content - <a href="#varandind">back</a></h3>
+<p>Currenlty ARDECO provides a set of variables and indicators related
+to the following domains:</p>
+<ul>
+<li>Population and Vital Statistics</li>
+<li>Domestic Product</li>
+<li>EMployment</li>
+<li>Labour Cost and Productivity</li>
+<li>Education</li>
+<li>Households</li>
+<li>Capital Formation and capital stock</li>
+<li>GHG Emissions</li>
+</ul>
+<p>The complete set of available variables and indicators is provided by
+the function ardeco_get_variable_list():</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">ardeco_get_variable_list</span>(), <span class="at">n=</span><span class="dv">1000</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 68 × 2</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt;    code    description                                                          </span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                                                                </span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt;  1 PVGD    &quot;GDP price index (implicit deflator, national, 2015=100, euro)&quot;      </span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  2 PVGE    &quot;GVA price index (implicit deflator, national, 2015=100, euro)&quot;      </span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;  3 SNPCN   &quot;Total population change&quot;                                            </span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;  4 SNMTN   &quot;Net migration&quot;                                                      </span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;  5 SNPBN   &quot;Live births&quot;                                                        </span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;  6 SNPDN   &quot;Deaths&quot;                                                             </span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;  7 SNPNN   &quot;Natural change of population&quot;                                       </span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt;  8 SUVGDP  &quot;GDP per capita at current prices&quot;                                   </span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt;  9 SNPTN   &quot;Population on 1st January by broad age group and sex&quot;               </span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; 10 SNPTD   &quot;Average annual population&quot;                                          </span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; 11 SUVGD   &quot;GDP at current market prices&quot;                                       </span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 12 SUVGE   &quot;GVA at basic prices&quot;                                                </span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 13 SUVGZ   &quot;GVA at basic prices by industry (10 NACE sectors)&quot;                  </span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; 14 SNWTD   &quot;Wage and salary earners (workplace based, employees)&quot;               </span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; 15 SNETZ   &quot;Employment by industry (10 NACE sectors)&quot;                           </span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; 16 SNETD   &quot;Total Employment (workplace based, employed persons)&quot;               </span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; 17 SOVGD   &quot;GDP at constant prices&quot;                                             </span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; 18 SOVGDP  &quot;GDP per capita at constant prices&quot;                                  </span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; 19 SOVGE   &quot;GVA at constant prices&quot;                                             </span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; 20 SOVGZ   &quot;GVA at constant prices by industry (10 NACE sectors)&quot;               </span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; 21 SPVGD   &quot;GDP price index (chain-type index, 2015=100)&quot;                       </span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; 22 SPVGE   &quot;GVA price index (chain-type index, 2015=100)&quot;                       </span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; 23 PVGZ    &quot;GVA price indices by industry (implicit deflators, national, 2015=1…</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; 24 RNECN   &quot;Residence-based employment&quot;                                         </span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; 25 RNUTN   &quot;Unemployment (LFS)&quot;                                                 </span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 26 RNLHT   &quot;Hours Worked (employed persons)&quot;                                    </span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; 27 RNLHTP  &quot;Hours worked per capita&quot;                                            </span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; 28 RNLHTE  &quot;Hours worked per employed person&quot;                                   </span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; 29 RNLHZ   &quot;Hours Worked by industry (10 NACE sectors)&quot;                         </span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; 30 RUWCZ   &quot;Compensation of employees at current prices by industry (10 NACE se…</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; 31 PPP     &quot;Purchasing power parities (PPPs) - EU=100&quot;                          </span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; 32 RNLHW   &quot;Hours Worked (employees)&quot;                                           </span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; 33 RNLCN   &quot;Civilian Labour Force&quot;                                              </span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; 34 RNLTN   &quot;Total Labour Force&quot;                                                 </span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; 35 SNETDP  &quot;Employment per capita&quot;                                              </span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; 36 RUWCD   &quot;Compensation of employees at current prices&quot;                        </span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; 37 RUWCDH  &quot;Nominal compensation per hour worked&quot;                               </span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; 38 RUWCDW  &quot;Nominal compensation per employee&quot;                                  </span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; 39 ROWCD   &quot;Compensation of Employees at constant prices&quot;                       </span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#&gt; 40 ROWCDH  &quot;Real compensation per hour worked&quot;                                  </span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co">#&gt; 41 ROWCDW  &quot;Real compensation per employee&quot;                                     </span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co">#&gt; 42 ROWCZ   &quot;Compensation of employees at constant prices by industry (10 NACE s…</span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="co">#&gt; 43 RUWCDHH &quot;Nominal unit labour cost based on hours worked&quot;                     </span></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; 44 RUWCDWE &quot; Nominal unit labour cost based on persons&quot;                         </span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; 45 SUVGDH  &quot;Nominal labour productivity per hour worked&quot;                        </span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt; 46 SUVGDE  &quot;Nominal labour productivity per person employed&quot;                    </span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co">#&gt; 47 SOVGDH  &quot; Real labour productivity per hour worked&quot;                          </span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="co">#&gt; 48 SOVGDE  &quot;Real labour productivity per person employed&quot;                       </span></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co">#&gt; 49 RPDTN   &quot;Population by educational attainment level&quot;                         </span></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="co">#&gt; 50 RPDEN   &quot;Early leavers from education and training (18-24 years)&quot;            </span></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a><span class="co">#&gt; 51 RPDNN   &quot;Young people neither in employment nor in education and training (1…</span></span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="co">#&gt; 52 RUVNH   &quot;Households net disposable income&quot;                                   </span></span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="co">#&gt; 53 RUYNH   &quot;Net property income&quot;                                                </span></span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a><span class="co">#&gt; 54 RUONH   &quot;Net operating Surplus and Mixed Income&quot;                             </span></span>
+<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a><span class="co">#&gt; 55 RUTYH   &quot;Current taxes on income and wealth&quot;                                 </span></span>
+<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a><span class="co">#&gt; 56 ROIGT   &quot;Gross Fixed Capital Formation at constant prices&quot;                   </span></span>
+<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a><span class="co">#&gt; 57 ROIGZ   &quot;Gross Fixed Capital Formation by industry (10 NACE sectors) at cons…</span></span>
+<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a><span class="co">#&gt; 58 SOKCT   &quot;Consumption of fixed capital at constant prices&quot;                    </span></span>
+<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a><span class="co">#&gt; 59 SOKCZ   &quot;Consumption of fixed capital by industry (10 NACE sectors) at const…</span></span>
+<span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a><span class="co">#&gt; 60 PIGT    &quot;GFCF price index (implicit deflator, national, 2015=100, euro)&quot;     </span></span>
+<span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a><span class="co">#&gt; 61 PIGZ    &quot;GFCF price indices by industry (implicit deflators, national, 2015=…</span></span>
+<span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a><span class="co">#&gt; 62 ROKND   &quot;Capital Stock at constant prices&quot;                                   </span></span>
+<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a><span class="co">#&gt; 63 EDGAR   &quot;Emissions Database for Global Atmospheric Research&quot;                 </span></span>
+<span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a><span class="co">#&gt; 64 EDGARP  &quot;GHG emissions per capita&quot;                                           </span></span>
+<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a><span class="co">#&gt; 65 RUIGZ   &quot;Gross Fixed Capital Formation by industry (10 NACE sectors) at curr…</span></span>
+<span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a><span class="co">#&gt; 66 RUIGT   &quot;Gross Fixed Capital Formation at current prices&quot;                    </span></span>
+<span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a><span class="co">#&gt; 67 SUKCT   &quot;Consumption of fixed capital at current prices&quot;                     </span></span>
+<span id="cb2-72"><a href="#cb2-72" tabindex="-1"></a><span class="co">#&gt; 68 SUKCZ   &quot;Consumption of fixed capital  by industry (10 NACE sectors) at curr…</span></span></code></pre></div>
+</div>
+<div id="geocov" class="section level3">
+<h3>The geographical coverage (NUTS) <a href="#varandind">back</a></h3>
+<p>Variables and indicators provide data for each EU country and its
+regions, according to the territorial classification provided by the
+Nomenclature of Territorial Units for Statistics as defined by Eurostat
+(NUTS nomenclature: <a href="https://ec.europa.eu/eurostat/web/nuts/overview" class="uri">https://ec.europa.eu/eurostat/web/nuts/overview</a>).</p>
+<p>The NUTS classification is composed of territorial units organised in
+four hierarchical and nested levels, i.e. where the upper level
+corresponds to aggregates of the lower level – from NUTS0 (corresponding
+to national level) to NUTS3 (corresponding to sub-regional level).</p>
+<p>Each three years a revision of the NUTS codes is performed, replacing
+some NUTS codes with new ones due to updating of statistical reference
+territory. Each review generates a new <strong>NUTS version</strong></p>
+<p>NUTS coding follows these rules:</p>
+<ul>
+<li>Nuts code at level 0 (country code) is composed by 2 letter (the
+country code according to ISO-3133-1 apart Greece which has been coded
+with EL in place of GR)</li>
+<li>Each nuts code at following levels (1, 2 and 3) add an additional
+char to the code. For example IT1A is a region belonging to great region
+IT1 in Italy (IT)</li>
+<li>Each NUTS code represent a specific territorial unit in any NUTS
+version. When a reference territorial unit change, also its NUTS code
+change and it’s unique in all NUTS version.</li>
+</ul>
+<p>More details about NUTS codeing are available in <a href="https://ec.europa.eu/eurostat/web/nuts/overview" class="uri">https://ec.europa.eu/eurostat/web/nuts/overview</a></p>
+<div id="tercetdef" class="section level4">
+<h4>Territorial tipologies: aggregated data by tercet <a href="#geocov">back</a></h4>
+<p>According to <a href="https://ec.europa.eu/eurostat/web/nuts/territorial-typologies">EUROSTAT
+definition</a>, territorial typologies (<strong>tercet</strong>) are
+classification systems that categorize regions and areas within the
+European Union based on specific geographical, socio-economic, and
+administrative criteria. These typologies are used to facilitate
+regional analysis and policy-making by providing a standardized
+framework for comparing different territories. Key territorial
+typologies include classifications such as urban-rural typologies,
+coastal and non-coastal regions, mountain areas, and metropolitan
+regions. By using these typologies, Eurostat aims to enhance the
+understanding of regional disparities and development patterns across
+the EU, supporting more effective regional policy interventions.</p>
+<p>Currently, in ARDECO, for the variables which have data at NUTS3
+level, it’s possible to require aggregated data at NUTS0 for Urban-rural
+typologies (URT). URT classifies each NUTS3 into one of three URT
+classes:</p>
+<ul>
+<li>Predominantly urban region</li>
+<li>Intermediate regions</li>
+<li>Predominantly rural regions</li>
+</ul>
+<p>A more detailed URT classification is also available: Urban-rural
+typologies with remoteness (URT with remoteness). URT with remoteness
+classifies each NUTS3 in 5 classes:</p>
+<ul>
+<li>Predominantly urban region</li>
+<li>Intermediate regions, close to a city</li>
+<li>Intermediate, remote regions</li>
+<li>Predominantly rural regions, close to a city</li>
+<li>Predominantly rural, remote regions</li>
+</ul>
+<p>The computation of the tercet classes for each NUTS0 is done by the
+sum of its NUTS3 belonging in each class.</p>
+</div>
+</div>
+<div id="tempcov" class="section level3">
+<h3>The temporal coverage <a href="#varandind">back</a></h3>
+<p>For each variable and for each territorial unit ARDECO provides the
+yearly value.</p>
+<p>In general, for each variable values from 2000 to the current year
+are provided.</p>
+<p>Depending by the variable, data before 2000 are provided according to
+the available information recovered from different sources of data. For
+example, Total population data are provided from 1960, for many
+variables data start from 1980, for some specific and more detailed data
+(economic sectorial data, age class for population) data starts from
+1990 or 1995.</p>
+<p>In addition, provisional data are provided for 2/3 years from the
+current year according to the forecasted yearly data provided by AMECO
+(Annual Macro-economic database of the European COmmission’s Directorate
+General for Economic and Financial Affairs, <a href="https://economy-finance.ec.europa.eu/economic-research-and-databases/economic-databases/ameco-database_en" class="uri">https://economy-finance.ec.europa.eu/economic-research-and-databases/economic-databases/ameco-database_en</a>).</p>
+</div>
+<div id="vardim" class="section level3">
+<h3>Variable as a set of datasets - variable dimensions <a href="#varandind">back</a></h3>
+<p>In ARDECO, each variable have at least two dimension: ‘Unit’ and
+‘Version’.</p>
+<p>‘Unit’ is the unit of measure related to the value associated to a
+nutscode in a specific year.</p>
+<p><em>Example</em>: the unit for variable ‘Total Population’ is
+‘Persons’.</p>
+<p>‘Version’ refers to the NUTS version for which the values of a
+variables are provided.</p>
+<p>Some variables can have more unit of measure. For example, GDP is
+provided in ‘EUR’ and in ‘PPS’.</p>
+<p>A variable can also have additional dimensions.</p>
+<p><em>Example</em>: In ‘Total Population’ it has been defined two
+additional dimension: ‘sex’ and ‘age group’. Each of this dimensions
+have a set of possible values (domain).</p>
+<p>The domain for dimension ‘sex’ is: ‘Total’, ‘Male’, ‘Female’. The
+domain for dimension ‘age group’ is: ‘Total’, ‘Less than 15’, ‘from 15
+to 64’, ‘65 and over’.</p>
+<p>The variable ‘Total Population’ can collect values for each nutcode,
+for each year and for each combination of values of its dimensions.</p>
+<p>Each combination of values of the dimensions of a variable identifies
+a dataset for that variable.</p>
+<p><em>Example</em>: the variable ‘Total Population’ as defined above,
+with dimension ‘Unit’, ‘sex’ and ‘age group’ have the following
+datasets:</p>
+<p>unit=‘Persons’ version= 2021 sex=‘Total’ ‘age group’=‘Total’
+represent the total population at NUTS version 2021</p>
+<p>unit=‘Persons’ version= 2021 sex=‘Male’ ‘age group’=‘Total’ represent
+the total male population at NUTS version 2021</p>
+<p>unit=‘Persons’ version= 2021 sex=‘Female’ ‘age group’=‘Total’
+represent the total female population at NUTS version 2021</p>
+<p>unit=‘Persons’ version= 2021 sex=‘Total’ ‘age group’=‘Less than 15’
+represent the total population have less than 15 years at NUTS version
+2021</p>
+<p>…an so on…</p>
+<p>To retrieve the number of datasets defined for a variable, use the
+function ardeco_get_dataset_list():</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">ardeco_get_dataset_list</span>(<span class="st">&#39;SNPTN&#39;</span>), <span class="at">n=</span><span class="dv">100</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 5</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt;    var   sex     age                 unit    vers            </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;               &lt;chr&gt;   &lt;chr&gt;           </span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt;  1 SNPTN Females 65 years and over   Persons 2016, 2021, 2024</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;  2 SNPTN Males   65 years and over   Persons 2016, 2021, 2024</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt;  3 SNPTN Total   65 years and over   Persons 2016, 2021, 2024</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;  4 SNPTN Females From 15 to 64 years Persons 2016, 2021, 2024</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt;  5 SNPTN Males   From 15 to 64 years Persons 2016, 2021, 2024</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt;  6 SNPTN Total   From 15 to 64 years Persons 2016, 2021, 2024</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;  7 SNPTN Females Less than 15 years  Persons 2016, 2021, 2024</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;  8 SNPTN Males   Less than 15 years  Persons 2016, 2021, 2024</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;  9 SNPTN Total   Less than 15 years  Persons 2016, 2021, 2024</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; 10 SNPTN Females Total               Persons 2016, 2021, 2024</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; 11 SNPTN Males   Total               Persons 2016, 2021, 2024</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; 12 SNPTN Total   Total               Persons 2016, 2021, 2024</span></span></code></pre></div>
+</div>
+</div>
+<div id="howto" class="section level2">
+<h2>How to use ARDECO R package - <a href="#content">back</a></h2>
+<ul>
+<li><a href="#varlist">Discover the available variable:
+<strong><em>ardeco_get_variable_list</em></strong></a></li>
+<li><a href="#datasetlist">List of Variable datasets:
+<strong><em>ardeco_get_dataset_list</em></strong></a></li>
+<li><a href="#tercetlist">List of tercets:
+<strong><em>ardeco_get_tercet_list</em></strong></a></li>
+<li><a href="#vardatawkf">How to retrieve variable data:
+<strong><em>ardeco_get_dataset_data</em></strong></a></li>
+</ul>
+<p>ARDECO R package provide a set of functions permitting to retrive the
+data of the ARDECO variables into a R dataframe. The data retrival is
+performed through the exploitation of the ARDECO APIs. These functions
+are an interface to the ARDECO APIs to simplify R users in data
+retrieval.</p>
+<p>The core function is
+<strong><em>ardeco_get_dataset_data</em></strong> which call ARDECO APIs
+to retrive data. This functions need the variable code and, optionally,
+a set of parameters enabling the user to filter data at the request
+level, minimizing the time for the</p>
+<p>In order to retrieve data for a variable, if the user doesn’t know
+the structure of the desired variable, the package provides a set fo
+functions in order to:</p>
+<ul>
+<li>Discover the available variables in ARDECO database</li>
+<li>Retrieve the list of datasets and dimensions defined for a specific
+variable</li>
+<li>Understand if its possible also to retrive tercet data for a
+specific variable</li>
+<li>build the correct request to retrieve the needed data</li>
+</ul>
+<div id="varlist" class="section level3">
+<h3>Discover the available variable:
+<strong><em>ardeco_get_variable_list</em></strong> - <a href="#howto">back</a></h3>
+<p>The unique mandatory information to retrieve data is the variable
+code. To retrieve the available ARDECO variables code, use</p>
+<blockquote>
+<p><strong>ardeco_get_variable_list()</strong></p>
+</blockquote>
+<p>The function returns a tibble with the following columns:</p>
+<ul>
+<li><p><strong><em>code</em></strong> is the mandatory code requested by
+the other ARDECO R package functions (<em>ardeco_get_dataset_list</em>,
+<em>ardeco_get_dataset_data</em>, <em>ardeco_get_tercet_list</em>) to
+retrieve information and data.</p></li>
+<li><p><strong><em>description</em></strong> explains the variable
+represented by the variable code</p></li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>mytb <span class="ot">&lt;-</span> <span class="fu">ardeco_get_variable_list</span>()</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">print</span>(mytb, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 68 × 2</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;    code   description                                                  </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;                                                        </span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;  1 PVGD   GDP price index (implicit deflator, national, 2015=100, euro)</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;  2 PVGE   GVA price index (implicit deflator, national, 2015=100, euro)</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;  3 SNPCN  Total population change                                      </span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;  4 SNMTN  Net migration                                                </span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt;  5 SNPBN  Live births                                                  </span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;  6 SNPDN  Deaths                                                       </span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;  7 SNPNN  Natural change of population                                 </span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;  8 SUVGDP GDP per capita at current prices                             </span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt;  9 SNPTN  Population on 1st January by broad age group and sex         </span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 10 SNPTD  Average annual population                                    </span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 58 more rows</span></span></code></pre></div>
+</div>
+<div id="datasetlist" class="section level3">
+<h3>List of Variable datasets:
+<strong><em>ardeco_get_dataset_list</em></strong> - <a href="#howto">back</a></h3>
+<p>As explained in <a href="#vardim">‘Variable as a set of datasets’</a>
+each variable have one or more datasets depending by its dimensions.</p>
+<p>To retrieve the list of the datasets defined for a variable, use</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_list(‘<em>varcode</em>’)</strong></p>
+</blockquote>
+<ul>
+<li><strong><em>varcode</em></strong> is one of the ARDECO variable
+code</li>
+</ul>
+<p>The function returns a tibble with the following columns:</p>
+<ul>
+<li><strong><em>var</em></strong>: variable code</li>
+<li><strong><em>unit</em></strong>: available unit of measure for the
+variable</li>
+<li><strong><em>vers</em></strong>: available NUTS version for the
+variable dataset (see <a href="#geocov">‘The geographical coverage
+(NUTS)’</a>)</li>
+<li><strong><em>additional dimensions</em></strong>: additional column
+for each additional dimension (if any) and related values (see <a href="#vardim">‘Variable as a set of datasets’</a>)</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>mytb <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_list</span>(<span class="st">&#39;SNETZ&#39;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">print</span>(mytb)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 13 × 4</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;    var   unit              sector vers            </span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;  &lt;chr&gt;           </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt;  1 SNETZ Thousands Persons A      2016, 2021, 2024</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;  2 SNETZ Thousands Persons B-E    2016, 2021, 2024</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;  3 SNETZ Thousands Persons F      2016, 2021, 2024</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt;  4 SNETZ Thousands Persons G-I    2016, 2021, 2024</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt;  5 SNETZ Thousands Persons G-J    2016, 2021, 2024</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt;  6 SNETZ Thousands Persons J      2016, 2021, 2024</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt;  7 SNETZ Thousands Persons K      2016, 2021, 2024</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt;  8 SNETZ Thousands Persons K-N    2016, 2021, 2024</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt;  9 SNETZ Thousands Persons L      2016, 2021, 2024</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; 10 SNETZ Thousands Persons M-N    2016, 2021, 2024</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; 11 SNETZ Thousands Persons O-Q    2016, 2021, 2024</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; 12 SNETZ Thousands Persons O-U    2016, 2021, 2024</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; 13 SNETZ Thousands Persons R-U    2016, 2021, 2024</span></span></code></pre></div>
+</div>
+<div id="tercetlist" class="section level3">
+<h3>List of tercets: <strong><em>ardeco_get_tercet_list</em></strong> -
+<a href="#howto">back</a></h3>
+<p>ARDECO R package provides the possibility to require data for a
+variable at available tercet (see <a href="#tercetdef">‘Territorial
+typologies: aggregated data by tercet’</a>). To check which tercet are
+currently available in ARDECO database, use:</p>
+<blockquote>
+<p><strong>ardeco_get_tercet_list()</strong></p>
+</blockquote>
+<p>This function return the available tercet and related tercet class.
+Each tercet and related tercet classes) are identified by codes:
+tercet_code and tercet_class_code.</p>
+<p>The function returns a tibble with the following columns:</p>
+<ul>
+<li><strong><em>tercet_code</em></strong>: the tercet code needed to
+request data at tercet level</li>
+<li><strong><em>tercet_name</em></strong>: the name of the tercet
+represented by the tercet_code<br />
+</li>
+<li><strong><em>tercet_class_code</em></strong>: the code of the tercet
+class needed to request data for a tercet class</li>
+<li><strong><em>tercet_class_name</em></strong>: the name of the tercet
+class represented by the tercet_class_code</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>mytb <span class="ot">&lt;-</span> <span class="fu">ardeco_get_tercet_list</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">print</span>(mytb)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;   tercet_code                             tercet_name tercet_class_code</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; 1           1                 by Urban-Rural Typology                 0</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; 2           1                 by Urban-Rural Typology                 2</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; 3           1                 by Urban-Rural Typology                 1</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; 4           2 by Urban-Rural Typology with Remoteness                 0</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; 5           2 by Urban-Rural Typology with Remoteness                 3</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 6           2 by Urban-Rural Typology with Remoteness                 4</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; 7           2 by Urban-Rural Typology with Remoteness                 5</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 8           2 by Urban-Rural Typology with Remoteness                 6</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;                      tercet_class_name</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; 1                  Predominantly urban</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 2                  Predominantly rural</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; 3                         Intermediate</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; 4                  Predominantly urban</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 5        Intermediate, close to a city</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; 6                 Intermediate, remote</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 7 Predominantly rural, close to a city</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 8          Predominantly rural, remote</span></span></code></pre></div>
+<p>It’s no possible require tercet data for all variable but for only
+those variables for which exist data at NUTS3 level. To check if it’s
+possible to require tercet data for a variable, use</p>
+<blockquote>
+<p><strong>ardeco_get_tercet_list(‘<em>varcode</em>’)</strong></p>
+</blockquote>
+<ul>
+<li><strong><em>varcode</em></strong> is the variable code to
+check.</li>
+</ul>
+<p>If the variable haven’t the NUTS3 level, the function return a
+warning highlighting the impossibility to aggregate data at tercet
+classes.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>mytb <span class="ot">&lt;-</span> <span class="fu">ardeco_get_tercet_list</span>(<span class="st">&#39;RPDTN&#39;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;The variable RPDTN has no data at level 3 and it&#39;s no possible to aggregate data at tercet classes&quot;</span></span></code></pre></div>
+</div>
+<div id="vardatawkf" class="section level3">
+<h3>How to retrieve variable data:
+<strong><em>ardeco_get_dataset_data</em></strong> - <a href="#howto">back</a></h3>
+<p>The core function to retrieve data is</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’)</strong></p>
+</blockquote>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database.</li>
+</ul>
+<p>This function return a dataframe where any row expose the value for a
+specific nuts, year, nutsversion, unit, dimensions. The dataframe
+include the following columns:</p>
+<ul>
+<li><strong><em>VARIABLE</em></strong>: the code of the requested
+variable</li>
+<li><strong><em>VERSIONS</em></strong>: the nuts version of the nuts
+code</li>
+<li><strong><em>LEVEL</em></strong>: the territorial level of the nuts
+code</li>
+<li><strong><em>NUTSCODE</em></strong>: the nuts code of the value</li>
+<li><strong><em>YEAR</em></strong>: the year of the value</li>
+<li><strong><em>UNIT</em></strong>: the unit of measure of the
+value</li>
+<li><strong><em>VALUE</em></strong>: the value of the variable</li>
+</ul>
+<p>Following an example to retrieve the complete set of ‘Average annual
+population’ data:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT    VALUE</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2016     0       AT 1980 Persons  7549428</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2016     0       BE 1980 Persons  9859002</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2016     0       CY 1980 Persons   509050</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 4    SNPTD     2016     0       DE 1980 Persons 61566000</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 5    SNPTD     2016     0       DK 1980 Persons  5124001</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 6    SNPTD     2016     0       EL 1980 Persons  9642501</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 7    SNPTD     2016     0       ES 1980 Persons 37491173</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 228621 rows ]</span></span></code></pre></div>
+<p>Additional columns will be added if for the variable it has been
+defined additional dimensions.</p>
+<p>In order to avoid problems due to the big amount of data which can be
+requested by user, <strong><em>ardeco_get_dataset_data</em></strong>
+works sending a set of requests, one for any dataset defined into the
+variable, joining the results of every call into the resulting
+dataframe. In this way each call ask a relative small set of data,
+avoiding timeout constrain imposed by the network infrastructure.</p>
+<p>If a variable have a huge number of datasets, it’s possible that the
+retrieval process of the entire variable needs long time (minutes)
+before receiving the final result. To check the status and the progress
+of the data retrieval, it’s possible to use an optional parameter which
+display the progress of the data retrieval process. This parameter is
+<strong><em>verbose</em></strong> which by default is set to
+<strong><em>FALSE</em></strong></p>
+<blockquote>
+<p>ardeco_get_dataset_data(‘<em>varcode</em>’, verbose=TRUE)</p>
+</blockquote>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database.</li>
+<li><strong><em>verbose</em></strong> is a flag and it can be TRUE or
+FALSE (FALSE by default). If TRUE, print the current dataset requested
+by the function.</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNETZ&#39;</span>, <span class="at">verbose=</span><span class="cn">TRUE</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=A&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=B-E&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=F&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=G-I&quot;</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=G-J&quot;</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=J&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=K&quot;</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=K-N&quot;</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=L&quot;</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=M-N&quot;</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=O-Q&quot;</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=O-U&quot;</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Fetching... [unit]=Thousands Persons [sector]=R-U&quot;</span></span></code></pre></div>
+</div>
+</div>
+<div id="filter" class="section level2">
+<h2>Filtering data - <a href="#content">back</a></h2>
+<p>The function <strong>ardeco_get_dataset_data</strong> permits to send
+a request for a subset of data filtered according to the following
+parameters:</p>
+<ul>
+<li><a href="#nutsver">Nuts version</a></li>
+<li><a href="#varnuts">Nutscode and nutslevel</a></li>
+<li><a href="#varunit">Unit</a></li>
+<li><a href="#varyear">Year</a></li>
+<li><a href="#dimens">Dimensions</a></li>
+<li><a href="#tercet">Tercets</a></li>
+</ul>
+<p>The filter is composed by a set of additional parameters to add to
+the call of the function <em>ardeco_get_dataset_data</em> according to
+the following syntax:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’, parameter-1 =
+<em>par-value-1</em>, …, parameter-n =
+<em>par-value-n</em>)</strong></p>
+</blockquote>
+<p>Where</p>
+<ul>
+<li><strong><em>parameter-x</em></strong>: one of the above listed
+parameters</li>
+<li><strong><em>par-value-x</em></strong>: the value of the
+parameter</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Request data for Italy at level 1, at nuts version=2021,</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># with unit of measure = &#39;Million EUR&#39; and related to year 2015</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">unit=</span><span class="st">&#39;Million PPS&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">level=</span><span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT    VALUE</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     1      ITC 2015 Million PPS 526625.2</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     1      ITF 2015 Million PPS 251691.9</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2021     1      ITG 2015 Million PPS 116697.4</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2021     1      ITH 2015 Million PPS 367591.2</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2021     1      ITI 2015 Million PPS 347427.1</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2021     1      ITZ 2015 Million PPS   1245.9</span></span></code></pre></div>
+<div id="nutsver" class="section level3">
+<h3>Nuts version - <a href="#filter">back</a></h3>
+<p>To request data at a specific nuts version, use:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’,
+version=<em>nutsversion</em>)</strong></p>
+</blockquote>
+<p>where</p>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database</li>
+<li><strong><em>nutsversion</em></strong> is one of the versions
+available for the requested variable</li>
+</ul>
+<p>To check the available versions for the requested variable, use:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_list(‘<em>varcode</em>’)</strong> (see <a href="#datasetlist">‘List of the available datasets’</a>)</p>
+</blockquote>
+<p>Example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Check the available versions for variable SNPTD</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">ardeco_get_dataset_list</span>(<span class="st">&#39;SNPTD&#39;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt;   var   unit    vers            </span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;           </span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; 1 SNPTD Persons 2016, 2021, 2024</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT   VALUE</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       AL 1960 Persons 1608801</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2021     0       AT 1960 Persons 7047440</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2021     0       BE 1960 Persons 9153499</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt; 4    SNPTD     2021     0       BG 1960 Persons 7867374</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; 5    SNPTD     2021     0       CH 1960 Persons 5328000</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 6    SNPTD     2021     0       CY 1960 Persons  441788</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; 7    SNPTD     2021     0       CZ 1960 Persons 9602011</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 157081 rows ]</span></span></code></pre></div>
+</div>
+<div id="varnuts" class="section level3">
+<h3>Nutscode and nutslevel - <a href="#filter">back</a></h3>
+<p>Filtering by nuts-code returns data for all territories coded with
+nutscode starting with the value passed to the function. The filter
+syntax is the following:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’,
+nutscode=<em>val-nutscode</em>)</strong></p>
+</blockquote>
+<p>where</p>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database</li>
+<li><strong><em>val-nutscode</em></strong> is a string representing the
+initial characters of the nutscode returned by the filter. The effect of
+this filter is: return all nutscodes starting with ‘val-nutscode’. It’s
+also possible to require values for more nutscode, listing the code
+separated by comma.</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Retrive data with nutscode starting with &#39;IT&#39;</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT  VALUE</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2016     0       IT 1980 Million EUR 341455</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2016     0       IT 1981 Million EUR 385319</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2016     0       IT 1982 Million EUR 434131</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2016     0       IT 1983 Million EUR 496161</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2016     0       IT 1984 Million EUR 554663</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2016     0       IT 1985 Million EUR 594280</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2016     0       IT 1986 Million EUR 651995</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 27633 rows ]</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co"># Retrive data with nutscode starting with &#39;IT,FR&#39;</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">nutscode=</span><span class="st">&#39;IT,FR&#39;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT  VALUE</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2016     0       FR 1980 Million EUR 504931</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2016     0       IT 1980 Million EUR 341455</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2016     0       FR 1981 Million EUR 553861</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2016     0       IT 1981 Million EUR 385319</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2016     0       FR 1982 Million EUR 597688</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2016     0       IT 1982 Million EUR 434131</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2016     0       FR 1983 Million EUR 630220</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 57881 rows ]</span></span></code></pre></div>
+<p>This filter can be refined using the parameter ‘level’. The parameter
+level filter the data by nuts level. The filter syntax is the
+following:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’,
+level=<em>val-nutslevel</em>)</strong></p>
+</blockquote>
+<p>where</p>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database</li>
+<li><strong><em>val-nutslevel</em></strong> is the nuts level of the
+nutscodes returned by the filter. This parameter can be:
+<ul>
+<li>a single number representing the requested nuts level (example:
+<strong>level=0</strong>): <em>Note: the val-nutslevel can be with or
+without the quote <strong>’</strong> (example: <strong>level=0</strong>
+or <strong>level=‘0’</strong>)</em></li>
+<li>a quoted string with a series of nuts level separated by comma. In
+this case, it will be returned the values for each nutscodes belonging
+in the listed nuts levels (example: <strong>level=‘0,2’</strong> return
+values for nuts codes in nuts level 0 and 2). <em>Note: in this case,
+the quotes are mandatory</em>.</li>
+<li>a quoted string with a couple of values divided by ‘-’. In this
+case, the two numbers represent the nuts level between the two values.
+Example: <strong>level=‘0-2’</strong> return values for nuts codes in
+nuts levels 0, 1 and 2). <em>Note: in this case, the quotes are
+mandatory</em>.</li>
+</ul></li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Retrive SUVGD data for Italy at country level (level 0) for the year 2015</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">level=</span><span class="dv">0</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT   VALUE</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     0       IT 2015 Million EUR 1655355</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     0       IT 2015 Million PPS 1611279</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co"># Retrive SUVGD data for Italy at country and regional level (level 0 and 2) for the year 2015</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">level=</span><span class="st">&#39;0,2&#39;</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     0       IT 2015 Million EUR 1655355.0</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     2     ITC1 2015 Million EUR  126868.3</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2021     2     ITC2 2015 Million EUR    4653.4</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2021     2     ITC3 2015 Million EUR   47179.5</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2021     2     ITC4 2015 Million EUR  362329.6</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2021     2     ITF1 2015 Million EUR   31863.8</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2021     2     ITF2 2015 Million EUR    6128.4</span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 39 rows ]</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co"># Retrive SUVGD data for Italy at level from 0 to 2 for the year 2015</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">level=</span><span class="st">&#39;0-2&#39;</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">100</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="co">#&gt;    VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co">#&gt; 1     SUVGD     2021     0       IT 2015 Million EUR 1655355.0</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt; 2     SUVGD     2021     1      ITC 2015 Million EUR  541030.9</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt; 3     SUVGD     2021     1      ITF 2015 Million EUR  258576.9</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt; 4     SUVGD     2021     1      ITG 2015 Million EUR  119889.6</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; 5     SUVGD     2021     1      ITH 2015 Million EUR  377646.6</span></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co">#&gt; 6     SUVGD     2021     1      ITI 2015 Million EUR  356930.8</span></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="co">#&gt; 7     SUVGD     2021     1      ITZ 2015 Million EUR    1280.3</span></span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt; 8     SUVGD     2021     2     ITC1 2015 Million EUR  126868.3</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="co">#&gt; 9     SUVGD     2021     2     ITC2 2015 Million EUR    4653.4</span></span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="co">#&gt; 10    SUVGD     2021     2     ITC3 2015 Million EUR   47179.5</span></span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a><span class="co">#&gt; 11    SUVGD     2021     2     ITC4 2015 Million EUR  362329.6</span></span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="co">#&gt; 12    SUVGD     2021     2     ITF1 2015 Million EUR   31863.8</span></span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="co">#&gt; 13    SUVGD     2021     2     ITF2 2015 Million EUR    6128.4</span></span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="co">#&gt; 14    SUVGD     2021     2     ITF3 2015 Million EUR  103763.8</span></span>
+<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 44 rows ]</span></span></code></pre></div>
+</div>
+<div id="varunit" class="section level3">
+<h3>Unit - <a href="#filter">back</a></h3>
+<p>To request data for a specific unit of measure, use:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’,
+unit=‘<em>unit</em>’)</strong></p>
+</blockquote>
+<p>where</p>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database</li>
+<li><strong><em>unit</em></strong> is one of the unit of measures
+available for the requested variable</li>
+</ul>
+<p>To check the available unit of measures for the requested variable,
+use:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_list(‘<em>varcode</em>’)</strong> (see <a href="#datasetlist">‘List of the available datasets’</a>)</p>
+</blockquote>
+<p>Example:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># Check the available units for variable SUVGD</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">ardeco_get_dataset_list</span>(<span class="st">&#39;SUVGD&#39;</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt;   var   unit        vers            </span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;           </span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; 1 SUVGD Million EUR 2016, 2021, 2024</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; 2 SUVGD Million PPS 2016, 2021, 2024</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="co"># Retrive data only for unit = &#39;Million PPS&#39;</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">unit=</span><span class="st">&#39;Million PPS&#39;</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT    VALUE</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2016     0       AT 1980 Million PPS  63886.9</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2016     0       BE 1980 Million PPS  81472.1</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2016     0       DE 1980 Million PPS       NA</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2016     0       DK 1980 Million PPS  40713.8</span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2016     0       EL 1980 Million PPS  67653.8</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2016     0       ES 1980 Million PPS 212593.0</span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2016     0       FI 1980 Million PPS  35398.8</span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 176726 rows ]</span></span></code></pre></div>
+</div>
+<div id="varyear" class="section level3">
+<h3>Year - <a href="#filter">back</a></h3>
+<p>To request data for a year, use:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’,
+year=‘<em>val-year</em>’)</strong></p>
+</blockquote>
+<p>where</p>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database</li>
+<li><strong><em>val-year</em></strong> is the year (or years) for which
+the data are requested. This parameter can be:
+<ul>
+<li>a single number representing the requested year (example:
+<strong>year=2020</strong>): <em>Note: the val-year can be with or
+without the quote <strong>’</strong> (example:
+<strong>year=2020</strong> or <strong>year=‘2020’</strong>)</em></li>
+<li>a quoted string with a series of years separated by comma. In this
+case, it will be returned the values for each of the listed year
+(example: <strong>year=‘2011, 2015, 2016’</strong> return values for
+year 2011, 2015 and 2016). <em>Note: in this case, the quotes are
+mandatory</em>.</li>
+<li>a quoted string with a couple of values divided by ‘-’. In this
+case, the two numbers represent the temporal windows for which will be
+returned the values. Example: <strong>year=‘2015-2018’</strong> return
+the for years 2015, 2016, 2017, 2018). <em>Note: in this case, the
+quotes are mandatory</em>.</li>
+</ul></li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># Retrive data only for year = 2015</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">nutscode=</span><span class="st">&#39;ITF11&#39;</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT  VALUE</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     3    ITF11 2015 Persons 303200</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co"># Retrive data for years 2015 and 2018</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">year=</span><span class="st">&#39;2015,2018&#39;</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">nutscode=</span><span class="st">&#39;ITF11&#39;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT  VALUE</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     3    ITF11 2015 Persons 303200</span></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2021     3    ITF11 2018 Persons 298200</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="co"># Retrive data for years from 2015 to 2018</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">year=</span><span class="st">&#39;2015-2018&#39;</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">nutscode=</span><span class="st">&#39;ITF11&#39;</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT  VALUE</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     3    ITF11 2015 Persons 303200</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2021     3    ITF11 2016 Persons 301500</span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2021     3    ITF11 2017 Persons 299900</span></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="co">#&gt; 4    SNPTD     2021     3    ITF11 2018 Persons 298200</span></span></code></pre></div>
+</div>
+<div id="dimens" class="section level3">
+<h3>Dimensions - <a href="#filter">back</a></h3>
+<p>If a variable have also additional dimensions, it is possible to
+filter for these additional dimensions, using the following syntax (like
+the other dimensions):</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’, dim-1 =
+<em>dim-value-1</em>, …, dim-n = <em>dim-value-n</em>)</strong></p>
+</blockquote>
+<p>Where</p>
+<ul>
+<li><strong><em>dim-x</em></strong>: one of the additional dimension
+defined in the variable</li>
+<li><strong><em>dim-value-x</em></strong>: of the possible values for
+the selected dimension</li>
+</ul>
+<p>To check the existance of additional dimensions for the requested
+variable, use:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_list(‘<em>varcode</em>’)</strong> (see <a href="#datasetlist">‘List of the available datasets’</a>)</p>
+</blockquote>
+<p>Example:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># Check the available dimensions for variable SNPTN</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">ardeco_get_dataset_list</span>(<span class="st">&#39;SNPTN&#39;</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 5</span></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="co">#&gt;    var   sex     age                 unit    vers            </span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;               &lt;chr&gt;   &lt;chr&gt;           </span></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co">#&gt;  1 SNPTN Females 65 years and over   Persons 2016, 2021, 2024</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="co">#&gt;  2 SNPTN Males   65 years and over   Persons 2016, 2021, 2024</span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="co">#&gt;  3 SNPTN Total   65 years and over   Persons 2016, 2021, 2024</span></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="co">#&gt;  4 SNPTN Females From 15 to 64 years Persons 2016, 2021, 2024</span></span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="co">#&gt;  5 SNPTN Males   From 15 to 64 years Persons 2016, 2021, 2024</span></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="co">#&gt;  6 SNPTN Total   From 15 to 64 years Persons 2016, 2021, 2024</span></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a><span class="co">#&gt;  7 SNPTN Females Less than 15 years  Persons 2016, 2021, 2024</span></span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a><span class="co">#&gt;  8 SNPTN Males   Less than 15 years  Persons 2016, 2021, 2024</span></span>
+<span id="cb23-14"><a href="#cb23-14" tabindex="-1"></a><span class="co">#&gt;  9 SNPTN Total   Less than 15 years  Persons 2016, 2021, 2024</span></span>
+<span id="cb23-15"><a href="#cb23-15" tabindex="-1"></a><span class="co">#&gt; 10 SNPTN Females Total               Persons 2016, 2021, 2024</span></span>
+<span id="cb23-16"><a href="#cb23-16" tabindex="-1"></a><span class="co">#&gt; 11 SNPTN Males   Total               Persons 2016, 2021, 2024</span></span>
+<span id="cb23-17"><a href="#cb23-17" tabindex="-1"></a><span class="co">#&gt; 12 SNPTN Total   Total               Persons 2016, 2021, 2024</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="co"># Retrive data only for sex = &#39;Males&#39; and age = &#39;Total&#39;</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTN&#39;</span>, <span class="at">sex=</span><span class="st">&#39;Males&#39;</span>, <span class="at">age =</span> <span class="st">&#39;Total&#39;</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR   SEX   AGE    UNIT   VALUE</span></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTN     2021     0       AL 1960 Males Total Persons  804267</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTN     2021     0       AT 1960 Males Total Persons 3357007</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a><span class="co">#&gt; 3    SNPTN     2021     0       BE 1960 Males Total Persons 4448001</span></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a><span class="co">#&gt; 4    SNPTN     2021     0       BG 1960 Males Total Persons 3815790</span></span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a><span class="co">#&gt; 5    SNPTN     2021     0       CH 1960 Males Total Persons 2553621</span></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 149511 rows ]</span></span></code></pre></div>
+</div>
+<div id="tercet" class="section level3">
+<h3>Tercets - <a href="#filter">back</a></h3>
+<p>It’s possible to retrieve the data for a variable at tercel level or
+a single tercet class (see <a href="#tercetlist">‘List of tercet’</a>).
+This function computes the tercet values at level 0 for any requested
+country and tercet class.</p>
+<p>The function permit to retrieve data at tercet level in two main
+ways:</p>
+<ul>
+<li>by <strong><em>tercet</em></strong>: return a value (absolute or
+percentage) for any requested country and for any tercet class defined
+into the requested tercet</li>
+<li>by <strong><em>tercet class</em></strong>: return a value (absolute
+or percentage) for any requested country for the requested tercet
+class</li>
+</ul>
+<p>The correct syntax to request data by
+<strong><em>tercet</em></strong> is the following:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’,
+tercet_code=<em>val-tercet-code</em>[, show_perc=TRUE])</strong></p>
+</blockquote>
+<p>where</p>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database</li>
+<li><strong><em>val-tercet-code</em></strong> is one of the code of the
+available tercet for the requested variable (see <a href="#tercetlist">‘List of tercet’</a>))</li>
+<li><strong><em>show_perc</em></strong> (optional parameter) is a flag
+and it can be TRUE or FALSE (FALSE by default). If
+<strong>FALSE</strong> (default), the functions return the absolute
+value of the requested tercet classes. If <strong>TRUE</strong>, the
+functions return the share (pecentage) of the requested tercet
+classes.</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co"># Check available tercet for variable SNPTD</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="fu">ardeco_get_tercet_list</span>(<span class="st">&#39;SNPTD&#39;</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co">#&gt;   tercet_code                             tercet_name tercet_class_code</span></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="co">#&gt; 1           1                 by Urban-Rural Typology                 0</span></span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="co">#&gt; 2           1                 by Urban-Rural Typology                 2</span></span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="co">#&gt; 3           1                 by Urban-Rural Typology                 1</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="co">#&gt; 4           2 by Urban-Rural Typology with Remoteness                 0</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="co">#&gt; 5           2 by Urban-Rural Typology with Remoteness                 3</span></span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a><span class="co">#&gt; 6           2 by Urban-Rural Typology with Remoteness                 4</span></span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a><span class="co">#&gt; 7           2 by Urban-Rural Typology with Remoteness                 5</span></span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a><span class="co">#&gt; 8           2 by Urban-Rural Typology with Remoteness                 6</span></span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a><span class="co">#&gt;                      tercet_class_name</span></span>
+<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a><span class="co">#&gt; 1                  Predominantly urban</span></span>
+<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a><span class="co">#&gt; 2                  Predominantly rural</span></span>
+<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a><span class="co">#&gt; 3                         Intermediate</span></span>
+<span id="cb25-16"><a href="#cb25-16" tabindex="-1"></a><span class="co">#&gt; 4                  Predominantly urban</span></span>
+<span id="cb25-17"><a href="#cb25-17" tabindex="-1"></a><span class="co">#&gt; 5        Intermediate, close to a city</span></span>
+<span id="cb25-18"><a href="#cb25-18" tabindex="-1"></a><span class="co">#&gt; 6                 Intermediate, remote</span></span>
+<span id="cb25-19"><a href="#cb25-19" tabindex="-1"></a><span class="co">#&gt; 7 Predominantly rural, close to a city</span></span>
+<span id="cb25-20"><a href="#cb25-20" tabindex="-1"></a><span class="co">#&gt; 8          Predominantly rural, remote</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a><span class="co"># Retrieve absolute values for tercet &#39;Urban-Rural Typology&#39; for variable &#39;SNPTD&#39; for country &#39;IT&#39;, year 2020, nuts version 2021</span></span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">tercet_code=</span><span class="dv">1</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="fu">print</span>(mydf)</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE TERCET_CODE YEAR    UNIT</span></span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0           1 2020 Persons</span></span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2021     0       IT                 1           1 2020 Persons</span></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2021     0       IT                 2           1 2020 Persons</span></span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a><span class="co">#&gt;               TERCET_NAME   TERCET_CLASS_NAME    VALUE</span></span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co">#&gt; 1 by Urban-Rural Typology Predominantly urban 28475100</span></span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="co">#&gt; 2 by Urban-Rural Typology        Intermediate 24767700</span></span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co">#&gt; 3 by Urban-Rural Typology Predominantly rural  6196100</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="co"># Retrieve share for tercet &#39;Urban-Rural Typology&#39; for variable &#39;SNPTD&#39; for country &#39;IT&#39;, year 2020, nuts version 2021</span></span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">tercet_code=</span><span class="dv">1</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">show_perc=</span><span class="cn">TRUE</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a><span class="fu">print</span>(mydf)</span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE TERCET_CODE YEAR    UNIT</span></span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0           1 2020 Persons</span></span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2021     0       IT                 1           1 2020 Persons</span></span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2021     0       IT                 2           1 2020 Persons</span></span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a><span class="co">#&gt;               TERCET_NAME   TERCET_CLASS_NAME VALUE</span></span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a><span class="co">#&gt; 1 by Urban-Rural Typology Predominantly urban 47.91</span></span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a><span class="co">#&gt; 2 by Urban-Rural Typology        Intermediate 41.67</span></span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a><span class="co">#&gt; 3 by Urban-Rural Typology Predominantly rural 10.42</span></span></code></pre></div>
+<p>The correct syntax to request data by
+<strong><em>tercet_class</em></strong> is the following:</p>
+<blockquote>
+<p><strong>ardeco_get_dataset_data(‘<em>varcode</em>’,
+tercet_class_code=<em>val-tercet-calss-code</em>[,
+show_perc=TRUE])</strong></p>
+</blockquote>
+<p>where</p>
+<ul>
+<li><strong><em>varcode</em></strong> is the code of one of the
+available variables exposed in ARDECO database</li>
+<li><strong><em>val-tercet-code</em></strong> is one of the code of the
+available tercet class for the requested variable (see <a href="#tercetlist">‘List of tercet’</a>))</li>
+<li><strong><em>show_perc</em></strong> (optional parameter) is a flag
+and it can be <strong>TRUE</strong> or <strong>FALSE</strong>
+(<strong>FALSE</strong> by default). If <strong>FALSE</strong>
+(default), the functions return the absolute value of the requested
+tercet class. If <strong>TRUE</strong>, the functions return the share
+(pecentage) of the requested tercet class.</li>
+</ul>
+<p>Example:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="co"># Check available tercet classes for variable SNPTD</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="fu">ardeco_get_tercet_list</span>(<span class="st">&#39;SNPTD&#39;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="co">#&gt;   tercet_code                             tercet_name tercet_class_code</span></span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="co">#&gt; 1           1                 by Urban-Rural Typology                 0</span></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="co">#&gt; 2           1                 by Urban-Rural Typology                 2</span></span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co">#&gt; 3           1                 by Urban-Rural Typology                 1</span></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="co">#&gt; 4           2 by Urban-Rural Typology with Remoteness                 0</span></span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a><span class="co">#&gt; 5           2 by Urban-Rural Typology with Remoteness                 3</span></span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a><span class="co">#&gt; 6           2 by Urban-Rural Typology with Remoteness                 4</span></span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a><span class="co">#&gt; 7           2 by Urban-Rural Typology with Remoteness                 5</span></span>
+<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a><span class="co">#&gt; 8           2 by Urban-Rural Typology with Remoteness                 6</span></span>
+<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a><span class="co">#&gt;                      tercet_class_name</span></span>
+<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a><span class="co">#&gt; 1                  Predominantly urban</span></span>
+<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a><span class="co">#&gt; 2                  Predominantly rural</span></span>
+<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a><span class="co">#&gt; 3                         Intermediate</span></span>
+<span id="cb28-16"><a href="#cb28-16" tabindex="-1"></a><span class="co">#&gt; 4                  Predominantly urban</span></span>
+<span id="cb28-17"><a href="#cb28-17" tabindex="-1"></a><span class="co">#&gt; 5        Intermediate, close to a city</span></span>
+<span id="cb28-18"><a href="#cb28-18" tabindex="-1"></a><span class="co">#&gt; 6                 Intermediate, remote</span></span>
+<span id="cb28-19"><a href="#cb28-19" tabindex="-1"></a><span class="co">#&gt; 7 Predominantly rural, close to a city</span></span>
+<span id="cb28-20"><a href="#cb28-20" tabindex="-1"></a><span class="co">#&gt; 8          Predominantly rural, remote</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a></span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="co"># Retrieve absolute value for tercet class &#39;Predominantly urban&#39; for variable &#39;SNPTD&#39; for country &#39;IT&#39;, year 2020, nuts version 2021</span></span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">tercet_class_code=</span><span class="dv">0</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="fu">print</span>(mydf)</span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT</span></span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0 2020 Persons</span></span>
+<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a><span class="co">#&gt;     TERCET_CLASS_NAME    VALUE</span></span>
+<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a><span class="co">#&gt; 1 Predominantly urban 28475100</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a></span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="co"># Retrieve share for tercet class &#39;Predominantly urban&#39; for variable &#39;SNPTD&#39; for country &#39;IT&#39;, year 2020, nuts version 2021</span></span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">tercet_class_code=</span><span class="dv">0</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">show_perc=</span><span class="cn">TRUE</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a><span class="fu">print</span>(mydf)</span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT</span></span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0 2020 Persons</span></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a><span class="co">#&gt;     TERCET_CLASS_NAME VALUE</span></span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a><span class="co">#&gt; 1 Predominantly urban 47.91</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

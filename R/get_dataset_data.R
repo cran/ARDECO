@@ -18,7 +18,10 @@
 #               - 9: EU average (eg. EU27_2020)
 #               If NULL return all levels
 #        dim(s): (optional) it can be one or more dimensions of dataset. if no dimension is passed, return data for all existing dimensions.
-#        tercet: (optional) it can be one of the available tercet class id as returned by ardeco_get_tercet_list() function. Tercet cannot be defined with level.
+#        tercet_code: (optional) it can be one of the available tercet_code as returned by ardeco_get_tercet_list() function. Tercet_code cannot be defined with level.
+#        tercet_class_code: (optional) it can be one of the available tercet_class_code as returned by ardeco_get_tercet_list() function. Tercet_class_code cannot be defined with level.
+#        show_perc: (optional). To be used with tercet_code or tercet_class_code. If true, the velue of tercet class are returned as percentage related to the country total.
+#        verbose: (optional) if true, it display the current dataset for which the process is fetching data
 # Output: a dataframe collecting the data related to the requested dataset
 #         detailed by year, nuts_code, unit and sector
 #         The fields of the dataframe are the following:
@@ -26,11 +29,14 @@
 #         - VERSION: nuts version of the nutscode
 #         - LEVEL: the nuts level of nutscode
 #         - NUTSCODE: code of the territory (NUTS code) of the value
+#         - TERCET_CLASS_CODE: (if required) code of the requested tercet class.
+#         - TERCET_CODE: (if required) code of the requested tercet.
 #         - YEAR: year of reference of the value
 #         - DIM(s): one or mode columns depending by the dimensions defined for the selected dataset
 #         - UNIT: unit of measure of the value
-#         - TERCET_CLASS_NAME: (if required) name of the requested tercet class name.
-#         - VALUE: value of the variable related to a specific unit, dim(s), version, level, nutscode, year
+#         - TERCET_NAME: (if required) name of the requested tercet.
+#         - TERCET_CLASS_NAME: (if required) name of the requested tercet class.
+#         - VALUE: value of the variable related to a specific unit, dim(s), version, level, nutscode, year.
 #
 # Description: return the list of value for each version, level, year and nutscode related to
 #              the requested dataset specified by variable code, unit and dimensions.
@@ -44,8 +50,12 @@
 #' @import jsonlite
 #' @import tidyr
 #' @import stringr
-#' @import utils
+#' @import arrow
+#' @importFrom stats var
+#' @importFrom utils URLdecode URLencode
 #' @export
+
+
 
 ardeco_get_dataset_data <- function(variable,
                                     ...) {
@@ -60,14 +70,17 @@ ardeco_get_dataset_data <- function(variable,
   # 	1.1) variable parameter
   #		1.1.1) have to be defined
   if (missing(variable)) {
-    return("Variable is mandatory")
+    print("Variable is mandatory")
+    return(NULL)
   }
 
   # 	1.1.2) one of the possible variable code
   variables_available = ardeco_get_variable_list()
   if (!variable %in% variables_available$code) {
-    return(paste("Variable ", variable, "does not exist"))
+    print(paste("Variable ", variable, "does not exist"))
+    return(NULL)
   }
+  # recover the list of available datasets defined into the variable and set the URL with the variable code
   datasets_available = ardeco_get_dataset_list(variable)
   url <- paste(url, variable, sep="")
   url <- paste(url, "?" , sep="")
@@ -81,6 +94,16 @@ ardeco_get_dataset_data <- function(variable,
   year <- NULL
   level <- NULL
   tercet <- NULL
+  tercet_code <- NULL
+  tercet_class_code <- NULL
+  show_perc <- NULL
+  verbose <- NULL
+  vers <- NULL
+  TERCET_NAME.1 <- NULL
+  TERCET_CLASS_NAME.1 <- NULL
+
+  exclude_list <- list()
+  call_list <- list()
 
   # recover the optional parameters passed to the function call
   add_dims <- NULL
@@ -90,9 +113,11 @@ ardeco_get_dataset_data <- function(variable,
     #print(e)
   })
   if (is.null(add_dims)) {
-    return("Error in additional parameters values")
+    print("Error in additional parameters values")
+    return(NULL)
   }
   for (param in names(add_dims)) {
+    exclude_list <- c(exclude_list, param)
     if (param == "year") {
       year <- add_dims[param]
     }
@@ -111,42 +136,132 @@ ardeco_get_dataset_data <- function(variable,
     if (param == "tercet") {
       tercet <- add_dims[param]
     }
+    if (param == "tercet_code") {
+      tercet_code <- add_dims[param]
+    }
+    if (param == "tercet_class_code") {
+      tercet_class_code <- add_dims[param]
+    }
+    if (param == "tercet") {
+      tercet_class_code <- add_dims[param]
+    }
+    if (param == "show_perc") {
+      show_perc <- add_dims[param]
+    }
+    if (param == "verbose") {
+      verbose <- add_dims[param]
+    }
 
   }
+
+
+  # check if show_perc has been passed with one of tercet_code or tercet_class_code
+  if (!is.null(show_perc)) {
+    if (is.null(tercet_class_code) && is.null(tercet_code)) {
+      print("You can't specify the show_perc parameter without specifying either tercet_code or tercet_class_cose")
+      return(NULL)
+    }
+  }
+
+
+  # select the variable's datasets for which fetching data
+  df_selected <- datasets_available %>% select(-var, -vers)
+  column_names <- colnames(df_selected)
+  filtered_column_names <- column_names[!column_names %in% exclude_list]
+  num_rows <- nrow(df_selected)
+  url_list<- list()
+  for (i in 1:num_rows) {
+    strTmp <- ""
+    for (c in filtered_column_names) {
+      if (!is.null(df_selected[[c]]) && length(df_selected[[c]]) > 0) {
+        strTmp <- paste(strTmp, "&", sep="")
+        strTmp <- paste(strTmp, URLencode(c), sep="")
+        strTmp <- paste(strTmp, "=", sep="")
+        #strTmp <- paste(strTmp, URLencode(df_selected[[c]][i-1]), sep="")
+        strTmp <- paste(strTmp, URLencode(df_selected[[c]][i]), sep="")
+      }
+    }
+    if (substr(strTmp, nchar(strTmp), nchar(strTmp)) != "=") {
+      url_list <- c(url_list, strTmp)
+    }
+  }
+  url_list <- unique(url_list)
 
   # 	1.3) check value of passed optional parameters
   #		1.3.1) For each of ("unit", "version", "nutscode", "year", "level", "tercet") (if passed)
   #	 		check if the passed value is in the domain of the parameter
 
-  # check TERCET value:
-  if (!is.null(tercet)) {
+  if (!is.null(tercet_code) && !is.null(tercet_class_code) ) {
+    print("Attention! You can't specify both tercet_class_code and tercet_code. Choose only one of these two parameters.")
+    return(NULL)
+  }
+
+
+  # check TERCET_CODE value:
+  if (!is.null(tercet_code)) {
     #   - cannot be used together level parameter
     if (!is.null(level)) {
-      return("Attention! You can't use both level and tercet. Choose only one of these two parameters.")
+      print("Attention! You can't use both level and tercet. Choose only one of these two parameters.")
+      return(NULL)
     }
 
     #   - can be used if exist data at level3
     if (as.character(nutsLevel) != "3") {
-      return(paste("variable", variable , "has no data at level 3 and it's no possible to aggregate data at tercet classes"))
+      print(paste("variable", variable , "has no data at level 3 and it's no possible to aggregate data at tercet classes"))
+      return(NULL)
     }
 
     #   - must be one of the tercet_class id returned by ardeco_get_tercet_list
     valid_tercets = ardeco_get_tercet_list()
-    tercet = as.character((tercet))
-    tercet_list <- strsplit(as.character(tercet), ",")[[1]]
+    tercet_code = as.character((tercet_code))
+    tercet_code_list <- strsplit(as.character(tercet_code), ",")[[1]]
+    if (length(tercet_code_list) > 1) {
+      print("tercet_code must contains only one value")
+      return(NULL)
+    }
+    for (tercet in tercet_code_list) {
+      is_present <- any(valid_tercets$tercet_code %in% tercet_code)
+      if (!is_present) {
+        valid_tercets_list <- sort(unique(unlist(as.list(valid_tercets$tercet_code))))
+        print(paste("tercet_code", tercet_code , "is not valid. tercet_code values permitted:[", paste(valid_tercets_list, collapse = ', '), "]"))
+        return(NULL)
+      }
+      url <- paste(url, "&tercet=", sep="")
+      url <- paste(url, URLencode(as.character(tercet_code)), sep="")
+    }
+  }
 
-    if (length(tercet_list) > 1) {
-      return("tercet must contains only one value")
+  # check TERCET_CLASS_CODE value:
+  if (!is.null(tercet_class_code)) {
+    #   - cannot be used together level parameter
+    if (!is.null(level)) {
+      print("Attention! You can't use both level and tercet. Choose only one of these two parameters.")
+      return(NULL)
     }
 
+    #   - can be used if exist data at level3
+    if (as.character(nutsLevel) != "3") {
+      print(paste("variable", variable , "has no data at level 3 and it's no possible to aggregate data at tercet classes"))
+      return(NULL)
+    }
+
+    #   - must be one of the tercet_class id returned by ardeco_get_tercet_list
+    valid_tercets = ardeco_get_tercet_list()
+    tercet_class_code = as.character((tercet_class_code))
+    tercet_list <- strsplit(as.character(tercet_class_code), ",")[[1]]
+    if (length(tercet_list) > 1) {
+      print("tercet must contains only one value")
+      return(NULL)
+    }
     for (tercet in tercet_list) {
-      is_present <- any(valid_tercets$tercet_class_code %in% tercet)
+      is_present <- any(valid_tercets$tercet_class_code %in% tercet_class_code)
       if (!is_present) {
         valid_tercets_list <- sort(unique(unlist(as.list(valid_tercets$tercet_class_code))))
-        return(paste("tercet", tercet , "is not valid. tercet values permitted:[", paste(valid_tercets_list, collapse = ', '), "]"))
+        print(paste("tercet_class_code", tercet_class_code , "is not valid. tercet values permitted:[", paste(valid_tercets_list, collapse = ', '), "]"))
+        return(NULL)
       }
       url <- paste(url, "&tercet_class=", sep="")
-      url <- paste(url, URLencode(as.character(tercet)), sep="")
+      url <- paste(url, URLencode(as.character(tercet_class_code)), sep="")
     }
   }
 
@@ -155,7 +270,8 @@ ardeco_get_dataset_data <- function(variable,
   if (!is.null(unit)) {
     unit = as.character((unit))
     if (!unit %in% datasets_available$unit) {
-      return(paste("unit", unit , "is not valid. units permitted:[", paste(unique(datasets_available$unit), collapse = ", "), "]"))
+      print(paste("unit", unit , "is not valid. units permitted:[", paste(unique(datasets_available$unit), collapse = ", "), "]"))
+      return(NULL)
     }
     url <- paste(url, "&unit=", sep="")
     url <- paste(url, URLencode(as.character(unit)), sep="")
@@ -172,10 +288,12 @@ ardeco_get_dataset_data <- function(variable,
 
     })
     if (is.null(tp)) {
-      return(strErr)
+      print(strErr)
+      return(NULL)
     }
     if (!any(grepl(version, datasets_available$vers))) {
-      return(paste("Version", version , "is not valid. versions permitted:[", paste(unique(datasets_available$vers), collapse = ", "), "]"))
+      print(paste("Version", version , "is not valid. versions permitted:[", paste(unique(datasets_available$vers), collapse = ", "), "]"))
+      return(NULL)
     }
     url <- paste(url, "&version=", sep="")
     url <- paste(url, URLencode(as.character(version)), sep="")
@@ -207,24 +325,28 @@ ardeco_get_dataset_data <- function(variable,
 
       })
       if (is.null(tp)) {
-        return(strErr)
+        print(strErr)
+        return(NULL)
       }
 
       str_years = as.character(year)
       if (grepl("-", str_years)) {
         year_list <- strsplit(as.character(year), "-")[[1]]
         if (length(year_list) != 2) {
-          return ("Illegal value in year parameter")
+          print("Illegal value in year parameter")
+          return(NULL)
         }
         val_min = as.numeric(year_list[1])
         val_max = as.numeric(year_list[2])
 
         if ((is.na(as.numeric(val_min)) || is.na(as.numeric(val_max)))) {
-          return ("Illegal value in year parameter")
+          print("Illegal value in year parameter")
+          return(NULL)
         }
 
         if (val_min > val_max) {
-          return ("Wrong min max in year parameter")
+          print("Wrong min max in year parameter")
+          return(NULL)
         }
 
         for (y in val_min:val_max) {
@@ -235,7 +357,8 @@ ardeco_get_dataset_data <- function(variable,
         year_list <- strsplit(as.character(year), ",")[[1]]
         for (y in year_list) {
           if (is.na(as.numeric(y))) {
-            return(paste("Level contains illegal value: ", y))
+            print(paste("Level contains illegal value: ", y))
+            return(NULL)
           }
           url <- paste(url, "&year=", sep="")
           url <- paste(url, URLencode(as.character(y)), sep="")
@@ -257,24 +380,28 @@ ardeco_get_dataset_data <- function(variable,
 
       })
       if (is.null(tp)) {
-        return(strErr)
+        print(strErr)
+        return(NULL)
       }
 
     str_level = as.character(level)
     if (grepl("-", str_level)) {
       level_list <- strsplit(as.character(level), "-")[[1]]
       if (length(level_list) != 2) {
-        return ("Illegal value in level parameter")
+        print("Illegal value in level parameter")
+        return(NULL)
       }
       val_min = as.numeric(level_list[1])
       val_max = as.numeric(level_list[2])
 
       if ((is.na(as.numeric(val_min)) || is.na(as.numeric(val_max)))) {
-        return ("Illegal value in level parameter")
+        print("Illegal value in level parameter")
+        return(NULL)
       }
 
       if (val_min > val_max) {
-        return ("Wrong min max in level parameter")
+        print("Wrong min max in level parameter")
+        return(NULL)
       }
 
       for (lev in val_min:val_max) {
@@ -285,7 +412,8 @@ ardeco_get_dataset_data <- function(variable,
       level_list <- strsplit(as.character(level), ",")[[1]]
       for (lev in level_list) {
         if (is.na(as.numeric(lev))) {
-          return(paste("Level contains illegal value: ", lev))
+          print(paste("Level contains illegal value: ", lev))
+          return(NULL)
         }
         url <- paste(url, "&level_id=", sep="")
         url <- paste(url, URLencode(as.character(lev)), sep="")
@@ -307,20 +435,22 @@ ardeco_get_dataset_data <- function(variable,
   })
 
   if (is.null(add_dims)) {
-    return("Error in additional parameters values")
+    print("Error in additional parameters values")
+    return(NULL)
   }
-
+  real_add_dims <- ''
   for (param in names(add_dims)) {
 
     #	skip already processed parameters
-    if (param == "level" || param == "year" || param == "nutscode" || param == "unit" || param == "version" || param == "tercet") {
+    if (param == "level" || param == "year" || param == "nutscode" || param == "unit" || param == "version" || param == "tercet" || param == "tercet_class_code" || param == "tercet_code" || param == 'show_perc' || param == 'verbose') {
       next
     }
 
     #	check parameters and related values
     valid_values <- datasets_available[[param]]
     if (is.null(valid_values)) {
-      return(paste("There is an invalid dimension...", param))
+      print(paste("There is an invalid dimension...", param))
+      return(NULL)
     }
 
     suppressWarnings({
@@ -332,17 +462,19 @@ ardeco_get_dataset_data <- function(variable,
 
     })
     if (is.null(tp)) {
-      return(strErr)
+      print(strErr)
+      return(NULL)
     }
     })
 
 
     if (!as.character(add_dims[[param]]) %in% valid_values) {
       dim_input <- as.character(add_dims[[param]])
-      return(paste(dim_input,
+      print(paste(dim_input,
       "is not a valid value for dimension",
       param,
       "- Values permitted:[", paste(unique(valid_values), collapse = ", "), "]"))
+      return(NULL)
     }
 
 
@@ -350,43 +482,128 @@ ardeco_get_dataset_data <- function(variable,
     url <- paste(url, param, sep="")
     url <- paste(url, "=", sep="")
     url <- paste(url, URLencode(as.character(add_dims[[param]])), sep="")
+
+    real_add_dims <- paste(real_add_dims, "[", sep="")
+    real_add_dims <- paste(real_add_dims, param, sep="")
+    real_add_dims <- paste(real_add_dims, "]=", sep="")
+    real_add_dims <- paste(real_add_dims, as.character(add_dims[[param]]), sep="")
+    real_add_dims <- paste(real_add_dims, " ", sep="")
+
   }
 
-  # 2.1) Build URL to retrive data
+  # 2.1) Build URL to retrieve data
   url <- stringr::str_replace_all(url, "\\?&", "?")
-  options(max.print = 100)
-  # print (url)
+
+  readfile <- data.frame()
+
   suppressWarnings({
     #	2.2) request the data by REST API
     readfile <- NULL
     errorMessage <- "Error during execution. Check parameter values or API avalaibility"
-    tryCatch({
-      readfile <- read.csv(url)
-    }, error = function(e) {
-      errorMessage <- paste(readfile, conditionMessage(e))
-    })
 
-    if (is.null(readfile)) {
-      return(errorMessage)
+    # Build the URL for each dataset to fetch and request the data in parquet format
+    for (u in url_list) {
+      dataset_info <- ''
+      dataset_info <- paste(dataset_info, URLdecode(u), sep="")
+      dataset_info <- gsub("&", " [", dataset_info)
+      dataset_info <- gsub("=", "]=", dataset_info)
+
+      url_ext <- url
+      url_ext <- paste(url_ext, u, sep="")
+      url_ext <- paste(url_ext, "&format=parquet", sep="")
+
+      if (!is.null(show_perc)) {
+        if (show_perc == TRUE) {
+          url_ext <- paste(url_ext, "&show_perc=true", sep="")
+        }
+      }
+
+      if (!is.null(verbose)) {
+        if (verbose == TRUE) {
+          message_verbose <- 'Fetching...'
+          message_verbose <- paste(message_verbose, real_add_dims, sep="")
+          message_verbose <- paste(message_verbose, dataset_info, sep="")
+          #message_verbose <- paste(message_verbose, url_ext, sep="")
+          message_verbose <- gsub("\\s+", " ", message_verbose)
+          print(message_verbose)
+        }
+      }
+
+      tryCatch({
+        #readfile <- read.csv(url)
+        readfileTmp <- read_parquet(url_ext)
+        readfile <- rbind(readfile, readfileTmp)
+      }, error = function(e) {
+        print(e)
+        errorMessage <- paste(readfileTmp, conditionMessage(e))
+      })
+
     }
 
+    # if there eas an error, exit with error message and NULL data
+    if (is.null(readfile)) {
+      print(errorMessage)
+      return(NULL)
+    }
+
+    # Check dataframe empty
+    if (nrow(readfile) == 0) {
+      print("*** NO DATA ***")
+      return(NULL)
+    }
 
     #	2.3) Formatting the output in order to have all fields with the field name according to the output specifications, ie:
     #         - VARIABLE: code of the variable
     #         - VERSION: nuts version of the nutscode
     #         - LEVEL: the nuts level of nutscode
     #         - NUTSCODE: code of the territory (NUTS code) of the value
+    #         - TERCET_CLASS_CODE: code of the tercet class of the value (optional)
+    #         - TERCET_CODE: code of the tercet code of the value (optional)
     #         - YEAR: year of reference of the value
     #         - DIM(s): one or mode columns depending by the dimensions defined for the selected dataset in lower case
     #         - UNIT: unit of measure of the value
+    #         - TERCET_NAME: name of the tercet code of the value (optional)
+    #         - TERCET_CLASS_NAME: name of the tercet class of the value (optional)
     #         - VALUE: value of the variable related to a specific unit, dim(s), version, level, nutscode, year
     for (i in 1:length(colnames(readfile))) {
-      if (colnames(readfile)[i] == "LEVEL_ID") {
-        colnames(readfile)[i] = "LEVEL"
-      }
-      if (colnames(readfile)[i] == "TERRITORY_ID") {
-        colnames(readfile)[i] = "NUTSCODE"
-      }
+
+      #print(colnames(readfile)[i])
+
+
+      tryCatch({
+        if (colnames(readfile)[i] == "LEVEL_ID") {
+          colnames(readfile)[i] = "LEVEL"
+        }
+      }, error = function(e) {
+        print(e)
+      })
+
+
+      tryCatch({
+        if (colnames(readfile)[i] == "TERRITORY_ID") {
+          colnames(readfile)[i] = "NUTSCODE"
+        }
+      }, error = function(e) {
+        print(e)
+      })
+
+      tryCatch({
+        if (colnames(readfile)[i] == "TERCET_CLASS") {
+          colnames(readfile)[i] = "TERCET_CLASS_CODE"
+        }
+      }, error = function(e) {
+        print(e)
+      })
+
+      tryCatch({
+        if (colnames(readfile)[i] == "TERCET") {
+          colnames(readfile)[i] = "TERCET_CODE"
+        }
+      }, error = function(e) {
+        print(e)
+      })
+
+
     }
     # remove DATE and NAME-HTML columns from output table
     readfile <- readfile %>% select(-one_of('DATE', 'NAME_HTML'))
@@ -395,22 +612,50 @@ ardeco_get_dataset_data <- function(variable,
 
     # Check dataframe empty
     if (nrow(readfile) == 0) {
-      return("*** NO DATA ***")
+      print("*** NO DATA ***")
+      return(NULL)
     } else {
-      if (!is.null(tercet)) {
-        tercet_class_name <- unique(valid_tercets$tercet_class_name[valid_tercets$tercet_class_code == tercet])
+      if (!is.null(tercet_class_code)) {
+        tercet_class_name <- unique(valid_tercets$tercet_class_name[valid_tercets$tercet_class_code == tercet_class_code])
         readfile$TERCET_CLASS_NAME <- tercet_class_name
         col_names <- colnames(readfile)
         readfile <- readfile[, c(col_names[1:(length(col_names)-2)], col_names[length(col_names)], col_names[(length(col_names)-1)])]
         #readfile <- cbind(TERCET = tercet_class_name, readfile)
       }
       readfile <- cbind(VARIABLE = variable, readfile)
-
-
-
     }
 
-    #readfile <- cbind ("VARIABLE" =  variable, readfile)
+
+    # Check if TERCET or TERCET_CLASS has been requested, include the name for TERCET and TERCET_CLASS
+    if (!is.null(tercet_code)) {
+      merged_df <- merge(readfile, valid_tercets, by.x = "TERCET_CODE", by.y = "tercet_code", all.x = TRUE)
+      merged_df <- merged_df[, c(names(readfile), "tercet_name")]
+      merged_df <- merge(merged_df, valid_tercets, by.x = "TERCET_CLASS_CODE", by.y = "tercet_class_code", all.x = TRUE)
+      merged_df <- merged_df[, c(names(readfile), "tercet_name.x", "tercet_class_name")]
+      df <- merged_df %>% distinct()
+
+      for (i in 1:length(colnames(df))) {
+        if (colnames(df)[i] == "tercet_name.x") {
+          colnames(df)[i] = "TERCET_NAME"
+        }
+        if (colnames(df)[i] == "tercet_class_name") {
+          colnames(df)[i] = "TERCET_CLASS_NAME"
+        }
+      }
+
+      cols <- colnames(df)
+      value_index <- which(cols == "VALUE")
+      new_order <- c(cols[1:(value_index-1)], "TERCET_NAME", "TERCET_CLASS_NAME", "VALUE", cols[(value_index+1):length(cols)])
+      df <- df[, new_order]
+      df <- df %>% select(-TERCET_NAME.1, -TERCET_CLASS_NAME.1)
+
+
+      # Return data with requested tercet info in a dataframe structure
+      options(max.print = 1000)
+      return(df)
+    }
+
+    # Return data in dataframe structure
     return (readfile)
     #return (as_tibble(readfile))
   })

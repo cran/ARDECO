@@ -23,6 +23,8 @@ get# European Commission
 #' @import jsonlite
 #' @import tidyr
 #' @import stringr
+#' @importFrom stats var
+#' @importFrom utils URLdecode URLencode
 #' @export
 
 ardeco_get_tercet_list <- function(var_code) {
@@ -33,14 +35,16 @@ ardeco_get_tercet_list <- function(var_code) {
     # check if the var_code has one of the permitted values
     variables_available = ardeco_get_variable_list()
     if (!var_code %in% variables_available$code) {
-      return(paste("Variable ", var_code, "does not exist. Variables permitted:[", paste(unique(variables_available$code), collapse = ", "), "]"))
+      print(paste("Variable ", var_code, "does not exist. Variables permitted:[", paste(unique(variables_available$code), collapse = ", "), "]"))
+      return(NULL)
     }
 
     # check if the var_code have data at nuts level 3
     nutsLevel <- ardeco_get_variable_props(var_code)
     nutsLevel <- nutsLevel$nutsLevel
     if (as.character(nutsLevel) != "3") {
-      return(paste("The variable", var_code , "has no data at level 3 and it's no possible to aggregate data at tercet classes"))
+      print(paste("The variable", var_code , "has no data at level 3 and it's no possible to aggregate data at tercet classes"))
+      return(NULL)
     }
 
   }
@@ -58,7 +62,8 @@ ardeco_get_tercet_list <- function(var_code) {
     if (status_code(response) == 200) {
       data <- content(response, as = "parsed", type = "application/json")
     } else {
-      return (paste("Error:", status_code(response), response))
+      print(paste("Error:", status_code(response), response))
+      return(NULL)
     }
 
     # format output and return the tercet list

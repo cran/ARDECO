@@ -27,13 +27,15 @@ ardeco_get_dataset_list <- function(var_code) {
 
   # check if the var_code has been specified
   if (missing(var_code)) {
-    return("ERROR: You must specify var_code")
+    print("ERROR: You must specify var_code")
+    return(NULL)
   }
 
   # check if the var_code has one of the permitted values
   variables_available = ardeco_get_variable_list()
   if (!var_code %in% variables_available$code) {
-    return(paste("Variable ", var_code, "does not exist. Variables permitted:[", paste(unique(variables_available$code), collapse = ", "), "]"))
+    print(paste("Variable ", var_code, "does not exist. Variables permitted:[", paste(unique(variables_available$code), collapse = ", "), "]"))
+    return(NULL)
   }
 
   # root of the URL to access to graphQL API for ARDECO
@@ -75,7 +77,8 @@ ardeco_get_dataset_list <- function(var_code) {
 
     # if API call fails, return error about API availability
     if (is.null(result$data$variable)) {
-      return("Error during execution. Check variable value or API avalaibility")
+      print("Error during execution. Check variable value or API avalaibility")
+      return(NULL)
     }
 
     # recover from the API result the list of all information related to the datasets

@@ -6,7 +6,7 @@ ardeco_get_dataset_data(variable, ...)
 }
 \arguments{
   \item{variable}{mandatory: the code of variable}
-  \item{...}{Other optional parameters to filter according to the different dimensions. This can be: version, level, nutscode, year, unit, tercet and the additional dimensions depending by the selected varable}
+  \item{...}{Other optional parameters to filter data according to the different dimensions. The dimensions common to all datasets are: version, level, nutscode, year, unit, tercet_code, tercet_class_code, verbose, show_perc. Additional dimensions can be setup according to the selected varable (see ardeco_get_dataset_list to check the additional dimension for a variable)}
 }
 \value{
 This function return a data frame including the data related to the selected dataset. The data frame include the following fileds:
@@ -15,19 +15,22 @@ This function return a data frame including the data related to the selected dat
     \item{VERSION: nuts version of NUTS code.}
     \item{LEVEL: level of NUTS code. From 0 to 3 represent NUTS0-3 level; 4 refers to Metropolitan regions, 9 refers data at EU level.}
     \item{NUTSCODE: code of the territorial unit of reference. It\'s one of the NUTS code (see EUROSTAT)}
+    \item{TERCET_CLASS_CODE: (if required) code of the requested tercet class.}
+    \item{TERCET_CODE: (if required) code of the requested tercet }
     \item{YEAR: year of reference of the value.}
     \item{DIM(s): one or mode columns depending by the dimensions defined for the selected dataset}
     \item{UNIT: unit of measure of the value.}
+    \item{TERCET_NAME: (if required) the name of the requested tercet }
+    \item{TERCET_CLASS_NAME: (if required) the name of the requested tercet class.}
     \item{VALUE: value of the selected variable related to the date, sector, territory_id, unit, variable}
   }
 }
 
 \examples{
-ardeco_get_dataset_data('SNPTN', version=2021, level=0, nutscode='IT', year=2020, sex='Males')
-ardeco_get_dataset_data('SUVGD', version=2021, level='0,2', nutscode='EE', year='2018-2020')
+ardeco_get_dataset_data('SNETD',version=2021,level=0,nutscode='IT',year=2020)
 }
 \description{
-The function recover the data via API of the dataset specified in input applying the optional filters and return the list of data in data frame format.
+The function recover the data via API of the dataset specified in input applying the optional filters and return the list of data in data frame format. The process retrieve each dataset defined in the selected variable and merge the result into the output dataframe. The optional parameter \bold{show_perc=TRUE} permits to check the progress of the retrieval process listing the datasets in processing.
 }
 \details{
 Each parameter have to be passed using notation \bold{<param-name>=\sQuote{<param-value>}}.
@@ -42,7 +45,7 @@ For example: \bold{nutscode=\sQuote{EE,IT}} return only the nuts codes related s
 
 FILTERING OPTION FOR PARAMETERS \bold{year} and \bold{level}
 
-The parameters \bold{year} and \bold{level} are numeric parameters.
+The parameters  \bold{year} and \bold{level} are numeric parameters.
 
 A numeric parameter can have a simple value. In this case the function return the values in which the specific parameter is EQUAL to the inserted value.
 
@@ -56,14 +59,22 @@ It's also possible to filter data defining an interval of years/levels. It can b
 
 For example: \bold{year=\sQuote{2000-2005}} return the values for the years starting from 2000 to 2005.
 
-FILTERING OPTION FOR PARAMETERS \bold{tercet}
+FILTERING OPTION FOR PARAMETERS \bold{tercet_code} and \bold{tercet_class_code}
 
-The parameters \bold{tercet} is a numeric parameter corresponding to a tercet class returned by ardeco_get_tercet_list() function.
+The parameters \bold{tercet_code} is a numeric parameter corresponding to a tercet name returned by ardeco_get_tercet_list() function.
 
 Using this parameter, the returned values are related to the aggregated data at country level (nuts level 0)
-for the selected tercet class.
+for all the tercet classes defined into the selected tercet.
 
-The parameters \bold{tercet} and \bold{level} cannot be use together
+To retrieve only one tercet class, use the parameter \bold{tercet_class_code}. This is a numeric parameter corresponding to a tercet class name returned by ardeco_get_tercet_list() function.
 
-For example: \bold{tercet=0} return the values at country level relatet to the tecet class "Predominantly urban"
+\bold{tercet_code} and \bold{tercet_class_code} return the absolute values of the requested tercet classes. To retrieve the share of the requested tercet classes, use the optional parameter \bold{show_perc=TRUE}.
+
+The parameters \bold{tercet_code} and \bold{tercet_class_code)} cannot be use together \bold{level}
+
+For example:
+
+\bold{tercet_code=1} return the absolute values at country level related to the tercet classes defined in "Urban-Rural Typology"
+
+\bold{tercet_class_code=0, show_perc=TRUE} return the share at country level related to the tercet class "Predominantly urban"
 }

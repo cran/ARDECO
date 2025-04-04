@@ -1,0 +1,528 @@
+---
+title: "ARDECO R package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ARDECO R package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+```{r setup}
+library(ARDECO)
+```
+
+## Content {#content}
+
+### [What is ARDECO](#whatis)
+### [Variables and indicators](#varandind)
+### [How to use ARDECO R package](#howto)
+### [Filtering data](#filter)
+
+## What is ARDECO - [back](#content) {#whatis}
+The Annual Regional Database of the European Commission (ARDECO) is maintained by the Joint Research Centre in close coordination with the Directorate General for Regional and Urban Policy. Its purpose is to provide consistent and harmonised time-series data on demographic and socio-economic variables at the regional and sub-regional levels.
+
+ARDECO primarily relies on official data from sources like Eurostat’s ‘Regional Accounts’ ( https://ec.europa.eu/eurostat/web/national-accounts/methodology/european-accounts/regional-accounts
+) and national or regional statistical offices. However, it also incorporates data from supplementary sources (such as the European Regional Database from Cambridge Econometrics - httpS://www.camecon.com/wp-content/uploads/2019/01/ERD-manual.pdf) and estimates generated using various methodologies (such as data interpolation, regional shares of closest year, and proxy variables).
+
+In cases where official data exhibits inconsistencies across the time-series due to breaks or provisional values, ARDECO replaces these values with estimates based on the most suitable methodology. Ensuring consistency across variables and over time, therefore, sometimes requires adjustments of official values
+
+For most variables and countries, ARDECO extends its time-series back to 1980 (1960 for population data). Additionally, short-term projections based on AMECO (https://economy-finance.ec.europa.eu/economic-research-and-databases/economic-databases/ameco-database_en) forecasts are included whenever possible.
+
+More detailed information about ARDECO can be found in the methodological note:
+
+**European Commission, Joint Research Centre, Auteri, D., Attardo, C., Berzi, M., Dorati, C., Albinola, F.,
+Baggio, L., Bucciarelli, G., Bussolari, I. and Dijkstra, L., [The Annual Regional Database of the European Commission (ARDECO) - Methodological Note](https://publications.jrc.ec.europa.eu/repository/handle/JRC138212), European Commission, Ispra, 2024, JRC138212)**
+
+## Variables and indicators - [back](#content) {#varandind}
+* [Coding convention](#codconv)
+* [The thematic content](#themcont)
+* [The geographical coverage (NUTS)](#geocov)
+  * [Territorial tipologies: aggregated data by tercet](#tercetdef)
+* [The temporal coverage](#tempcov)
+* [Variable as a set of datasets - variable dimensions](#vardim)
+
+### Coding convention - [back](#varandind) {#codconv}
+Within ARDECO, both variables and indicators are provided. Variables represent core data expressed as
+‘volumes’ and are computed from primary sources. Indicators, on the other hand, are expressed as ‘ratios’
+and result from dividing one variable (e.g., GDP) by another (e.g., average population).
+
+For a convention adopted in ARDECO, variables have a code composed by 4 o 5 characters (for example: "GDP at current market prices" is coded SUVGD), while the indicators are coded with 6 or more characters (for example: "GDP per capita at current prices" is coded SUVGDP)
+
+### The thematic content - [back](#varandind) {#themcont}
+Currenlty ARDECO provides a set of variables and indicators related to the following domains:
+
+* Population and Vital Statistics
+* Domestic Product
+* EMployment
+* Labour Cost and Productivity
+* Education
+* Households
+* Capital Formation and capital stock
+* GHG Emissions
+
+The complete set of available variables and indicators is provided by the function ardeco_get_variable_list():
+```{r}
+print(ardeco_get_variable_list(), n=1000)
+```
+
+
+### The geographical coverage (NUTS) [back](#varandind) {#geocov}
+Variables and indicators provide data for each EU country and its regions, according to the territorial classification provided by the Nomenclature of Territorial Units for Statistics as defined by Eurostat (NUTS nomenclature: https://ec.europa.eu/eurostat/web/nuts/overview).
+
+The NUTS classification is composed of territorial units organised in four hierarchical and nested levels, i.e. where the upper level corresponds to aggregates of the lower level – from NUTS0 (corresponding to national level) to NUTS3 (corresponding to sub-regional level).
+
+Each three years a revision of the NUTS codes is performed, replacing some NUTS codes with new ones due to updating of statistical reference territory. Each review generates a new __NUTS version__
+
+NUTS coding follows these rules:
+
+* Nuts code at level 0 (country code) is composed by 2 letter (the country code according to ISO-3133-1 apart Greece which has been coded with EL in place of GR)
+* Each nuts code at following levels (1, 2 and 3) add an additional char to the code. For example IT1A is a region belonging to great region IT1 in Italy (IT)
+* Each NUTS code represent a specific territorial unit in any NUTS version. When a reference territorial unit change, also its NUTS code change and it's unique in all NUTS version.
+
+More details about NUTS codeing are available in https://ec.europa.eu/eurostat/web/nuts/overview 
+
+#### Territorial tipologies: aggregated data by tercet [back](#geocov) {#tercetdef}
+According to [EUROSTAT definition](https://ec.europa.eu/eurostat/web/nuts/territorial-typologies), territorial typologies (__tercet__) are classification systems that categorize regions and areas within the European Union based on specific geographical, socio-economic, and administrative criteria. These typologies are used to facilitate regional analysis and policy-making by providing a standardized framework for comparing different territories. Key territorial typologies include classifications such as urban-rural typologies, coastal and non-coastal regions, mountain areas, and metropolitan regions. By using these typologies, Eurostat aims to enhance the understanding of regional disparities and development patterns across the EU, supporting more effective regional policy interventions.
+
+Currently, in ARDECO, for the variables which have data at NUTS3 level, it's possible to require aggregated data at NUTS0 for Urban-rural typologies (URT). URT classifies each NUTS3 into one of three URT classes:
+
+* Predominantly urban region
+* Intermediate regions
+* Predominantly rural regions
+
+A more detailed URT classification is also available: Urban-rural typologies with remoteness (URT with remoteness). URT with remoteness classifies each NUTS3 in 5 classes:
+
+* Predominantly urban region
+* Intermediate regions, close to a city
+* Intermediate, remote regions
+* Predominantly rural regions, close to a city 
+* Predominantly rural, remote regions 
+
+The computation of the tercet classes for each NUTS0 is done by the sum of its NUTS3 belonging in each class. 
+
+### The temporal coverage [back](#varandind) {#tempcov}
+For each variable and for each territorial unit ARDECO provides the yearly value.
+
+In general, for each variable values from 2000 to the current year are provided.
+
+Depending by the variable, data before 2000 are provided according to the available information recovered from different sources of data. For example, Total population data are provided from 1960, for many variables data start from 1980, for some specific and more detailed data (economic sectorial data, age class for population) data starts from 1990 or 1995.
+
+In addition, provisional data are provided for 2/3 years from the current year according to the forecasted yearly data provided by AMECO (Annual Macro-economic database of the European COmmission's Directorate General for Economic and Financial Affairs, https://economy-finance.ec.europa.eu/economic-research-and-databases/economic-databases/ameco-database_en).
+
+### Variable as a set of datasets - variable dimensions [back](#varandind) {#vardim}
+In ARDECO, each variable have at least two dimension: 'Unit' and 'Version'.
+
+'Unit' is the unit of measure related to the value associated to a nutscode in a specific year.
+
+_Example_: the unit for variable 'Total Population' is 'Persons'.
+
+'Version' refers to the NUTS version for which the values of a variables are provided.
+
+Some variables can have more unit of measure. For example, GDP is provided in 'EUR' and in 'PPS'.
+
+A variable can also have additional dimensions.
+
+_Example_: In 'Total Population' it has been defined two additional dimension: 'sex' and 'age group'. Each of this dimensions have a set of possible values (domain).
+
+The domain for dimension 'sex' is: 'Total', 'Male', 'Female'.
+The domain for dimension 'age group' is: 'Total', 'Less than 15', 'from 15 to 64', '65 and over'.
+
+The variable 'Total Population' can collect values for each nutcode, for each year and for each combination of values of its dimensions.
+
+Each combination of values of the dimensions of a variable identifies a dataset for that variable.
+
+_Example_: the variable 'Total Population' as defined above, with dimension 'Unit', 'sex' and 'age group' have the following datasets:
+
+unit='Persons' version= 2021 sex='Total' 'age group'='Total' represent the total population at NUTS version 2021
+
+unit='Persons' version= 2021 sex='Male' 'age group'='Total' represent the total male population at NUTS version 2021
+
+unit='Persons' version= 2021 sex='Female' 'age group'='Total' represent the total female population at NUTS version 2021
+
+unit='Persons' version= 2021 sex='Total' 'age group'='Less than 15' represent the total population have less than 15 years at NUTS version 2021
+
+...an so on...
+
+To retrieve the number of datasets defined for a variable, use the function ardeco_get_dataset_list():
+```{r}
+print(ardeco_get_dataset_list('SNPTN'), n=100)
+```
+
+
+## How to use ARDECO R package - [back](#content) {#howto}
+
+* [Discover the available variable: ***ardeco_get_variable_list***](#varlist)
+* [List of Variable datasets: ***ardeco_get_dataset_list***](#datasetlist)
+* [List of tercets: ***ardeco_get_tercet_list***](#tercetlist)
+* [How to retrieve variable data: ***ardeco_get_dataset_data***](#vardatawkf)
+
+ARDECO R package provide a set of functions permitting to retrive the data of the ARDECO variables into a R dataframe. The data retrival is performed through the exploitation of the ARDECO APIs. These functions are an interface to the ARDECO APIs to simplify R users in data retrieval.
+
+The core function is ***ardeco_get_dataset_data*** which call ARDECO APIs to retrive data. This functions need the variable code and, optionally, a set of parameters enabling the user to filter data at the request level, minimizing the time for the
+
+In order to retrieve data for a variable, if the user doesn't know the structure of the desired variable, the package provides a set fo functions in order to:
+
+* Discover the available variables in ARDECO database
+* Retrieve the list of datasets and dimensions defined for a specific variable
+* Understand if its possible also to retrive tercet data for a specific variable
+* build the correct request to retrieve the needed data 
+
+### Discover the available variable: ***ardeco_get_variable_list*** - [back](#howto) {#varlist}
+The unique mandatory information to retrieve data is the variable code.
+To retrieve the available ARDECO variables code, use
+
+> **ardeco_get_variable_list()**
+
+The function returns a tibble with the following columns:
+
+* ***code*** is the mandatory code requested by the other ARDECO R package functions (_ardeco_get_dataset_list_, _ardeco_get_dataset_data_, _ardeco_get_tercet_list_) to retrieve information and data.
+
+* ***description*** explains the variable represented by the variable code
+
+Example:
+```{r}
+mytb <- ardeco_get_variable_list()
+print(mytb, max=50)
+```
+
+
+### List of Variable datasets: ***ardeco_get_dataset_list*** - [back](#howto) {#datasetlist}
+As explained in ['Variable as a set of datasets'](#vardim) each variable have one or more datasets depending by its dimensions.
+
+To retrieve the list of the datasets defined for a variable, use
+
+> **ardeco_get_dataset_list('_varcode_')**
+
+* ***varcode*** is one of the ARDECO variable code
+
+The function returns a tibble with the following columns:
+
+* ***var***: variable code
+* ***unit***: available unit of measure for the variable
+* ***vers***: available NUTS version for the variable dataset (see ['The geographical coverage (NUTS)'](#geocov))
+* ***additional dimensions***: additional column for each additional dimension (if any) and related values (see ['Variable as a set of datasets'](#vardim))
+
+Example:
+```{r}
+mytb <- ardeco_get_dataset_list('SNETZ')
+print(mytb)
+```
+
+### List of tercets: ***ardeco_get_tercet_list*** - [back](#howto) {#tercetlist}
+ARDECO R package provides the possibility to require data for a variable at available tercet (see ['Territorial typologies: aggregated data by tercet'](#tercetdef)). To check which tercet are currently available in ARDECO database, use:
+
+> **ardeco_get_tercet_list()**
+
+This function return the available tercet and related tercet class. Each tercet and related tercet classes) are identified by codes: tercet_code and tercet_class_code.
+
+The function returns a tibble with the following columns:
+
+* ***tercet_code***: the tercet code needed to request data at tercet level
+* ***tercet_name***: the name of the tercet represented by the tercet_code  
+* ***tercet_class_code***: the code of the tercet class needed to request data for a tercet class
+* ***tercet_class_name***: the name of the tercet class represented by the tercet_class_code  
+
+Example:
+```{r}
+mytb <- ardeco_get_tercet_list()
+print(mytb)
+```
+
+It's no possible require tercet data for all variable but for only those variables for which exist data at NUTS3 level. To check if it's possible to require tercet data for a variable, use
+
+> **ardeco_get_tercet_list('_varcode_')**
+
+* ***varcode*** is the variable code to check.
+
+If the variable haven't the NUTS3 level, the function return a warning highlighting the impossibility to aggregate data at tercet classes.
+
+Example:
+```{r}
+mytb <- ardeco_get_tercet_list('RPDTN')
+```
+
+### How to retrieve variable data: ***ardeco_get_dataset_data*** - [back](#howto) {#vardatawkf}
+The core function to retrieve data is
+
+> **ardeco_get_dataset_data('_varcode_')**
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database.
+
+This function return a dataframe where any row expose the value for a specific nuts, year, nutsversion, unit, dimensions. The dataframe include the following columns:
+
+* ***VARIABLE***: the code of the requested variable
+* ***VERSIONS***: the nuts version of the nuts code
+* ***LEVEL***: the territorial level of the nuts code
+* ***NUTSCODE***: the nuts code of the value
+* ***YEAR***: the year of the value
+* ***UNIT***: the unit of measure of the value
+* ***VALUE***: the value of the variable  
+
+Following an example to retrieve the complete set of 'Average annual population' data:
+```{r}
+mydf <- ardeco_get_dataset_data('SNPTD')
+print(mydf, max=50)
+```
+
+Additional columns will be added if for the variable it has been defined additional dimensions.
+
+In order to avoid problems due to the big amount of data which can be requested by user, ***ardeco_get_dataset_data*** works sending a set of requests, one for any dataset defined into the variable, joining the results of every call into the resulting dataframe. In this way each call ask a relative small set of data, avoiding timeout constrain imposed by the network infrastructure.
+
+If a variable have a huge number of datasets, it's possible that the retrieval process of the entire variable needs long time (minutes) before receiving the final result. To check the status and the progress of the data retrieval, it's possible to use an optional parameter which display the progress of the data retrieval process. This parameter is ***verbose*** which by default is set to ***FALSE***
+
+> ardeco_get_dataset_data('_varcode_', verbose=TRUE)
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database.
+* ***verbose*** is a flag and it can be TRUE or FALSE (FALSE by default). If TRUE, print the current dataset requested by the function.
+
+Example:
+```{r}
+mydf <- ardeco_get_dataset_data('SNETZ', verbose=TRUE)
+```
+
+
+## Filtering data - [back](#content) {#filter}
+
+The function **ardeco_get_dataset_data** permits to send a request for a subset of data filtered according to the following parameters:
+
+* [Nuts version](#nutsver)
+* [Nutscode and nutslevel](#varnuts)
+* [Unit](#varunit)
+* [Year](#varyear)
+* [Dimensions](#dimens)
+* [Tercets](#tercet)
+
+The filter is composed by a set of additional parameters to add to the call of the function *ardeco_get_dataset_data* according to the following syntax:
+
+> **ardeco_get_dataset_data('_varcode_', parameter-1 = _par-value-1_, ..., parameter-n = _par-value-n_)**
+
+Where
+
+* ***parameter-x***: one of the above listed parameters
+* ***par-value-x***: the value of the parameter
+
+Example:
+```{r}
+# Request data for Italy at level 1, at nuts version=2021,
+# with unit of measure = 'Million EUR' and related to year 2015
+mydf <- ardeco_get_dataset_data('SUVGD', version=2021, unit='Million PPS', year=2015, nutscode='IT', level=1)
+print(mydf, max=50)
+```
+
+
+### Nuts version - [back](#filter) {#nutsver}
+To request data at a specific nuts version, use:
+
+> **ardeco_get_dataset_data('_varcode_', version=_nutsversion_)**
+
+where
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database
+* ***nutsversion*** is one of the versions available for the requested variable
+
+To check the available versions for the requested variable, use:
+
+> **ardeco_get_dataset_list('_varcode_')**  (see ['List of the available datasets'](#datasetlist))
+
+Example:
+```{r}
+# Check the available versions for variable SNPTD
+ardeco_get_dataset_list('SNPTD')
+
+mydf <- ardeco_get_dataset_data('SNPTD', version=2021)
+print(mydf, max=50)
+```
+
+### Nutscode and nutslevel - [back](#filter) {#varnuts}
+Filtering by nuts-code returns data for all territories coded with nutscode starting with the value passed to the function. The filter syntax is the following:
+
+> **ardeco_get_dataset_data('_varcode_', nutscode=_val-nutscode_)**
+
+where
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database
+* ***val-nutscode*** is a string representing the initial characters of the nutscode returned by the filter. The effect of this filter is: return all nutscodes starting with 'val-nutscode'. It's also possible to require values for more nutscode, listing the code separated by comma.
+
+Example:
+```{r}
+# Retrive data with nutscode starting with 'IT'
+mydf <- ardeco_get_dataset_data('SUVGD', nutscode='IT')
+print(mydf, max=50)
+
+# Retrive data with nutscode starting with 'IT,FR'
+mydf <- ardeco_get_dataset_data('SUVGD', nutscode='IT,FR')
+print(mydf, max=50)
+```
+This filter can be refined using the parameter 'level'. The parameter level filter the data by nuts level. The filter syntax is the following:
+
+> **ardeco_get_dataset_data('_varcode_', level=_val-nutslevel_)**
+
+where
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database
+* ***val-nutslevel*** is the nuts level of the nutscodes returned by the filter. This parameter can be:
+  * a single number representing the requested nuts level (example: **level=0**): _Note: the val-nutslevel can be with or without the quote **'** (example: **level=0** or **level='0'**)_
+  * a quoted string with a series of nuts level separated by comma. In this case, it will be returned the values for each nutscodes belonging in the listed nuts levels (example: **level='0,2'** return values for nuts codes in nuts level 0 and 2). _Note: in this case, the quotes are mandatory_.
+  * a quoted string with a couple of values divided by '-'. In this case, the two numbers represent the nuts level between the two values. Example: **level='0-2'** return values for nuts codes in nuts levels 0, 1 and 2). _Note: in this case, the quotes are mandatory_.
+
+
+Example:
+```{r}
+# Retrive SUVGD data for Italy at country level (level 0) for the year 2015
+mydf <- ardeco_get_dataset_data('SUVGD', level=0, nutscode='IT', year=2015, version=2021)
+print(mydf, max=50)
+
+# Retrive SUVGD data for Italy at country and regional level (level 0 and 2) for the year 2015
+mydf <- ardeco_get_dataset_data('SUVGD', level='0,2', nutscode='IT', year=2015, version=2021)
+print(mydf, max=50)
+
+# Retrive SUVGD data for Italy at level from 0 to 2 for the year 2015
+mydf <- ardeco_get_dataset_data('SUVGD', level='0-2', nutscode='IT', year=2015, version=2021)
+print(mydf, max=100)
+
+```
+
+
+### Unit - [back](#filter) {#varunit}
+To request data for a specific unit of measure, use:
+
+> **ardeco_get_dataset_data('_varcode_', unit='_unit_')**
+
+where
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database
+* ***unit*** is one of the unit of measures available for the requested variable
+
+To check the available unit of measures for the requested variable, use:
+
+> **ardeco_get_dataset_list('_varcode_')**  (see ['List of the available datasets'](#datasetlist))
+
+Example:
+```{r}
+# Check the available units for variable SUVGD
+ardeco_get_dataset_list('SUVGD')
+
+# Retrive data only for unit = 'Million PPS'
+mydf <- ardeco_get_dataset_data('SUVGD', unit='Million PPS')
+print(mydf, max=50)
+```
+
+### Year - [back](#filter) {#varyear}
+To request data for a year, use:
+
+> **ardeco_get_dataset_data('_varcode_', year='_val-year_')**
+
+where
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database
+* ***val-year*** is the year (or years) for which the data are requested. This parameter can be:
+  * a single number representing the requested year (example: **year=2020**): _Note: the val-year can be with or without the quote **'** (example: **year=2020** or **year='2020'**)_
+  * a quoted string with a series of years separated by comma. In this case, it will be returned the values for each of the listed year (example: **year='2011, 2015, 2016'** return values for year 2011, 2015 and 2016). _Note: in this case, the quotes are mandatory_.
+  * a quoted string with a couple of values divided by '-'. In this case, the two numbers represent the temporal windows for which will be returned the values. Example: **year='2015-2018'** return the for years 2015, 2016, 2017, 2018). _Note: in this case, the quotes are mandatory_.
+
+Example:
+```{r}
+# Retrive data only for year = 2015
+mydf <- ardeco_get_dataset_data('SNPTD', year=2015, version=2021, nutscode='ITF11')
+print(mydf, max=50)
+
+# Retrive data for years 2015 and 2018
+mydf <- ardeco_get_dataset_data('SNPTD', year='2015,2018', version=2021, nutscode='ITF11')
+print(mydf, max=50)
+
+# Retrive data for years from 2015 to 2018
+mydf <- ardeco_get_dataset_data('SNPTD', year='2015-2018', version=2021, nutscode='ITF11')
+print(mydf, max=50)
+
+```
+
+
+
+### Dimensions - [back](#filter) {#dimens}
+If a variable have also additional dimensions, it is possible to filter for these additional dimensions, using the following syntax (like the other dimensions):
+
+> **ardeco_get_dataset_data('_varcode_', dim-1 = _dim-value-1_, ..., dim-n = _dim-value-n_)**
+
+Where
+
+* ***dim-x***: one of the additional dimension defined in the variable
+* ***dim-value-x***: of the possible values for the selected dimension
+
+To check the existance of additional dimensions for the requested variable, use:
+
+> **ardeco_get_dataset_list('_varcode_')**  (see ['List of the available datasets'](#datasetlist))
+
+Example:
+```{r}
+# Check the available dimensions for variable SNPTN
+ardeco_get_dataset_list('SNPTN')
+
+# Retrive data only for sex = 'Males' and age = 'Total'
+mydf <- ardeco_get_dataset_data('SNPTN', sex='Males', age = 'Total')
+print(mydf, max=50)
+```
+
+
+### Tercets - [back](#filter) {#tercet}
+It's possible to retrieve the data for a variable at tercel level or a single tercet class (see ['List of tercet'](#tercetlist)). This function computes the tercet values at level 0 for any requested country and tercet class.
+
+The function permit to retrieve data at tercet level in two main ways:
+
+* by ***tercet***: return a value (absolute or percentage) for any requested country and for any tercet class defined into the requested tercet
+* by ***tercet class***: return a value (absolute or percentage) for any requested country for the requested tercet class
+
+The correct syntax to request data by ***tercet*** is the following:
+
+> **ardeco_get_dataset_data('_varcode_', tercet_code=_val-tercet-code_[, show_perc=TRUE])**
+
+where
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database
+* ***val-tercet-code*** is one of the code of the available tercet for the requested variable (see ['List of tercet'](#tercetlist)))
+* ***show_perc*** (optional parameter) is a flag and it can be TRUE or FALSE (FALSE by default). If **FALSE** (default), the functions return the absolute value of the requested tercet classes. If **TRUE**, the functions return the share (pecentage) of the requested tercet classes.
+
+Example:
+```{r}
+# Check available tercet for variable SNPTD
+ardeco_get_tercet_list('SNPTD')
+
+# Retrieve absolute values for tercet 'Urban-Rural Typology' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
+mydf <- ardeco_get_dataset_data('SNPTD', tercet_code=1, nutscode='IT', year=2020, version=2021)
+print(mydf)
+
+# Retrieve share for tercet 'Urban-Rural Typology' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
+mydf <- ardeco_get_dataset_data('SNPTD', tercet_code=1, nutscode='IT', year=2020, version=2021, show_perc=TRUE)
+print(mydf)
+
+```
+
+
+The correct syntax to request data by ***tercet_class*** is the following:
+
+> **ardeco_get_dataset_data('_varcode_', tercet_class_code=_val-tercet-calss-code_[, show_perc=TRUE])**
+
+where
+
+* ***varcode*** is the code of one of the available variables exposed in ARDECO database
+* ***val-tercet-code*** is one of the code of the available tercet class for the requested variable (see ['List of tercet'](#tercetlist)))
+* ***show_perc*** (optional parameter) is a flag and it can be **TRUE** or **FALSE** (**FALSE** by default). If **FALSE** (default), the functions return the absolute value of the requested tercet class. If **TRUE**, the functions return the share (pecentage) of the requested tercet class.
+
+Example:
+```{r}
+# Check available tercet classes for variable SNPTD
+ardeco_get_tercet_list('SNPTD')
+
+# Retrieve absolute value for tercet class 'Predominantly urban' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
+mydf <- ardeco_get_dataset_data('SNPTD', tercet_class_code=0, nutscode='IT', year=2020, version=2021)
+print(mydf)
+
+# Retrieve share for tercet class 'Predominantly urban' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
+mydf <- ardeco_get_dataset_data('SNPTD', tercet_class_code=0, nutscode='IT', year=2020, version=2021, show_perc=TRUE)
+print(mydf)
+```

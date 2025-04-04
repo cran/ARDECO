@@ -1,4 +1,9 @@
 ARDECO package
+ver.2.2.0
+- availability to recover aggregation at tercet (all tercet classes) or one tercet class
+- availability to recover aggregation at tercet/tercet class: absolute values or percentages
+- Solved problem in recovering big quantity of data using parquet and splitting the request by variable datasets
+- vignette provision for the package
 ver.2.1.0
 - availability to recover aggregation at tercet class
 ver.2.0.0
