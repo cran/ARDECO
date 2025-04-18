@@ -32,8 +32,13 @@ ardeco_get_variable_props <- function(variable) {
     result <- conn$exec(new$link) %>% fromJSON(flatten = F)
     return(result$data$variable)
   }, error = function(e) {
-    strErr <- paste("Error call: ", link)
-    stop(strErr)
+    # strErr <- paste("Error call: ", link)
+    # stop(strErr)
   })
+
+  if (is.null(result)) {
+    print("Error during execution. Check API avalaibility")
+    return(NULL)
+  }
 
 }

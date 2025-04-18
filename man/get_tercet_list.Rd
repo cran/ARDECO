@@ -14,10 +14,6 @@ The list of tercet and related tercet classes for which is possible to aggregate
 - tercet_class_code: code of the tercet class
 - tercet_class_name: name of the tercet class. For example "Predominantly Urban"}
 
-\examples{
-ardeco_get_tercet_list()
-ardeco_get_tercet_list('SNPTN')
-}
 \description{
 The function return the list of the tercet with the related tercet classes
 for which is possible to agregate variables data.

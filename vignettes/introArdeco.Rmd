@@ -6,6 +6,10 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r, include=FALSE}
+library(httptest2)
+start_vignette("introArdeco")
+```
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -347,16 +351,12 @@ Filtering by nuts-code returns data for all territories coded with nutscode star
 where
 
 * ***varcode*** is the code of one of the available variables exposed in ARDECO database
-* ***val-nutscode*** is a string representing the initial characters of the nutscode returned by the filter. The effect of this filter is: return all nutscodes starting with 'val-nutscode'. It's also possible to require values for more nutscode, listing the code separated by comma.
+* ***val-nutscode*** is a string representing the initial characters of the nutscode returned by the filter. The effect of this filter is: return all nutscodes starting with 'val-nutscode'.
 
 Example:
 ```{r}
 # Retrive data with nutscode starting with 'IT'
 mydf <- ardeco_get_dataset_data('SUVGD', nutscode='IT')
-print(mydf, max=50)
-
-# Retrive data with nutscode starting with 'IT,FR'
-mydf <- ardeco_get_dataset_data('SUVGD', nutscode='IT,FR')
 print(mydf, max=50)
 ```
 This filter can be refined using the parameter 'level'. The parameter level filter the data by nuts level. The filter syntax is the following:
@@ -525,4 +525,7 @@ print(mydf)
 # Retrieve share for tercet class 'Predominantly urban' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
 mydf <- ardeco_get_dataset_data('SNPTD', tercet_class_code=0, nutscode='IT', year=2020, version=2021, show_perc=TRUE)
 print(mydf)
+```
+```{r, include=FALSE}
+end_vignette()
 ```

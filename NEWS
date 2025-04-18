@@ -1,4 +1,6 @@
 ARDECO package
+ver.2.2.1
+- solved problem catching errors due to unavailable APIs
 ver.2.2.0
 - availability to recover aggregation at tercet (all tercet classes) or one tercet class
 - availability to recover aggregation at tercet/tercet class: absolute values or percentages
@@ -19,6 +21,6 @@ ver.1.0.0
 - unit and sector optional in ardeco_get_dataset_data
 - add level and version in output data.frame
 ver.0.1.1
-assessment of the returned variables list
+- assessment of the returned variables list
 ver.0.1.0
-Set of functions to access ARDECO data and use it in R environment
+- Set of functions to access ARDECO data and use it in R environment

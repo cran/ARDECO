@@ -1,3 +1,7 @@
+## ----include=FALSE------------------------------------------------------------
+library(httptest2)
+start_vignette("introArdeco")
+
 ## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -51,10 +55,6 @@ print(mydf, max=50)
 ## -----------------------------------------------------------------------------
 # Retrive data with nutscode starting with 'IT'
 mydf <- ardeco_get_dataset_data('SUVGD', nutscode='IT')
-print(mydf, max=50)
-
-# Retrive data with nutscode starting with 'IT,FR'
-mydf <- ardeco_get_dataset_data('SUVGD', nutscode='IT,FR')
 print(mydf, max=50)
 
 ## -----------------------------------------------------------------------------
@@ -125,4 +125,7 @@ print(mydf)
 # Retrieve share for tercet class 'Predominantly urban' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
 mydf <- ardeco_get_dataset_data('SNPTD', tercet_class_code=0, nutscode='IT', year=2020, version=2021, show_perc=TRUE)
 print(mydf)
+
+## ----include=FALSE------------------------------------------------------------
+end_vignette()
 

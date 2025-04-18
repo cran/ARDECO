@@ -26,9 +26,6 @@ This function return a data frame including the data related to the selected dat
   }
 }
 
-\examples{
-ardeco_get_dataset_data('SNETD',version=2021,level=0,nutscode='IT',year=2020)
-}
 \description{
 The function recover the data via API of the dataset specified in input applying the optional filters and return the list of data in data frame format. The process retrieve each dataset defined in the selected variable and merge the result into the output dataframe. The optional parameter \bold{show_perc=TRUE} permits to check the progress of the retrieval process listing the datasets in processing.
 }

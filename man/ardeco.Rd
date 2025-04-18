@@ -33,10 +33,3 @@ https://urban.jrc.ec.europa.eu/ardeco
 }
 
 
-\examples{
-ardeco_get_variable_list()
-ardeco_get_dataset_list('SNPTN')
-ardeco_get_tercet_list('SNPTN')
-ardeco_get_dataset_data('SNETD',version=2021,level=0,nutscode='IT',year=2020)
-}
-

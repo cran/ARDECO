@@ -44,10 +44,14 @@ ardeco_get_variable_list <- function() {
     # submit the GraphQL API request
     result <- conn$exec(new$link) %>% fromJSON(flatten = F)
   }, error = function(e) {
-    strErr <- paste("Error call: ", link)
-    stop(strErr)
+    # strErr <- paste("Error call: ", link)
+    # stop(strErr)
   })
 
+  if (is.null(result)) {
+    print("Error during execution. Check API avalaibility")
+    return(NULL)
+  }
 
   # convert the result in formatted list
   variable_list <- result$data$variableList %>% as_tibble()

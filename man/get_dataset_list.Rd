@@ -15,9 +15,6 @@ The set of datasets related to the selected variable. Each dataset is described 
 - additioanl dimensions: additional dimensions (like sector, sex, age class) and related permitted values
 }
 
-\examples{
-ardeco_get_dataset_list('SNPTN')
-}
 \description{
 The function return the list of dataset linked to a variable through the ARDECO API by defining the varaible code.
 For each dataset it'ìs returned the code of variable, the unit fo measure, the nuts version and the eventual additional dimensions (like sector, sex, age classes) for which the data is available.
