@@ -1,7 +1,7 @@
 Package: ARDECO
 Type: Package
 Title: Annual Regional Database of the European Commission (ARDECO)
-Version: 2.2.1
+Version: 2.2.2
 Authors@R: c(
     person("Carmelo", "Attardo", email = "carmelo.attardo@ec.europa.eu", role = "cre"),
     person("Giuseppe", "Bucciarelli", email = "giuseppe.bucciarelli@ext.ec.europa.eu", role = "aut"),
@@ -27,10 +27,10 @@ RoxygenNote: 7.3.2
 Suggests: knitr, rmarkdown, httptest2
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2025-04-18 06:02:36 UTC; attarca
+Packaged: 2025-04-28 14:26:29 UTC; attarca
 Author: Carmelo Attardo [cre],
   Giuseppe Bucciarelli [aut],
   European Commission, JRC [cph]
 Maintainer: Carmelo Attardo <carmelo.attardo@ec.europa.eu>
 Repository: CRAN
-Date/Publication: 2025-04-18 06:20:02 UTC
+Date/Publication: 2025-04-28 14:40:05 UTC

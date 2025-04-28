@@ -6,11 +6,18 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r, include=FALSE}
+library(httptest2)
+start_vignette("introArdeco")
+```
 
-
-
-
-``` r
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+```{r setup}
 library(ARDECO)
 ```
 
@@ -64,80 +71,8 @@ Currenlty ARDECO provides a set of variables and indicators related to the follo
 * GHG Emissions
 
 The complete set of available variables and indicators is provided by the function ardeco_get_variable_list():
-
-``` r
+```{r}
 print(ardeco_get_variable_list(), n=1000)
-#> # A tibble: 68 × 2
-#>    code    description                                                                          
-#>    <chr>   <chr>                                                                                
-#>  1 RNLHTP  "Hours worked per capita"                                                            
-#>  2 RNLHTE  "Hours worked per employed person"                                                   
-#>  3 SNPCN   "Total population change"                                                            
-#>  4 PVGD    "GDP price index (implicit deflator, national, 2015=100, euro)"                      
-#>  5 PVGE    "GVA price index (implicit deflator, national, 2015=100, euro)"                      
-#>  6 SNMTN   "Net migration"                                                                      
-#>  7 SNETD   "Total Employment (workplace based, employed persons)"                               
-#>  8 SNWTD   "Wage and salary earners (workplace based, employees)"                               
-#>  9 SNETZ   "Employment by industry (10 NACE sectors)"                                           
-#> 10 RNECN   "Residence-based employment"                                                         
-#> 11 RNUTN   "Unemployment (LFS)"                                                                 
-#> 12 RNLHT   "Hours Worked (employed persons)"                                                    
-#> 13 RUWCDW  "Nominal compensation per employee"                                                  
-#> 14 RUWCZ   "Compensation of employees at current prices by industry (10 NACE sectors)"          
-#> 15 ROWCD   "Compensation of Employees at constant prices"                                       
-#> 16 ROWCDH  "Real compensation per hour worked"                                                  
-#> 17 ROWCDW  "Real compensation per employee"                                                     
-#> 18 RUWCDHH "Nominal unit labour cost based on hours worked"                                     
-#> 19 SNPBN   "Live births"                                                                        
-#> 20 SNPDN   "Deaths"                                                                             
-#> 21 SNPNN   "Natural change of population"                                                       
-#> 22 SUVGDP  "GDP per capita at current prices"                                                   
-#> 23 RUWCDWE " Nominal unit labour cost based on persons"                                         
-#> 24 RUIGT   "Gross Fixed Capital Formation at current prices"                                    
-#> 25 RUIGZ   "Gross Fixed Capital Formation by industry (10 NACE sectors) at current prices"      
-#> 26 ROIGZ   "Gross Fixed Capital Formation by industry (10 NACE sectors) at constant prices"     
-#> 27 ROKND   "Capital Stock at constant prices"                                                   
-#> 28 SUVGDH  "Nominal labour productivity per hour worked"                                        
-#> 29 SNPTN   "Population on 1st January by broad age group and sex"                               
-#> 30 SNPTD   "Average annual population"                                                          
-#> 31 SUVGDE  "Nominal labour productivity per person employed"                                    
-#> 32 SUVGD   "GDP at current market prices"                                                       
-#> 33 SOVGDH  " Real labour productivity per hour worked"                                          
-#> 34 SOVGDE  "Real labour productivity per person employed"                                       
-#> 35 ROWCZ   "Compensation of employees at constant prices by industry (10 NACE sectors)"         
-#> 36 RPDTN   "Population by educational attainment level"                                         
-#> 37 RPDEN   "Early leavers from education and training (18-24 years)"                            
-#> 38 RPDNN   "Young people neither in employment nor in education and training (NEET, 15-29 years…
-#> 39 SUVGE   "GVA at basic prices"                                                                
-#> 40 SUVGZ   "GVA at basic prices by industry (10 NACE sectors)"                                  
-#> 41 SOVGD   "GDP at constant prices"                                                             
-#> 42 SOVGDP  "GDP per capita at constant prices"                                                  
-#> 43 SOVGE   "GVA at constant prices"                                                             
-#> 44 SOVGZ   "GVA at constant prices by industry (10 NACE sectors)"                               
-#> 45 SPVGD   "GDP price index (chain-type index, 2015=100)"                                       
-#> 46 SPVGE   "GVA price index (chain-type index, 2015=100)"                                       
-#> 47 PVGZ    "GVA price indices by industry (implicit deflators, national, 2015=100, euro)"       
-#> 48 PPP     "Purchasing power parities (PPPs) - EU=100"                                          
-#> 49 RNLHW   "Hours Worked (employees)"                                                           
-#> 50 RNLHZ   "Hours Worked by industry (10 NACE sectors)"                                         
-#> 51 RNLCN   "Civilian Labour Force"                                                              
-#> 52 RNLTN   "Total Labour Force"                                                                 
-#> 53 SNETDP  "Employment per capita"                                                              
-#> 54 RUWCD   "Compensation of employees at current prices"                                        
-#> 55 RUWCDH  "Nominal compensation per hour worked"                                               
-#> 56 RUVNH   "Households net disposable income"                                                   
-#> 57 RUYNH   "Net property income"                                                                
-#> 58 RUONH   "Net operating Surplus and Mixed Income"                                             
-#> 59 RUTYH   "Current taxes on income and wealth"                                                 
-#> 60 PIGT    "GFCF price index (implicit deflator, national, 2015=100, euro)"                     
-#> 61 SUKCT   "Consumption of fixed capital at current prices"                                     
-#> 62 SUKCZ   "Consumption of fixed capital  by industry (10 NACE sectors) at current prices"      
-#> 63 ROIGT   "Gross Fixed Capital Formation at constant prices"                                   
-#> 64 SOKCT   "Consumption of fixed capital at constant prices"                                    
-#> 65 SOKCZ   "Consumption of fixed capital by industry (10 NACE sectors) at constant prices"      
-#> 66 PIGZ    "GFCF price indices by industry (implicit deflators, national, 2015=100, euro)"      
-#> 67 EDGAR   "Emissions Database for Global Atmospheric Research"                                 
-#> 68 EDGARP  "GHG emissions per capita"
 ```
 
 
@@ -219,24 +154,8 @@ unit='Persons' version= 2021 sex='Total' 'age group'='Less than 15' represent th
 ...an so on...
 
 To retrieve the number of datasets defined for a variable, use the function ardeco_get_dataset_list():
-
-``` r
+```{r}
 print(ardeco_get_dataset_list('SNPTN'), n=100)
-#> # A tibble: 12 × 5
-#>    var   sex     age                 unit    vers            
-#>    <chr> <chr>   <chr>               <chr>   <chr>           
-#>  1 SNPTN Females 65 years and over   Persons 2016, 2021, 2024
-#>  2 SNPTN Males   65 years and over   Persons 2016, 2021, 2024
-#>  3 SNPTN Total   65 years and over   Persons 2016, 2021, 2024
-#>  4 SNPTN Females From 15 to 64 years Persons 2016, 2021, 2024
-#>  5 SNPTN Males   From 15 to 64 years Persons 2016, 2021, 2024
-#>  6 SNPTN Total   From 15 to 64 years Persons 2016, 2021, 2024
-#>  7 SNPTN Females Less than 15 years  Persons 2016, 2021, 2024
-#>  8 SNPTN Males   Less than 15 years  Persons 2016, 2021, 2024
-#>  9 SNPTN Total   Less than 15 years  Persons 2016, 2021, 2024
-#> 10 SNPTN Females Total               Persons 2016, 2021, 2024
-#> 11 SNPTN Males   Total               Persons 2016, 2021, 2024
-#> 12 SNPTN Total   Total               Persons 2016, 2021, 2024
 ```
 
 
@@ -271,24 +190,9 @@ The function returns a tibble with the following columns:
 * ***description*** explains the variable represented by the variable code
 
 Example:
-
-``` r
+```{r}
 mytb <- ardeco_get_variable_list()
 print(mytb, max=50)
-#> # A tibble: 68 × 2
-#>    code   description                                                  
-#>    <chr>  <chr>                                                        
-#>  1 RNLHTP Hours worked per capita                                      
-#>  2 RNLHTE Hours worked per employed person                             
-#>  3 SNPCN  Total population change                                      
-#>  4 PVGD   GDP price index (implicit deflator, national, 2015=100, euro)
-#>  5 PVGE   GVA price index (implicit deflator, national, 2015=100, euro)
-#>  6 SNMTN  Net migration                                                
-#>  7 SNETD  Total Employment (workplace based, employed persons)         
-#>  8 SNWTD  Wage and salary earners (workplace based, employees)         
-#>  9 SNETZ  Employment by industry (10 NACE sectors)                     
-#> 10 RNECN  Residence-based employment                                   
-#> # ℹ 58 more rows
 ```
 
 
@@ -309,26 +213,9 @@ The function returns a tibble with the following columns:
 * ***additional dimensions***: additional column for each additional dimension (if any) and related values (see ['Variable as a set of datasets'](#vardim))
 
 Example:
-
-``` r
+```{r}
 mytb <- ardeco_get_dataset_list('SNETZ')
 print(mytb)
-#> # A tibble: 13 × 4
-#>    var   unit              sector vers            
-#>    <chr> <chr>             <chr>  <chr>           
-#>  1 SNETZ Thousands Persons A      2016, 2021, 2024
-#>  2 SNETZ Thousands Persons B-E    2016, 2021, 2024
-#>  3 SNETZ Thousands Persons F      2016, 2021, 2024
-#>  4 SNETZ Thousands Persons G-I    2016, 2021, 2024
-#>  5 SNETZ Thousands Persons G-J    2016, 2021, 2024
-#>  6 SNETZ Thousands Persons J      2016, 2021, 2024
-#>  7 SNETZ Thousands Persons K      2016, 2021, 2024
-#>  8 SNETZ Thousands Persons K-N    2016, 2021, 2024
-#>  9 SNETZ Thousands Persons L      2016, 2021, 2024
-#> 10 SNETZ Thousands Persons M-N    2016, 2021, 2024
-#> 11 SNETZ Thousands Persons O-Q    2016, 2021, 2024
-#> 12 SNETZ Thousands Persons O-U    2016, 2021, 2024
-#> 13 SNETZ Thousands Persons R-U    2016, 2021, 2024
 ```
 
 ### List of tercets: ***ardeco_get_tercet_list*** - [back](#howto) {#tercetlist}
@@ -346,28 +233,9 @@ The function returns a tibble with the following columns:
 * ***tercet_class_name***: the name of the tercet class represented by the tercet_class_code  
 
 Example:
-
-``` r
+```{r}
 mytb <- ardeco_get_tercet_list()
 print(mytb)
-#>   tercet_code                             tercet_name tercet_class_code
-#> 1           1                 by Urban-Rural Typology                 0
-#> 2           1                 by Urban-Rural Typology                 2
-#> 3           1                 by Urban-Rural Typology                 1
-#> 4           2 by Urban-Rural Typology with Remoteness                 0
-#> 5           2 by Urban-Rural Typology with Remoteness                 3
-#> 6           2 by Urban-Rural Typology with Remoteness                 4
-#> 7           2 by Urban-Rural Typology with Remoteness                 5
-#> 8           2 by Urban-Rural Typology with Remoteness                 6
-#>                      tercet_class_name
-#> 1                  Predominantly urban
-#> 2                  Predominantly rural
-#> 3                         Intermediate
-#> 4                  Predominantly urban
-#> 5        Intermediate, close to a city
-#> 6                 Intermediate, remote
-#> 7 Predominantly rural, close to a city
-#> 8          Predominantly rural, remote
 ```
 
 It's no possible require tercet data for all variable but for only those variables for which exist data at NUTS3 level. To check if it's possible to require tercet data for a variable, use
@@ -379,10 +247,8 @@ It's no possible require tercet data for all variable but for only those variabl
 If the variable haven't the NUTS3 level, the function return a warning highlighting the impossibility to aggregate data at tercet classes.
 
 Example:
-
-``` r
+```{r}
 mytb <- ardeco_get_tercet_list('RPDTN')
-#> [1] "The variable RPDTN has no data at level 3 and it's no possible to aggregate data at tercet classes"
 ```
 
 ### How to retrieve variable data: ***ardeco_get_dataset_data*** - [back](#howto) {#vardatawkf}
@@ -403,19 +269,9 @@ This function return a dataframe where any row expose the value for a specific n
 * ***VALUE***: the value of the variable  
 
 Following an example to retrieve the complete set of 'Average annual population' data:
-
-``` r
+```{r}
 mydf <- ardeco_get_dataset_data('SNPTD')
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT   VALUE
-#> 1    SNPTD     2024     0       AL 1960 Persons 1608801
-#> 2    SNPTD     2024     0       AT 1960 Persons 7047440
-#> 3    SNPTD     2024     0       BE 1960 Persons 9153499
-#> 4    SNPTD     2024     0       BG 1960 Persons 7867374
-#> 5    SNPTD     2024     0       CH 1960 Persons 5328000
-#> 6    SNPTD     2024     0       CY 1960 Persons  441788
-#> 7    SNPTD     2024     0       CZ 1960 Persons 9602011
-#>  [ reached 'max' / getOption("max.print") -- omitted 1249603 rows ]
 ```
 
 Additional columns will be added if for the variable it has been defined additional dimensions.
@@ -430,22 +286,8 @@ If a variable have a huge number of datasets, it's possible that the retrieval p
 * ***verbose*** is a flag and it can be TRUE or FALSE (FALSE by default). If TRUE, print the current dataset requested by the function.
 
 Example:
-
-``` r
+```{r}
 mydf <- ardeco_get_dataset_data('SNETZ', verbose=TRUE)
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=A"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=B-E"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=F"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=G-I"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=G-J"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=J"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=K"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=K-N"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=L"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=M-N"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=O-Q"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=O-U"
-#> [1] "Fetching... [unit]=Thousands Persons [sector]=R-U"
 ```
 
 
@@ -470,19 +312,11 @@ Where
 * ***par-value-x***: the value of the parameter
 
 Example:
-
-``` r
+```{r}
 # Request data for Italy at level 1, at nuts version=2021,
 # with unit of measure = 'Million EUR' and related to year 2015
 mydf <- ardeco_get_dataset_data('SUVGD', version=2021, unit='Million PPS', year=2015, nutscode='IT', level=1)
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE
-#> 1    SUVGD     2021     1      ITC 2015 Million PPS 529145.62
-#> 2    SUVGD     2021     1      ITF 2015 Million PPS 252896.52
-#> 3    SUVGD     2021     1      ITG 2015 Million PPS 117255.89
-#> 4    SUVGD     2021     1      ITH 2015 Million PPS 369350.57
-#> 5    SUVGD     2021     1      ITI 2015 Million PPS 349089.92
-#> 6    SUVGD     2021     1      ITZ 2015 Million PPS   1252.18
 ```
 
 
@@ -501,29 +335,12 @@ To check the available versions for the requested variable, use:
 > **ardeco_get_dataset_list('_varcode_')**  (see ['List of the available datasets'](#datasetlist))
 
 Example:
-
-``` r
+```{r}
 # Check the available versions for variable SNPTD
 ardeco_get_dataset_list('SNPTD')
-#> # A tibble: 1 × 3
-#>   var   unit    vers            
-#>   <chr> <chr>   <chr>           
-#> 1 SNPTD Persons 2016, 2021, 2024
-```
-
-``` r
 
 mydf <- ardeco_get_dataset_data('SNPTD', version=2021)
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT   VALUE
-#> 1    SNPTD     2021     0       AL 1960 Persons 1608801
-#> 2    SNPTD     2021     0       AT 1960 Persons 7047440
-#> 3    SNPTD     2021     0       BE 1960 Persons 9153499
-#> 4    SNPTD     2021     0       BG 1960 Persons 7867374
-#> 5    SNPTD     2021     0       CH 1960 Persons 5328000
-#> 6    SNPTD     2021     0       CY 1960 Persons  441788
-#> 7    SNPTD     2021     0       CZ 1960 Persons 9602011
-#>  [ reached 'max' / getOption("max.print") -- omitted 135276 rows ]
 ```
 
 ### Nutscode and nutslevel - [back](#filter) {#varnuts}
@@ -537,20 +354,10 @@ where
 * ***val-nutscode*** is a string representing the initial characters of the nutscode returned by the filter. The effect of this filter is: return all nutscodes starting with 'val-nutscode'.
 
 Example:
-
-``` r
+```{r}
 # Retrive data with nutscode starting with 'IT'
 mydf <- ardeco_get_dataset_data('SUVGD', nutscode='IT')
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT  VALUE
-#> 1    SUVGD     2024     0       IT 1980 Million EUR 342242
-#> 2    SUVGD     2024     0       IT 1981 Million EUR 386207
-#> 3    SUVGD     2024     0       IT 1982 Million EUR 435132
-#> 4    SUVGD     2024     0       IT 1983 Million EUR 497304
-#> 5    SUVGD     2024     0       IT 1984 Million EUR 555942
-#> 6    SUVGD     2024     0       IT 1985 Million EUR 595650
-#> 7    SUVGD     2024     0       IT 1986 Million EUR 653497
-#>  [ reached 'max' / getOption("max.print") -- omitted 150097 rows ]
 ```
 This filter can be refined using the parameter 'level'. The parameter level filter the data by nuts level. The filter syntax is the following:
 
@@ -566,53 +373,19 @@ where
 
 
 Example:
-
-``` r
+```{r}
 # Retrive SUVGD data for Italy at country level (level 0) for the year 2015
 mydf <- ardeco_get_dataset_data('SUVGD', level=0, nutscode='IT', year=2015, version=2021)
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT   VALUE
-#> 1    SUVGD     2021     0       IT 2015 Million EUR 1663278
-#> 2    SUVGD     2021     0       IT 2015 Million PPS 1618991
-```
-
-``` r
 
 # Retrive SUVGD data for Italy at country and regional level (level 0 and 2) for the year 2015
 mydf <- ardeco_get_dataset_data('SUVGD', level='0,2', nutscode='IT', year=2015, version=2021)
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT      VALUE
-#> 1    SUVGD     2021     0       IT 2015 Million EUR 1663277.70
-#> 2    SUVGD     2021     2     ITC1 2015 Million EUR  127475.53
-#> 3    SUVGD     2021     2     ITC2 2015 Million EUR    4675.69
-#> 4    SUVGD     2021     2     ITC3 2015 Million EUR   47405.32
-#> 5    SUVGD     2021     2     ITC4 2015 Million EUR  364063.70
-#> 6    SUVGD     2021     2     ITF1 2015 Million EUR   32016.27
-#> 7    SUVGD     2021     2     ITF2 2015 Million EUR    6157.72
-#>  [ reached 'max' / getOption("max.print") -- omitted 39 rows ]
-```
-
-``` r
 
 # Retrive SUVGD data for Italy at level from 0 to 2 for the year 2015
 mydf <- ardeco_get_dataset_data('SUVGD', level='0-2', nutscode='IT', year=2015, version=2021)
 print(mydf, max=100)
-#>    VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT      VALUE
-#> 1     SUVGD     2021     0       IT 2015 Million EUR 1663277.70
-#> 2     SUVGD     2021     1      ITC 2015 Million EUR  543620.24
-#> 3     SUVGD     2021     1      ITF 2015 Million EUR  259814.43
-#> 4     SUVGD     2021     1      ITG 2015 Million EUR  120463.39
-#> 5     SUVGD     2021     1      ITH 2015 Million EUR  379454.04
-#> 6     SUVGD     2021     1      ITI 2015 Million EUR  358639.17
-#> 7     SUVGD     2021     1      ITZ 2015 Million EUR    1286.43
-#> 8     SUVGD     2021     2     ITC1 2015 Million EUR  127475.53
-#> 9     SUVGD     2021     2     ITC2 2015 Million EUR    4675.69
-#> 10    SUVGD     2021     2     ITC3 2015 Million EUR   47405.32
-#> 11    SUVGD     2021     2     ITC4 2015 Million EUR  364063.70
-#> 12    SUVGD     2021     2     ITF1 2015 Million EUR   32016.27
-#> 13    SUVGD     2021     2     ITF2 2015 Million EUR    6157.72
-#> 14    SUVGD     2021     2     ITF3 2015 Million EUR  104260.39
-#>  [ reached 'max' / getOption("max.print") -- omitted 44 rows ]
+
 ```
 
 
@@ -631,31 +404,13 @@ To check the available unit of measures for the requested variable, use:
 > **ardeco_get_dataset_list('_varcode_')**  (see ['List of the available datasets'](#datasetlist))
 
 Example:
-
-``` r
+```{r}
 # Check the available units for variable SUVGD
 ardeco_get_dataset_list('SUVGD')
-#> # A tibble: 2 × 3
-#>   var   unit        vers            
-#>   <chr> <chr>       <chr>           
-#> 1 SUVGD Million EUR 2016, 2021, 2024
-#> 2 SUVGD Million PPS 2016, 2021, 2024
-```
-
-``` r
 
 # Retrive data only for unit = 'Million PPS'
 mydf <- ardeco_get_dataset_data('SUVGD', unit='Million PPS')
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE
-#> 1    SUVGD     2024     0       AT 1980 Million PPS  63886.92
-#> 2    SUVGD     2024     0       BE 1980 Million PPS  81472.09
-#> 3    SUVGD     2024     0       DE 1980 Million PPS        NA
-#> 4    SUVGD     2024     0       DK 1980 Million PPS  40713.81
-#> 5    SUVGD     2024     0       EL 1980 Million PPS  67653.78
-#> 6    SUVGD     2024     0       ES 1980 Million PPS 212592.99
-#> 7    SUVGD     2024     0       FI 1980 Million PPS  35398.79
-#>  [ reached 'max' / getOption("max.print") -- omitted 928228 rows ]
 ```
 
 ### Year - [back](#filter) {#varyear}
@@ -672,35 +427,19 @@ where
   * a quoted string with a couple of values divided by '-'. In this case, the two numbers represent the temporal windows for which will be returned the values. Example: **year='2015-2018'** return the for years 2015, 2016, 2017, 2018). _Note: in this case, the quotes are mandatory_.
 
 Example:
-
-``` r
+```{r}
 # Retrive data only for year = 2015
 mydf <- ardeco_get_dataset_data('SNPTD', year=2015, version=2021, nutscode='ITF11')
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT  VALUE
-#> 1    SNPTD     2021     3    ITF11 2015 Persons 303200
-```
-
-``` r
 
 # Retrive data for years 2015 and 2018
 mydf <- ardeco_get_dataset_data('SNPTD', year='2015,2018', version=2021, nutscode='ITF11')
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT  VALUE
-#> 1    SNPTD     2021     3    ITF11 2015 Persons 303200
-#> 2    SNPTD     2021     3    ITF11 2018 Persons 298200
-```
-
-``` r
 
 # Retrive data for years from 2015 to 2018
 mydf <- ardeco_get_dataset_data('SNPTD', year='2015-2018', version=2021, nutscode='ITF11')
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT  VALUE
-#> 1    SNPTD     2021     3    ITF11 2015 Persons 303200
-#> 2    SNPTD     2021     3    ITF11 2016 Persons 301500
-#> 3    SNPTD     2021     3    ITF11 2017 Persons 299900
-#> 4    SNPTD     2021     3    ITF11 2018 Persons 298200
+
 ```
 
 
@@ -720,39 +459,13 @@ To check the existance of additional dimensions for the requested variable, use:
 > **ardeco_get_dataset_list('_varcode_')**  (see ['List of the available datasets'](#datasetlist))
 
 Example:
-
-``` r
+```{r}
 # Check the available dimensions for variable SNPTN
 ardeco_get_dataset_list('SNPTN')
-#> # A tibble: 12 × 5
-#>    var   sex     age                 unit    vers            
-#>    <chr> <chr>   <chr>               <chr>   <chr>           
-#>  1 SNPTN Females 65 years and over   Persons 2016, 2021, 2024
-#>  2 SNPTN Males   65 years and over   Persons 2016, 2021, 2024
-#>  3 SNPTN Total   65 years and over   Persons 2016, 2021, 2024
-#>  4 SNPTN Females From 15 to 64 years Persons 2016, 2021, 2024
-#>  5 SNPTN Males   From 15 to 64 years Persons 2016, 2021, 2024
-#>  6 SNPTN Total   From 15 to 64 years Persons 2016, 2021, 2024
-#>  7 SNPTN Females Less than 15 years  Persons 2016, 2021, 2024
-#>  8 SNPTN Males   Less than 15 years  Persons 2016, 2021, 2024
-#>  9 SNPTN Total   Less than 15 years  Persons 2016, 2021, 2024
-#> 10 SNPTN Females Total               Persons 2016, 2021, 2024
-#> 11 SNPTN Males   Total               Persons 2016, 2021, 2024
-#> 12 SNPTN Total   Total               Persons 2016, 2021, 2024
-```
-
-``` r
 
 # Retrive data only for sex = 'Males' and age = 'Total'
 mydf <- ardeco_get_dataset_data('SNPTN', sex='Males', age = 'Total')
 print(mydf, max=50)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE YEAR   SEX   AGE    UNIT   VALUE
-#> 1    SNPTN     2024     0       AL 1960 Males Total Persons  804267
-#> 2    SNPTN     2024     0       AT 1960 Males Total Persons 3357007
-#> 3    SNPTN     2024     0       BE 1960 Males Total Persons 4448001
-#> 4    SNPTN     2024     0       BG 1960 Males Total Persons 3815790
-#> 5    SNPTN     2024     0       CH 1960 Males Total Persons 2553621
-#>  [ reached 'max' / getOption("max.print") -- omitted 940831 rows ]
 ```
 
 
@@ -775,58 +488,18 @@ where
 * ***show_perc*** (optional parameter) is a flag and it can be TRUE or FALSE (FALSE by default). If **FALSE** (default), the functions return the absolute value of the requested tercet classes. If **TRUE**, the functions return the share (pecentage) of the requested tercet classes.
 
 Example:
-
-``` r
+```{r}
 # Check available tercet for variable SNPTD
 ardeco_get_tercet_list('SNPTD')
-#>   tercet_code                             tercet_name tercet_class_code
-#> 1           1                 by Urban-Rural Typology                 0
-#> 2           1                 by Urban-Rural Typology                 2
-#> 3           1                 by Urban-Rural Typology                 1
-#> 4           2 by Urban-Rural Typology with Remoteness                 0
-#> 5           2 by Urban-Rural Typology with Remoteness                 3
-#> 6           2 by Urban-Rural Typology with Remoteness                 4
-#> 7           2 by Urban-Rural Typology with Remoteness                 5
-#> 8           2 by Urban-Rural Typology with Remoteness                 6
-#>                      tercet_class_name
-#> 1                  Predominantly urban
-#> 2                  Predominantly rural
-#> 3                         Intermediate
-#> 4                  Predominantly urban
-#> 5        Intermediate, close to a city
-#> 6                 Intermediate, remote
-#> 7 Predominantly rural, close to a city
-#> 8          Predominantly rural, remote
-```
-
-``` r
 
 # Retrieve absolute values for tercet 'Urban-Rural Typology' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
 mydf <- ardeco_get_dataset_data('SNPTD', tercet_code=1, nutscode='IT', year=2020, version=2021)
 print(mydf)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE TERCET_CODE YEAR    UNIT
-#> 1    SNPTD     2021     0       IT                 0           1 2020 Persons
-#> 2    SNPTD     2021     0       IT                 1           1 2020 Persons
-#> 3    SNPTD     2021     0       IT                 2           1 2020 Persons
-#>               TERCET_NAME   TERCET_CLASS_NAME    VALUE
-#> 1 by Urban-Rural Typology Predominantly urban 28475100
-#> 2 by Urban-Rural Typology        Intermediate 24767700
-#> 3 by Urban-Rural Typology Predominantly rural  6196100
-```
-
-``` r
 
 # Retrieve share for tercet 'Urban-Rural Typology' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
 mydf <- ardeco_get_dataset_data('SNPTD', tercet_code=1, nutscode='IT', year=2020, version=2021, show_perc=TRUE)
 print(mydf)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE TERCET_CODE YEAR    UNIT
-#> 1    SNPTD     2021     0       IT                 0           1 2020 Persons
-#> 2    SNPTD     2021     0       IT                 1           1 2020 Persons
-#> 3    SNPTD     2021     0       IT                 2           1 2020 Persons
-#>               TERCET_NAME   TERCET_CLASS_NAME VALUE
-#> 1 by Urban-Rural Typology Predominantly urban 12.16
-#> 2 by Urban-Rural Typology        Intermediate 10.56
-#> 3 by Urban-Rural Typology Predominantly rural  2.64
+
 ```
 
 
@@ -841,45 +514,18 @@ where
 * ***show_perc*** (optional parameter) is a flag and it can be **TRUE** or **FALSE** (**FALSE** by default). If **FALSE** (default), the functions return the absolute value of the requested tercet class. If **TRUE**, the functions return the share (pecentage) of the requested tercet class.
 
 Example:
-
-``` r
+```{r}
 # Check available tercet classes for variable SNPTD
 ardeco_get_tercet_list('SNPTD')
-#>   tercet_code                             tercet_name tercet_class_code
-#> 1           1                 by Urban-Rural Typology                 0
-#> 2           1                 by Urban-Rural Typology                 2
-#> 3           1                 by Urban-Rural Typology                 1
-#> 4           2 by Urban-Rural Typology with Remoteness                 0
-#> 5           2 by Urban-Rural Typology with Remoteness                 3
-#> 6           2 by Urban-Rural Typology with Remoteness                 4
-#> 7           2 by Urban-Rural Typology with Remoteness                 5
-#> 8           2 by Urban-Rural Typology with Remoteness                 6
-#>                      tercet_class_name
-#> 1                  Predominantly urban
-#> 2                  Predominantly rural
-#> 3                         Intermediate
-#> 4                  Predominantly urban
-#> 5        Intermediate, close to a city
-#> 6                 Intermediate, remote
-#> 7 Predominantly rural, close to a city
-#> 8          Predominantly rural, remote
-```
-
-``` r
 
 # Retrieve absolute value for tercet class 'Predominantly urban' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
 mydf <- ardeco_get_dataset_data('SNPTD', tercet_class_code=0, nutscode='IT', year=2020, version=2021)
 print(mydf)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT   TERCET_CLASS_NAME    VALUE
-#> 1    SNPTD     2021     0       IT                 0 2020 Persons Predominantly urban 28475100
-```
-
-``` r
 
 # Retrieve share for tercet class 'Predominantly urban' for variable 'SNPTD' for country 'IT', year 2020, nuts version 2021
 mydf <- ardeco_get_dataset_data('SNPTD', tercet_class_code=0, nutscode='IT', year=2020, version=2021, show_perc=TRUE)
 print(mydf)
-#>   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT   TERCET_CLASS_NAME VALUE
-#> 1    SNPTD     2021     0       IT                 0 2020 Persons Predominantly urban 12.16
 ```
-
+```{r, include=FALSE}
+end_vignette()
+```

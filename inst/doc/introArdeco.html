@@ -433,75 +433,75 @@ to the following domains:</p>
 the function ardeco_get_variable_list():</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">ardeco_get_variable_list</span>(), <span class="at">n=</span><span class="dv">1000</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 68 × 2</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt;    code    description                                                          </span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                                                                </span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt;  1 SNETD   &quot;Total Employment (workplace based, employed persons)&quot;               </span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  2 SNPCN   &quot;Total population change&quot;                                            </span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;  3 SNMTN   &quot;Net migration&quot;                                                      </span></span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;  4 PVGD    &quot;GDP price index (implicit deflator, national, 2015=100, euro)&quot;      </span></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;  5 PVGE    &quot;GVA price index (implicit deflator, national, 2015=100, euro)&quot;      </span></span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;  6 SNPBN   &quot;Live births&quot;                                                        </span></span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;  7 SNPDN   &quot;Deaths&quot;                                                             </span></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt;  8 SNPNN   &quot;Natural change of population&quot;                                       </span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt;  9 SUVGDP  &quot;GDP per capita at current prices&quot;                                   </span></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; 10 SNWTD   &quot;Wage and salary earners (workplace based, employees)&quot;               </span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; 11 SNETZ   &quot;Employment by industry (10 NACE sectors)&quot;                           </span></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 12 RNECN   &quot;Residence-based employment&quot;                                         </span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 13 RNUTN   &quot;Unemployment (LFS)&quot;                                                 </span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; 14 RNLHT   &quot;Hours Worked (employed persons)&quot;                                    </span></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; 15 RNLHTP  &quot;Hours worked per capita&quot;                                            </span></span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; 16 RNLHTE  &quot;Hours worked per employed person&quot;                                   </span></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; 17 RUWCDW  &quot;Nominal compensation per employee&quot;                                  </span></span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; 18 RUWCZ   &quot;Compensation of employees at current prices by industry (10 NACE se…</span></span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; 19 ROWCD   &quot;Compensation of Employees at constant prices&quot;                       </span></span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; 20 ROWCDH  &quot;Real compensation per hour worked&quot;                                  </span></span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; 21 ROWCDW  &quot;Real compensation per employee&quot;                                     </span></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; 22 RUWCDHH &quot;Nominal unit labour cost based on hours worked&quot;                     </span></span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; 23 ROWCZ   &quot;Compensation of employees at constant prices by industry (10 NACE s…</span></span>
-<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; 24 ROIGZ   &quot;Gross Fixed Capital Formation by industry (10 NACE sectors) at cons…</span></span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; 25 SNPTN   &quot;Population on 1st January by broad age group and sex&quot;               </span></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 26 SNPTD   &quot;Average annual population&quot;                                          </span></span>
-<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; 27 SUVGD   &quot;GDP at current market prices&quot;                                       </span></span>
-<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; 28 RUWCDWE &quot; Nominal unit labour cost based on persons&quot;                         </span></span>
-<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; 29 SUVGDH  &quot;Nominal labour productivity per hour worked&quot;                        </span></span>
-<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; 30 SUVGDE  &quot;Nominal labour productivity per person employed&quot;                    </span></span>
-<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; 31 SOVGDH  &quot; Real labour productivity per hour worked&quot;                          </span></span>
-<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; 32 SOVGDE  &quot;Real labour productivity per person employed&quot;                       </span></span>
-<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; 33 RPDTN   &quot;Population by educational attainment level&quot;                         </span></span>
-<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; 34 RPDEN   &quot;Early leavers from education and training (18-24 years)&quot;            </span></span>
-<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; 35 RUIGT   &quot;Gross Fixed Capital Formation at current prices&quot;                    </span></span>
-<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; 36 RUIGZ   &quot;Gross Fixed Capital Formation by industry (10 NACE sectors) at curr…</span></span>
-<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; 37 SUKCT   &quot;Consumption of fixed capital at current prices&quot;                     </span></span>
-<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; 38 SUKCZ   &quot;Consumption of fixed capital  by industry (10 NACE sectors) at curr…</span></span>
-<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; 39 ROIGT   &quot;Gross Fixed Capital Formation at constant prices&quot;                   </span></span>
-<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#&gt; 40 SOKCT   &quot;Consumption of fixed capital at constant prices&quot;                    </span></span>
-<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co">#&gt; 41 SOKCZ   &quot;Consumption of fixed capital by industry (10 NACE sectors) at const…</span></span>
-<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co">#&gt; 42 PIGZ    &quot;GFCF price indices by industry (implicit deflators, national, 2015=…</span></span>
-<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="co">#&gt; 43 ROKND   &quot;Capital Stock at constant prices&quot;                                   </span></span>
-<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; 44 RPDNN   &quot;Young people neither in employment nor in education and training (N…</span></span>
-<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; 45 SUVGE   &quot;GVA at basic prices&quot;                                                </span></span>
-<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt; 46 SUVGZ   &quot;GVA at basic prices by industry (10 NACE sectors)&quot;                  </span></span>
-<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co">#&gt; 47 SOVGZ   &quot;GVA at constant prices by industry (10 NACE sectors)&quot;               </span></span>
-<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="co">#&gt; 48 SOVGD   &quot;GDP at constant prices&quot;                                             </span></span>
-<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co">#&gt; 49 SOVGDP  &quot;GDP per capita at constant prices&quot;                                  </span></span>
-<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="co">#&gt; 50 SOVGE   &quot;GVA at constant prices&quot;                                             </span></span>
-<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a><span class="co">#&gt; 51 SPVGD   &quot;GDP price index (chain-type index, 2015=100)&quot;                       </span></span>
-<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="co">#&gt; 52 SPVGE   &quot;GVA price index (chain-type index, 2015=100)&quot;                       </span></span>
-<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="co">#&gt; 53 PVGZ    &quot;GVA price indices by industry (implicit deflators, national, 2015=1…</span></span>
-<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a><span class="co">#&gt; 54 RNLCN   &quot;Civilian Labour Force&quot;                                              </span></span>
-<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a><span class="co">#&gt; 55 PPP     &quot;Purchasing power parities (PPPs) - EU=100&quot;                          </span></span>
-<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a><span class="co">#&gt; 56 RNLHW   &quot;Hours Worked (employees)&quot;                                           </span></span>
-<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a><span class="co">#&gt; 57 RUWCD   &quot;Compensation of employees at current prices&quot;                        </span></span>
-<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a><span class="co">#&gt; 58 RNLHZ   &quot;Hours Worked by industry (10 NACE sectors)&quot;                         </span></span>
-<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a><span class="co">#&gt; 59 RNLTN   &quot;Total Labour Force&quot;                                                 </span></span>
-<span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a><span class="co">#&gt; 60 SNETDP  &quot;Employment per capita&quot;                                              </span></span>
-<span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a><span class="co">#&gt; 61 RUWCDH  &quot;Nominal compensation per hour worked&quot;                               </span></span>
-<span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a><span class="co">#&gt; 62 RUVNH   &quot;Households net disposable income&quot;                                   </span></span>
-<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a><span class="co">#&gt; 63 RUYNH   &quot;Net property income&quot;                                                </span></span>
-<span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a><span class="co">#&gt; 64 RUONH   &quot;Net operating Surplus and Mixed Income&quot;                             </span></span>
-<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a><span class="co">#&gt; 65 RUTYH   &quot;Current taxes on income and wealth&quot;                                 </span></span>
-<span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a><span class="co">#&gt; 66 PIGT    &quot;GFCF price index (implicit deflator, national, 2015=100, euro)&quot;     </span></span>
-<span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a><span class="co">#&gt; 67 EDGAR   &quot;Emissions Database for Global Atmospheric Research&quot;                 </span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt;    code    description                                                                          </span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;                                                                                </span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt;  1 RNLHTP  &quot;Hours worked per capita&quot;                                                            </span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  2 RNLHTE  &quot;Hours worked per employed person&quot;                                                   </span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;  3 SNPCN   &quot;Total population change&quot;                                                            </span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;  4 PVGD    &quot;GDP price index (implicit deflator, national, 2015=100, euro)&quot;                      </span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;  5 PVGE    &quot;GVA price index (implicit deflator, national, 2015=100, euro)&quot;                      </span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;  6 SNMTN   &quot;Net migration&quot;                                                                      </span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;  7 SNETD   &quot;Total Employment (workplace based, employed persons)&quot;                               </span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt;  8 SNWTD   &quot;Wage and salary earners (workplace based, employees)&quot;                               </span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt;  9 SNETZ   &quot;Employment by industry (10 NACE sectors)&quot;                                           </span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; 10 RNECN   &quot;Residence-based employment&quot;                                                         </span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; 11 RNUTN   &quot;Unemployment (LFS)&quot;                                                                 </span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 12 RNLHT   &quot;Hours Worked (employed persons)&quot;                                                    </span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 13 RUWCDW  &quot;Nominal compensation per employee&quot;                                                  </span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; 14 RUWCZ   &quot;Compensation of employees at current prices by industry (10 NACE sectors)&quot;          </span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; 15 ROWCD   &quot;Compensation of Employees at constant prices&quot;                                       </span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; 16 ROWCDH  &quot;Real compensation per hour worked&quot;                                                  </span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; 17 ROWCDW  &quot;Real compensation per employee&quot;                                                     </span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; 18 RUWCDHH &quot;Nominal unit labour cost based on hours worked&quot;                                     </span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; 19 SNPBN   &quot;Live births&quot;                                                                        </span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; 20 SNPDN   &quot;Deaths&quot;                                                                             </span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; 21 SNPNN   &quot;Natural change of population&quot;                                                       </span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; 22 SUVGDP  &quot;GDP per capita at current prices&quot;                                                   </span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; 23 RUWCDWE &quot; Nominal unit labour cost based on persons&quot;                                         </span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; 24 RUIGT   &quot;Gross Fixed Capital Formation at current prices&quot;                                    </span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; 25 RUIGZ   &quot;Gross Fixed Capital Formation by industry (10 NACE sectors) at current prices&quot;      </span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 26 ROIGZ   &quot;Gross Fixed Capital Formation by industry (10 NACE sectors) at constant prices&quot;     </span></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; 27 ROKND   &quot;Capital Stock at constant prices&quot;                                                   </span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; 28 SUVGDH  &quot;Nominal labour productivity per hour worked&quot;                                        </span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; 29 SNPTN   &quot;Population on 1st January by broad age group and sex&quot;                               </span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; 30 SNPTD   &quot;Average annual population&quot;                                                          </span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; 31 SUVGDE  &quot;Nominal labour productivity per person employed&quot;                                    </span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; 32 SUVGD   &quot;GDP at current market prices&quot;                                                       </span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; 33 SOVGDH  &quot; Real labour productivity per hour worked&quot;                                          </span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; 34 SOVGDE  &quot;Real labour productivity per person employed&quot;                                       </span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; 35 ROWCZ   &quot;Compensation of employees at constant prices by industry (10 NACE sectors)&quot;         </span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; 36 RPDTN   &quot;Population by educational attainment level&quot;                                         </span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; 37 RPDEN   &quot;Early leavers from education and training (18-24 years)&quot;                            </span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; 38 RPDNN   &quot;Young people neither in employment nor in education and training (NEET, 15-29 years…</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; 39 SUVGE   &quot;GVA at basic prices&quot;                                                                </span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#&gt; 40 SUVGZ   &quot;GVA at basic prices by industry (10 NACE sectors)&quot;                                  </span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="co">#&gt; 41 SOVGD   &quot;GDP at constant prices&quot;                                                             </span></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co">#&gt; 42 SOVGDP  &quot;GDP per capita at constant prices&quot;                                                  </span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="co">#&gt; 43 SOVGE   &quot;GVA at constant prices&quot;                                                             </span></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; 44 SOVGZ   &quot;GVA at constant prices by industry (10 NACE sectors)&quot;                               </span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; 45 SPVGD   &quot;GDP price index (chain-type index, 2015=100)&quot;                                       </span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt; 46 SPVGE   &quot;GVA price index (chain-type index, 2015=100)&quot;                                       </span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co">#&gt; 47 PVGZ    &quot;GVA price indices by industry (implicit deflators, national, 2015=100, euro)&quot;       </span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="co">#&gt; 48 PPP     &quot;Purchasing power parities (PPPs) - EU=100&quot;                                          </span></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co">#&gt; 49 RNLHW   &quot;Hours Worked (employees)&quot;                                                           </span></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="co">#&gt; 50 RNLHZ   &quot;Hours Worked by industry (10 NACE sectors)&quot;                                         </span></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a><span class="co">#&gt; 51 RNLCN   &quot;Civilian Labour Force&quot;                                                              </span></span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="co">#&gt; 52 RNLTN   &quot;Total Labour Force&quot;                                                                 </span></span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="co">#&gt; 53 SNETDP  &quot;Employment per capita&quot;                                                              </span></span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a><span class="co">#&gt; 54 RUWCD   &quot;Compensation of employees at current prices&quot;                                        </span></span>
+<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a><span class="co">#&gt; 55 RUWCDH  &quot;Nominal compensation per hour worked&quot;                                               </span></span>
+<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a><span class="co">#&gt; 56 RUVNH   &quot;Households net disposable income&quot;                                                   </span></span>
+<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a><span class="co">#&gt; 57 RUYNH   &quot;Net property income&quot;                                                                </span></span>
+<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a><span class="co">#&gt; 58 RUONH   &quot;Net operating Surplus and Mixed Income&quot;                                             </span></span>
+<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a><span class="co">#&gt; 59 RUTYH   &quot;Current taxes on income and wealth&quot;                                                 </span></span>
+<span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a><span class="co">#&gt; 60 PIGT    &quot;GFCF price index (implicit deflator, national, 2015=100, euro)&quot;                     </span></span>
+<span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a><span class="co">#&gt; 61 SUKCT   &quot;Consumption of fixed capital at current prices&quot;                                     </span></span>
+<span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a><span class="co">#&gt; 62 SUKCZ   &quot;Consumption of fixed capital  by industry (10 NACE sectors) at current prices&quot;      </span></span>
+<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a><span class="co">#&gt; 63 ROIGT   &quot;Gross Fixed Capital Formation at constant prices&quot;                                   </span></span>
+<span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a><span class="co">#&gt; 64 SOKCT   &quot;Consumption of fixed capital at constant prices&quot;                                    </span></span>
+<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a><span class="co">#&gt; 65 SOKCZ   &quot;Consumption of fixed capital by industry (10 NACE sectors) at constant prices&quot;      </span></span>
+<span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a><span class="co">#&gt; 66 PIGZ    &quot;GFCF price indices by industry (implicit deflators, national, 2015=100, euro)&quot;      </span></span>
+<span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a><span class="co">#&gt; 67 EDGAR   &quot;Emissions Database for Global Atmospheric Research&quot;                                 </span></span>
 <span id="cb2-72"><a href="#cb2-72" tabindex="-1"></a><span class="co">#&gt; 68 EDGARP  &quot;GHG emissions per capita&quot;</span></span></code></pre></div>
 </div>
 <div id="geocov" class="section level3">
@@ -696,16 +696,16 @@ represented by the variable code</p></li>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 68 × 2</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;    code   description                                                  </span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;                                                        </span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;  1 SNETD  Total Employment (workplace based, employed persons)         </span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;  2 SNPCN  Total population change                                      </span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;  3 SNMTN  Net migration                                                </span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;  1 RNLHTP Hours worked per capita                                      </span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;  2 RNLHTE Hours worked per employed person                             </span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;  3 SNPCN  Total population change                                      </span></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;  4 PVGD   GDP price index (implicit deflator, national, 2015=100, euro)</span></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt;  5 PVGE   GVA price index (implicit deflator, national, 2015=100, euro)</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;  6 SNPBN  Live births                                                  </span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;  7 SNPDN  Deaths                                                       </span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;  8 SNPNN  Natural change of population                                 </span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt;  9 SUVGDP GDP per capita at current prices                             </span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 10 SNWTD  Wage and salary earners (workplace based, employees)         </span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;  6 SNMTN  Net migration                                                </span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt;  7 SNETD  Total Employment (workplace based, employed persons)         </span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;  8 SNWTD  Wage and salary earners (workplace based, employees)         </span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt;  9 SNETZ  Employment by industry (10 NACE sectors)                     </span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 10 RNECN  Residence-based employment                                   </span></span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; # ℹ 58 more rows</span></span></code></pre></div>
 </div>
 <div id="datasetlist" class="section level3">
@@ -846,15 +846,15 @@ value</li>
 population’ data:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT    VALUE</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2016     0       AT 1980 Persons  7549428</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2016     0       BE 1980 Persons  9859002</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2016     0       CY 1980 Persons   509050</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 4    SNPTD     2016     0       DE 1980 Persons 61566000</span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 5    SNPTD     2016     0       DK 1980 Persons  5124001</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 6    SNPTD     2016     0       EL 1980 Persons  9642501</span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 7    SNPTD     2016     0       ES 1980 Persons 37491173</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 368058 rows ]</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR    UNIT   VALUE</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2024     0       AL 1960 Persons 1608801</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2024     0       AT 1960 Persons 7047440</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2024     0       BE 1960 Persons 9153499</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 4    SNPTD     2024     0       BG 1960 Persons 7867374</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 5    SNPTD     2024     0       CH 1960 Persons 5328000</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 6    SNPTD     2024     0       CY 1960 Persons  441788</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 7    SNPTD     2024     0       CZ 1960 Persons 9602011</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 1249603 rows ]</span></span></code></pre></div>
 <p>Additional columns will be added if for the variable it has been
 defined additional dimensions.</p>
 <p>In order to avoid problems due to the big amount of data which can be
@@ -930,13 +930,13 @@ parameter</li>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co"># with unit of measure = &#39;Million EUR&#39; and related to year 2015</span></span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">unit=</span><span class="st">&#39;Million PPS&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">level=</span><span class="dv">1</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT    VALUE</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     1      ITC 2015 Million PPS 526625.2</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     1      ITF 2015 Million PPS 251691.9</span></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2021     1      ITG 2015 Million PPS 116697.4</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2021     1      ITH 2015 Million PPS 367591.2</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2021     1      ITI 2015 Million PPS 347427.1</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2021     1      ITZ 2015 Million PPS   1245.9</span></span></code></pre></div>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     1      ITC 2015 Million PPS 529145.62</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     1      ITF 2015 Million PPS 252896.52</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2021     1      ITG 2015 Million PPS 117255.89</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2021     1      ITH 2015 Million PPS 369350.57</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2021     1      ITI 2015 Million PPS 349089.92</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2021     1      ITZ 2015 Million PPS   1252.18</span></span></code></pre></div>
 <div id="nutsver" class="section level3">
 <h3>Nuts version - <a href="#filter">back</a></h3>
 <p>To request data at a specific nuts version, use:</p>
@@ -973,7 +973,7 @@ available for the requested variable</li>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; 5    SNPTD     2021     0       CH 1960 Persons 5328000</span></span>
 <span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; 6    SNPTD     2021     0       CY 1960 Persons  441788</span></span>
 <span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; 7    SNPTD     2021     0       CZ 1960 Persons 9602011</span></span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 157081 rows ]</span></span></code></pre></div>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 135276 rows ]</span></span></code></pre></div>
 </div>
 <div id="varnuts" class="section level3">
 <h3>Nutscode and nutslevel - <a href="#filter">back</a></h3>
@@ -997,14 +997,14 @@ this filter is: return all nutscodes starting with ‘val-nutscode’.</li>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
 <span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT  VALUE</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2016     0       IT 1980 Million EUR 341455</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2016     0       IT 1981 Million EUR 385319</span></span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2016     0       IT 1982 Million EUR 434131</span></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2016     0       IT 1983 Million EUR 496161</span></span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2016     0       IT 1984 Million EUR 554663</span></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2016     0       IT 1985 Million EUR 594280</span></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2016     0       IT 1986 Million EUR 651995</span></span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 40511 rows ]</span></span></code></pre></div>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2024     0       IT 1980 Million EUR 342242</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2024     0       IT 1981 Million EUR 386207</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2024     0       IT 1982 Million EUR 435132</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2024     0       IT 1983 Million EUR 497304</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2024     0       IT 1984 Million EUR 555942</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2024     0       IT 1985 Million EUR 595650</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2024     0       IT 1986 Million EUR 653497</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 150097 rows ]</span></span></code></pre></div>
 <p>This filter can be refined using the parameter ‘level’. The parameter
 level filter the data by nuts level. The filter syntax is the
 following:</p>
@@ -1040,40 +1040,40 @@ mandatory</em>.</li>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">level=</span><span class="dv">0</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT   VALUE</span></span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     0       IT 2015 Million EUR 1655355</span></span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     0       IT 2015 Million PPS 1611279</span></span></code></pre></div>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     0       IT 2015 Million EUR 1663278</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     0       IT 2015 Million PPS 1618991</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a></span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co"># Retrive SUVGD data for Italy at country and regional level (level 0 and 2) for the year 2015</span></span>
 <span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">level=</span><span class="st">&#39;0,2&#39;</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE</span></span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     0       IT 2015 Million EUR 1655355.0</span></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     2     ITC1 2015 Million EUR  126868.3</span></span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2021     2     ITC2 2015 Million EUR    4653.4</span></span>
-<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2021     2     ITC3 2015 Million EUR   47179.5</span></span>
-<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2021     2     ITC4 2015 Million EUR  362329.6</span></span>
-<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2021     2     ITF1 2015 Million EUR   31863.8</span></span>
-<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2021     2     ITF2 2015 Million EUR    6128.4</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT      VALUE</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2021     0       IT 2015 Million EUR 1663277.70</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2021     2     ITC1 2015 Million EUR  127475.53</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2021     2     ITC2 2015 Million EUR    4675.69</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2021     2     ITC3 2015 Million EUR   47405.32</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2021     2     ITC4 2015 Million EUR  364063.70</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2021     2     ITF1 2015 Million EUR   32016.27</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2021     2     ITF2 2015 Million EUR    6157.72</span></span>
 <span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 39 rows ]</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a></span>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co"># Retrive SUVGD data for Italy at level from 0 to 2 for the year 2015</span></span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">level=</span><span class="st">&#39;0-2&#39;</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2015</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">100</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt;    VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE</span></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; 1     SUVGD     2021     0       IT 2015 Million EUR 1655355.0</span></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; 2     SUVGD     2021     1      ITC 2015 Million EUR  541030.9</span></span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; 3     SUVGD     2021     1      ITF 2015 Million EUR  258576.9</span></span>
-<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; 4     SUVGD     2021     1      ITG 2015 Million EUR  119889.6</span></span>
-<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; 5     SUVGD     2021     1      ITH 2015 Million EUR  377646.6</span></span>
-<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; 6     SUVGD     2021     1      ITI 2015 Million EUR  356930.8</span></span>
-<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; 7     SUVGD     2021     1      ITZ 2015 Million EUR    1280.3</span></span>
-<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; 8     SUVGD     2021     2     ITC1 2015 Million EUR  126868.3</span></span>
-<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt; 9     SUVGD     2021     2     ITC2 2015 Million EUR    4653.4</span></span>
-<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; 10    SUVGD     2021     2     ITC3 2015 Million EUR   47179.5</span></span>
-<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt; 11    SUVGD     2021     2     ITC4 2015 Million EUR  362329.6</span></span>
-<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="co">#&gt; 12    SUVGD     2021     2     ITF1 2015 Million EUR   31863.8</span></span>
-<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; 13    SUVGD     2021     2     ITF2 2015 Million EUR    6128.4</span></span>
-<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a><span class="co">#&gt; 14    SUVGD     2021     2     ITF3 2015 Million EUR  103763.8</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt;    VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT      VALUE</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; 1     SUVGD     2021     0       IT 2015 Million EUR 1663277.70</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; 2     SUVGD     2021     1      ITC 2015 Million EUR  543620.24</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; 3     SUVGD     2021     1      ITF 2015 Million EUR  259814.43</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; 4     SUVGD     2021     1      ITG 2015 Million EUR  120463.39</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; 5     SUVGD     2021     1      ITH 2015 Million EUR  379454.04</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; 6     SUVGD     2021     1      ITI 2015 Million EUR  358639.17</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; 7     SUVGD     2021     1      ITZ 2015 Million EUR    1286.43</span></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; 8     SUVGD     2021     2     ITC1 2015 Million EUR  127475.53</span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt; 9     SUVGD     2021     2     ITC2 2015 Million EUR    4675.69</span></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; 10    SUVGD     2021     2     ITC3 2015 Million EUR   47405.32</span></span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt; 11    SUVGD     2021     2     ITC4 2015 Million EUR  364063.70</span></span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="co">#&gt; 12    SUVGD     2021     2     ITF1 2015 Million EUR   32016.27</span></span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; 13    SUVGD     2021     2     ITF2 2015 Million EUR    6157.72</span></span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a><span class="co">#&gt; 14    SUVGD     2021     2     ITF3 2015 Million EUR  104260.39</span></span>
 <span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 44 rows ]</span></span></code></pre></div>
 </div>
 <div id="varunit" class="section level3">
@@ -1107,15 +1107,15 @@ use:</p>
 <span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co"># Retrive data only for unit = &#39;Million PPS&#39;</span></span>
 <span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SUVGD&#39;</span>, <span class="at">unit=</span><span class="st">&#39;Million PPS&#39;</span>)</span>
 <span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT    VALUE</span></span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2016     0       AT 1980 Million PPS  63886.9</span></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2016     0       BE 1980 Million PPS  81472.1</span></span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2016     0       DE 1980 Million PPS       NA</span></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2016     0       DK 1980 Million PPS  40713.8</span></span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2016     0       EL 1980 Million PPS  67653.8</span></span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2016     0       ES 1980 Million PPS 212593.0</span></span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2016     0       FI 1980 Million PPS  35398.8</span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 269865 rows ]</span></span></code></pre></div>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR        UNIT     VALUE</span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; 1    SUVGD     2024     0       AT 1980 Million PPS  63886.92</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; 2    SUVGD     2024     0       BE 1980 Million PPS  81472.09</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; 3    SUVGD     2024     0       DE 1980 Million PPS        NA</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt; 4    SUVGD     2024     0       DK 1980 Million PPS  40713.81</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; 5    SUVGD     2024     0       EL 1980 Million PPS  67653.78</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; 6    SUVGD     2024     0       ES 1980 Million PPS 212592.99</span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; 7    SUVGD     2024     0       FI 1980 Million PPS  35398.79</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 928228 rows ]</span></span></code></pre></div>
 </div>
 <div id="varyear" class="section level3">
 <h3>Year - <a href="#filter">back</a></h3>
@@ -1214,12 +1214,12 @@ variable, use:</p>
 <span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTN&#39;</span>, <span class="at">sex=</span><span class="st">&#39;Males&#39;</span>, <span class="at">age =</span> <span class="st">&#39;Total&#39;</span>)</span>
 <span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="fu">print</span>(mydf, <span class="at">max=</span><span class="dv">50</span>)</span>
 <span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE YEAR   SEX   AGE    UNIT   VALUE</span></span>
-<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTN     2021     0       AL 1960 Males Total Persons  804267</span></span>
-<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTN     2021     0       AT 1960 Males Total Persons 3357007</span></span>
-<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="co">#&gt; 3    SNPTN     2021     0       BE 1960 Males Total Persons 4448001</span></span>
-<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="co">#&gt; 4    SNPTN     2021     0       BG 1960 Males Total Persons 3815790</span></span>
-<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="co">#&gt; 5    SNPTN     2021     0       CH 1960 Males Total Persons 2553621</span></span>
-<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 282340 rows ]</span></span></code></pre></div>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTN     2024     0       AL 1960 Males Total Persons  804267</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTN     2024     0       AT 1960 Males Total Persons 3357007</span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="co">#&gt; 3    SNPTN     2024     0       BE 1960 Males Total Persons 4448001</span></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="co">#&gt; 4    SNPTN     2024     0       BG 1960 Males Total Persons 3815790</span></span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="co">#&gt; 5    SNPTN     2024     0       CH 1960 Males Total Persons 2553621</span></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="co">#&gt;  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 940831 rows ]</span></span></code></pre></div>
 </div>
 <div id="tercet" class="section level3">
 <h3>Tercets - <a href="#filter">back</a></h3>
@@ -1298,9 +1298,9 @@ classes.</li>
 <span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a><span class="co">#&gt; 2    SNPTD     2021     0       IT                 1           1 2020 Persons</span></span>
 <span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="co">#&gt; 3    SNPTD     2021     0       IT                 2           1 2020 Persons</span></span>
 <span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a><span class="co">#&gt;               TERCET_NAME   TERCET_CLASS_NAME VALUE</span></span>
-<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co">#&gt; 1 by Urban-Rural Typology Predominantly urban 47.91</span></span>
-<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="co">#&gt; 2 by Urban-Rural Typology        Intermediate 41.67</span></span>
-<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co">#&gt; 3 by Urban-Rural Typology Predominantly rural 10.42</span></span></code></pre></div>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co">#&gt; 1 by Urban-Rural Typology Predominantly urban 12.16</span></span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="co">#&gt; 2 by Urban-Rural Typology        Intermediate 10.56</span></span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co">#&gt; 3 by Urban-Rural Typology Predominantly rural  2.64</span></span></code></pre></div>
 <p>The correct syntax to request data by
 <strong><em>tercet_class</em></strong> is the following:</p>
 <blockquote>
@@ -1346,18 +1346,14 @@ tercet class. If <strong>TRUE</strong>, the functions return the share
 <span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="co"># Retrieve absolute value for tercet class &#39;Predominantly urban&#39; for variable &#39;SNPTD&#39; for country &#39;IT&#39;, year 2020, nuts version 2021</span></span>
 <span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">tercet_class_code=</span><span class="dv">0</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">version=</span><span class="dv">2021</span>)</span>
 <span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="fu">print</span>(mydf)</span>
-<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT</span></span>
-<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0 2020 Persons</span></span>
-<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="co">#&gt;     TERCET_CLASS_NAME    VALUE</span></span>
-<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a><span class="co">#&gt; 1 Predominantly urban 28475100</span></span></code></pre></div>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT   TERCET_CLASS_NAME    VALUE</span></span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0 2020 Persons Predominantly urban 28475100</span></span></code></pre></div>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a></span>
 <span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="co"># Retrieve share for tercet class &#39;Predominantly urban&#39; for variable &#39;SNPTD&#39; for country &#39;IT&#39;, year 2020, nuts version 2021</span></span>
 <span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">ardeco_get_dataset_data</span>(<span class="st">&#39;SNPTD&#39;</span>, <span class="at">tercet_class_code=</span><span class="dv">0</span>, <span class="at">nutscode=</span><span class="st">&#39;IT&#39;</span>, <span class="at">year=</span><span class="dv">2020</span>, <span class="at">version=</span><span class="dv">2021</span>, <span class="at">show_perc=</span><span class="cn">TRUE</span>)</span>
 <span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="fu">print</span>(mydf)</span>
-<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT</span></span>
-<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0 2020 Persons</span></span>
-<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a><span class="co">#&gt;     TERCET_CLASS_NAME VALUE</span></span>
-<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a><span class="co">#&gt; 1 Predominantly urban 47.91</span></span></code></pre></div>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a><span class="co">#&gt;   VARIABLE VERSIONS LEVEL NUTSCODE TERCET_CLASS_CODE YEAR    UNIT   TERCET_CLASS_NAME VALUE</span></span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a><span class="co">#&gt; 1    SNPTD     2021     0       IT                 0 2020 Persons Predominantly urban 12.16</span></span></code></pre></div>
 </div>
 </div>
 

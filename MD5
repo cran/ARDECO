@@ -1,6 +1,6 @@
-3167cf6a37e61ed463c19a1313ad73b4 *DESCRIPTION
+da9c39d5bf5668dfa41e708b5c2739e5 *DESCRIPTION
 a1488077d6c2e299be47a68f27c9c96d *NAMESPACE
-5b6b9264e4fd0c561f2747ab157c99c2 *NEWS
+5252aad3bbdde808f15a3d0f06ead381 *NEWS
 2b12ed14ae2ebd577761f35292c06071 *R/ardeco.R
 34d40e96f87d91d653283bdc437eb059 *R/get_dataset_data.R
 6e698e0137ac3b5a4b03e0aeef43f66b *R/get_dataset_list.R
@@ -8,13 +8,13 @@ a1488077d6c2e299be47a68f27c9c96d *NAMESPACE
 6d39f75d23cd59721616f9a614a6006f *R/get_variable_list.R
 0979c74a457378a6e8d0e881ad23b790 *R/get_variable_props.R
 d2aa2d127dc04ed1721f0a405cc10f32 *README.md
-4d8375db66644c8ff3fe896cf69892ce *build/vignette.rds
-31c83098525a3c4859433b6c31dea874 *inst/doc/introArdeco.R
-601a9e3bc62d195bd88cbed19d701f7a *inst/doc/introArdeco.Rmd
-eb10d893be8e6bf568249504cf7ef5d1 *inst/doc/introArdeco.html
+35c49c24db3c90eab6895317e639688d *build/vignette.rds
+07cda2a4e7a170ebd5f8a55dfe9a6ea1 *inst/doc/introArdeco.Rmd
+247e3b46e72c2f55971ec6b8257f36af *inst/doc/introArdeco.html
 092943fc582463a4c78a1f6e5032025d *man/ardeco.Rd
 fe4824cf1887fc0b364a884b58c56d79 *man/get_dataset_data.Rd
 3d324e0818e5f2c2f3bfab4e189f2c4b *man/get_dataset_list.Rd
 e43737f2bc9e8c987c68b73782de0f50 *man/get_tercet_list.Rd
 577f53b3bac029032116d16ffff91da1 *man/get_variable_list.Rd
-601a9e3bc62d195bd88cbed19d701f7a *vignettes/introArdeco.Rmd
+07cda2a4e7a170ebd5f8a55dfe9a6ea1 *vignettes/introArdeco.Rmd
+601a9e3bc62d195bd88cbed19d701f7a *vignettes/introArdeco.Rmd.orig

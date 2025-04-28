@@ -1,4 +1,6 @@
 ARDECO package
+ver.2.2.2
+- pre-built vignette to avoid unexpected sample outputs and errors due to unavailable APIs
 ver.2.2.1
 - solved problem catching errors due to unavailable APIs
 ver.2.2.0
